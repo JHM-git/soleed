@@ -1,0 +1,16 @@
+<section class="edu-offer">
+  <div class=section-title-div>
+    <h2 class="section-title">Etapas Educativas</h2>
+  </div>
+  <div class="edu-offer-div">
+    {% for i in range(edu_offer|count) %}
+      {% if edu_offer[i] %}
+    <div class="stage">
+      <h4>{{ stages[i] }}</h4>
+      <p>{{ funding_type[i] }}</p>
+      <p class="stage-presentation">{{ edu_stage_msg[i] }}</p>
+    </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>

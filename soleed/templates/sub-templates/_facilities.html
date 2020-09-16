@@ -1,0 +1,22 @@
+<section class="facilities">
+  <div class=section-title-div>
+    <h2 class="section-title">Instalaciones</h2>
+  </div>
+  <div class="info-div">
+    {% for facility in facilities_list %}
+    <p class="ins">{{ facility }}</p>
+    {% endfor %}
+    {% if school.sports_facilities %}
+      <div>
+        <span class="ins">Instalaciones deportivas: {% for facility in sports_facilities %}
+          <span>{{ facility }}</span> {% endfor %}
+        </span>
+      </div>
+      {% endif %}
+  </div>
+  {% if school.facilities_information %}
+  <div class="info-text">
+    <p>{{ school.facilities_information }}</p>
+  </div>
+  {% endif %}
+</section>

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+Soleed - Error
+{% endblock %}
+
+{% block header %}
+{{ super() }}
+{% endblock %}
+
+{% block main %}
+  <h1>Ha ocurrido un error impevisto</h1>
+  <p>Estamos trabajando para solucionar el problema. Sentimos la molestia.</p>
+  <p><a href="{{ url_for('index')}}">Volver</a></p>
+{% endblock %}

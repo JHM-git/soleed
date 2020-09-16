@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}
+Soleed - {{ user.username }}
+{% endblock %}
+
+{% block header %}
+{{ super() }}
+{% endblock %}
+
+{% block main %}
+  <section>
+    <div>
+      <table>
+        <tr valign="top">
+          <td><img src="{{ user.avatar(60) }}" alt="avatar"></td>
+          <td>
+            <h1>Usuario: {{ user.username }}</h1>
+            {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
+            {% if user.last_seen %}<p>Última visita: {{ user.last_seen }}</p>{% endif %}
+          </td>
+        </tr>
+      </table>
+      <div>
+        {% if user == current_user %}
+        <p><a href="{{ url_for('edit_user_profile')}}">Haz cambios a tu perfil</a></p>
+        {% endif %}
+      </div>
+    </div>
+    <hr>
+    <div>
+      <h2>Tus opiniones:</h2>
+      {% for opinion in opinions %}
+      <div>
+        <p>{{ opinion.body }}</p><span>Date</span>
+      </div>
+      {% endfor %}
+    </div>
+    <hr>
+    
+    <div>
+      <h2>Tus comentarios:</h2>
+      {% for comment in comments %}
+        {% include 'sub-templates/_opinion.html' %}
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}

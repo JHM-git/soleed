@@ -1,0 +1,41 @@
+{% macro nav_link(endpoint, text, username) %}
+{% if request.endpoint.endswith(endpoint) %}
+    <li class="active nav-choice"><a href="{{ url_for(endpoint, username=current_user.username) }}">{{text}}</a></li>
+{% else %}
+    <li class="nav-choice"><a href="{{ url_for(endpoint, username=current_user.username) }}">{{text}}</a></li>
+{% endif %}
+{% endmacro %}
+
+{% macro two_random_opinions(list, opinion_type) %}
+{% set opinion_one = list | random %}
+{% set opinion_two = list | random %}
+{% if opinion_one.general_score > opinion_two.general_score %}
+<div class="opinion"><p>"{{ opinion_one.general }}"<br><span>{{ opinion_one.author.username }}</span></p></div>
+<div class="opinion"><p>"{{ opinion_two.opinion_type }}"<br><span>{{ opinion_two.author.username }}</span></p></div>
+{% elif opinion_one.general_score < opinion_two.general_score %}
+<div class="opinion"><p>"{{ opinion_two.opinion_type }}"<br><span>{{ opinion_two.author.username }}</span></p></div>
+<div class="opinion"><p>"{{ opinion_one.opinion_type }}"<br><span>{{ opinion_one.author.username }}</span></p></div>
+{% else %}
+{{ two_random_opinions(list, opinionType) }}
+{% endif %}
+{% endmacro %}
+
+{% macro one_random_opinion(list, opinion_type) %}
+{% set opinion = list | random %}
+<div class="opinion"><p>"{{ opinion.opinion_type }}"<br><span>{{ opinion.author.username }}</span></p></div>
+{% endmacro %}
+
+{% macro opinion_creator(list, opinion_type, number) %}
+{% set opinion_list = list %}
+{% for opinion in opinion_list %}
+    {% if opinion.opinion_type == '' %}
+    {{ opinion_list.remove(opinion) }}
+    {% endif %}
+{% endfor %}
+{% if number == 1 %}
+{{ one_random_opinion(opinion_list) }}
+{% elif number == 2 %}
+{{ two_random_opinions(opinion_list) }}
+{% endif %}
+{% endmacro %}
+

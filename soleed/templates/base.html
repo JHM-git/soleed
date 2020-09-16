@@ -1,0 +1,68 @@
+{% from "macros.html" import nav_link with context %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  {% block script1 %}
+
+  {% endblock %}
+  
+  <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+  
+  {% block header %}
+  <header class="header">
+    <h1 class="header-logo-stand-in">Soleed</h1>
+    <img class="header-logo" src="../static/images/Logo_1.png" alt="Soleed logo">
+    <ul class="nav-list">
+      {{ nav_link('index', 'Home') }}
+      {{ nav_link('schools', 'Schools') }}
+      {{ nav_link('about', 'About') }}
+      {{ nav_link('contact', 'Get in Touch') }}
+      {% if current_user.is_anonymous %}
+      {{ nav_link('login', 'Login') }}
+      {% else %}
+      {{ nav_link('user', 'Profile', username=current_user.username) }}
+      {{ nav_link('logout', 'Logout') }}
+      {% endif %}
+    </ul>
+  </header>
+  {% endblock %}
+  <main class="main-content-holder">
+
+    <div>
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+    </div>
+    
+  {% block main %}
+    <img class="banner-img" src="../static/images/notebook-table-mid.jpg" alt="Notebook and table">
+    
+  {% endblock %}
+
+  </main>
+
+  
+  {% block footer %}
+  <footer>
+    <p>This is the footer...</p>
+  </footer>
+  {% endblock %}
+
+</body>
+{% block script2 %}
+
+{% endblock %}
+</html>

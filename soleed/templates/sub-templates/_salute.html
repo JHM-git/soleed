@@ -1,0 +1,21 @@
+<section class="salute">
+  <div class="dir-msg-cont">
+    <div class="director-div">
+      <div class="dir-content">
+        {% if school.headteacher_title is sameas 'Mr' %}
+        <h3>Saludo del director del {{ school.name }}:</h3>
+        {% else %}
+        <h3>Saludo de la directora del {{ school.name }}:</h3>
+        {% endif %}
+      </div>
+      
+    </div>
+    <div class="dir-message-div">
+      <div class="dir-msg-content">
+        <p class="dir-msg">"{{ school.director_message }}"</p>
+        <p class="dir-name">{{ school.headteacher }}</p>
+      </div>
+      
+    </div>
+  </div>
+</section>

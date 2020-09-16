@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block title %}
+Soleed - Colegio ejemplo
+{% endblock %}
+
+{% block header %}
+{{ super() }}
+{% endblock %}
+
+{% block main %}
+<!--Stand-in image for school image-->
+{{ super() }}
+<div class="path">
+  <p>Estás en: path eg Madrid | Madrid | Example School</p>
+</div>
+<section class="info">
+  <h1 class="school-title">Nombre del colegio</h1>
+  <div class="info-div school-info">
+    <p class="a&d address">Direccion</p>
+    <p class="a&d phone">Número de teléfono</p>
+    <p class="a&d webpage"><a href="">www.paginaweb.com</a></p>
+    <p class="a&d email">e-mail</p>
+    <p class="a&d id">Número centro</p>
+  </div>
+  <div class="info-div education-info">
+    <p class="e-info stages">Enseñanzas impartidas: Infantil, Primaria</p>
+    <p class="e-info org">Centro público/concertado/privado</p>
+    <p class="e-info pupil-number">Número de alumnos: xxx</p>
+    <p class="e-info">Laico/Religioso</p>
+    <p class="e-info">Bilingüe/Trilingüe (language)</p>
+  </div>
+  <div class="total-score">
+    <p>Valoración x/10 (de xx opiniones</p>
+  </div>
+  
+</section>
+
+<section class="teasers">
+  <div class="info-text point-1"><p>Short info one: Presentation of the school in a few lines including education offer, situation, etc.</p></div>
+  <div class="info-text point-2"><p>Short info two: Education methods and priorities also in only a few lines</p></div>
+  <div class="info-text point-3"><p>Short info three: What is special about the school? Why is it a good choice for a parent that is choosing a school</p></div>
+</section>
+<div>
+  <img class="pupils-img" src="../static/images/teachers-mid.jpg" alt="teachers in front of a blackboard">
+</div>
+<section class="salute">
+  <div class="dir-msg-cont">
+    <div class="director-div">
+      <div class="dir-content">
+        <h3>Saludo del director/a del Nombre del colegio:</h3>
+      </div>
+      
+    </div>
+    <div class="dir-message-div">
+      <div class="dir-msg-content">
+        <p class="dir-msg">"Mensaje del director. In the example school we are happy to see another group of children start their school journey with us this autumn. In the spring we celebrated those that left to continue their lives and studies elsewhere. We place the individual before anything else and believe that by helping children become .... and some more(about 1000 characters?)"</p>
+        <p class="dir-name">Pedro Garcia Rodriguez</p>
+      </div>
+      
+    </div>
+  </div>
+</section>
+<div class="separator-1"></div>
+
+<section class="edu-offer">
+  <div class=section-title-div>
+    <h2 class="section-title">Etapas Educativas</h2>
+  </div>
+  <div class="edu-offer-div">
+    <div class="stage infantil-1st">
+      <h4>Primera Etapa de Infantil</h4>
+      <p>publ/conc/priv</p>
+      <p class="stage-presentation">Descripción de la étapa educativa en unas cinco lineas. Qué quieren destacar, sean métodos, cultura de aprendizaje etcetera. Diferente para cada etapa.</p>
+    </div>
+    <div class="stage infantil-2nd">
+      <h4>Segunda Etapa de Infantil</h4>
+      <p>publ/conc/priv</p>
+      <p class="stage-presentation">Descripción de la étapa educativa en unas cinco lineas. Qué quieren destacar, sean métodos, cultura de aprendizaje etcetera. Diferente para cada etapa.</p>
+    </div>
+    <div class="stage primaria">
+      <h4>Primaria</h4>
+      <p>publ/conc/priv</p>
+      <p class="stage-presentation">Descripción de la étapa educativa en unas cinco lineas. Qué quieren destacar, sean métodos, cultura de aprendizaje etcetera. Diferente para cada etapa.</p>
+    </div>
+    <div class="stage secundaria">
+      <h4>Secundaria</h4>
+      <p>publ/conc/priv</p>
+      <p class="stage-presentation">Descripción de la étapa educativa en unas cinco lineas. Qué quieren destacar, sean métodos, cultura de aprendizaje etcetera. Diferente para cada etapa.</p>
+    </div>
+    <div class="stage instituto">
+      <h4>Instituto</h4>
+      <p>publ/conc/priv</p>
+      <p class="stage-presentation">Descripción de la étapa educativa en unas cinco lineas. Qué quieren destacar, sean métodos, cultura de aprendizaje etcetera. Diferente para cada etapa.</p>
+    </div>
+    <div class="stage form-prof">
+      <h4>Formación Profesional</h4>
+      <p>publ/conc/priv</p>
+      <p class="stage-presentation">Descripción de la étapa educativa en unas cinco lineas. Qué quieren destacar, sean métodos, cultura de aprendizaje etcetera. Diferente para cada etapa.</p>
+    </div>
+  </div>
+  <!--<div class="edu-offer-div">
+    <div class="stage primaria">
+      <h4>Primaria</h4>
+      <p>publ/conc/priv</p>
+    </div>
+    <div class="stage secundaria">
+      <h4>Secundaria</h4>
+      <p>publ/conc/priv</p>
+    </div>
+  </div>
+  <div class="edu-offer-div">
+    <div class="stage instituto">
+      <h4>Instituto</h4>
+      <p>publ/conc/priv</p>
+    </div>
+    <div class="stage form-prof">
+      <h4>Formación Profesional</h4>
+      <p>publ/conc/priv</p>
+    </div>
+  </div>-->
+
+  
+</section>
+
+<div class="separator-2"></div>
+
+<section class="faculties">
+  <div class=section-title-div>
+    <h2 class="section-title">Instalaciones</h2>
+  </div>
+  <div class="info-div">
+    <p>Patio separado para infantil: Sí/No</p>
+    <p>Biblioteca</p>
+    <p>Instalaciones deportivas: gimnasio, campo de futbol etc.</p>
+    <p>Huerto</p>
+  </div>
+  <div class="info-text"><p>Información general sobre las instalaciones. Cuándo ha sido construido/reformado etc. Qué tipo de espacios hay y cómo se usan. Cómo son las clases y otros espacios interiores.</p></div>
+  
+</section>
+
+<div>
+  <img class="sports-img" src="../static/images/football-full.jpg" alt="children at football practice">
+</div>
+
+<section class="languages">
+  <div class=section-title-div>
+    <h2 class="section-title">Lenguajes</h2>
+  </div>
+  <div class="edu-offer-div">
+    <div class="stage language">
+      <h4>Lenguaje 1</h4>
+      <p>obligatorio/opcional</p>
+      <p class="stage-presentation">Descripción de la enseñanza del idioma. Si se trata de un sistema bilingüe o no, cuántas horas se dan a la semana, en qué se centra la enseñanza, etc. desde qué edad se empieza a impartir el idioma. El porqué de ese idioma.</p>
+    </div>
+    <div class="stage language">
+      <h4>Lenguaje 2</h4>
+      <p>obligatorio/opcional</p>
+      <p class="stage-presentation">Descripción de la enseñanza del idioma. Si se trata de un sistema bilingüe o no, cuántas horas se dan a la semana, en qué se centra la enseñanza, etc. desde qué edad se empieza a impartir el idioma. El porqué de ese idioma.</p>
+    </div>
+    <div class="stage language">
+      <h4>Lenguaje 3</h4>
+      <p>obligatorio/opcional</p>
+      <p class="stage-presentation">Descripción de la enseñanza del idioma. Si se trata de un sistema bilingüe o no, cuántas horas se dan a la semana, en qué se centra la enseñanza, etc. desde qué edad se empieza a impartir el idioma. El porqué de ese idioma.</p>
+    </div>
+  </div>
+
+</section>
+
+<div class="separator-1"></div>
+
+<section class="services">
+  <div class=section-title-div>
+    <h2 class="section-title">Services</h2>
+  </div>
+  <div class="services-div">
+    <div class="service"><p>Comedor (cocina propia)</p><span class="service-price">precio €</span></div>
+    <div class="service"><p>Horario ampliado (mañana desde... por la tarde hasta...</p><span class="service-price">precio desde €</span></div>
+    <div class="service"><p>Extrascolares: ejemplos</p><span class="service-price">precio desde €</span ></div>
+    <div class="service"><p>Gabinete médico/Enfermería</p><span class="service-price">precio €</span></div>
+    <div class="service"><p>Ruta escolar</p><span class="service-price">precio €</span></div>
+  </div>
+</section>
+
+<div class="separator-2"></div>
+
+<section class="opinions">
+  <div class=section-title-div>
+    <h2 class="section-title">Opiniones</h2>
+  </div>
+  <div class="opinion-type"><div class="flex3"><p>Valoración Global</p></div><div class="flex1"><span>x,x</span></div></div>
+  <div class="opinion"><p>"Un ejemplo de la valoración global del colegio, generado al azar de todos los comentarios en la database. El primero con valuación encima de la media."<br><span>Nombre</span></p></div>
+  <div class="opinion"><p>"Un ejemplo de la valoración global del colegio, generado al azar de todos los comentarios en la database. El segundo con valuación debajo de la media."<br><span>Nombre</span></p></div>
+  <div class="opinion-type"><div class="flex3"><p>Profesorado</p></div><div class="flex1"><span>x,x</span></div></div>
+  <div class="opinion"><p>"Un ejemplo de la valoración del profesorado del colegio, generado al azar de todos los comentarios en la database. Probablemente solo uno."<br><span>Nombre</span></p></div>
+  <div class="opinion-type"><div class="flex3"><p>Instalaciones & Materiales</p></div><div class="flex1"><span>x,x</span></div></div>
+  <div class="opinion"><p>"Un ejemplo de la valoración de las instalaciones del colegio y de las materiales que el colegio distribuye a los alumnos, generado al azar de todos los comentarios en la database. Probablemente solo uno."<br><span>Nombre</span></p></div>
+  <div class="opinion-type"><div class="flex3"><p>Comunicación & Accessibilidad</p></div><div class="flex1"><span>x,x</span></div></div>
+  <div class="opinion"><p>"Un ejemplo de la valoración de la comunicación por parte del colegio y de lo fácil que es acceder a las instalaciones y servicios que el colegio ofrece, generado al azar de todos los comentarios en la database. Probablemente solo uno."<br><span>Nombre</span></p></div>
+</section>
+
+<div class="separator-1"></div>
+
+<section class="location">
+  <div class="location-flex">
+    <div class="flex1 location-div">
+      <h3 class="section-title-sml">Ubicación</h3>
+      <p class="location-info">Dirección</p>
+      <p class="location-info">Más información sobre donde se encuentra el colegio, cómo es la zona, qué hay cerca. Si es facil de llegar en transporte público y/o aparcar cerca etc.</p>
+    </div>
+    <div class="flex3">
+      <div id="map"></div>
+    </div>
+  </div>
+</section>
+
+<script type="text/javascript">
+let latLng = {
+  lat: 40.468635,
+  lng: -3.700575
+}
+console.log(latLng);
+</script>
+
+<script type="text/javascript"
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCf3lNl53rWVvFwrSFMP1OO7Yzc9mY1OUE">
+</script>
+
+<script type="text/javascript"
+src="{{ url_for('static', filename='js/map.js') }}"></script>
+
+{% endblock %}
+
+{% block script %}
+
+
+{% endblock %}

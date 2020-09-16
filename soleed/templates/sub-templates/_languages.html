@@ -1,0 +1,35 @@
+<section class="languages">
+  <div class=section-title-div>
+    <h2 class="section-title">Lenguajes</h2>
+  </div>
+  <div class="edu-offer-div">
+    {% if school.first_language %}
+    <div class="stage language">
+      <h4>{{ school.first_language }}</h4>
+      <p>{{ school.optionality_first_language }}</p>
+      <p class="stage-presentation">{{ school.description_first_language }}</p>
+    </div>
+    {% endif %}
+    {% if school.second_language %}
+    <div class="stage language">
+      <h4>{{ school.second_language }}</h4>
+      <p>{{ school.optionality_second_language }}</p>
+      <p class="stage-presentation">{{ school.description_second_language }}</p>
+    </div>
+    {% endif %}
+    {% if school.third_language %}
+    <div class="stage language">
+      <h4>{{ school.third_language }}</h4>
+      <p>{{ school.optionality_third_language }}</p>
+      <p class="stage-presentation">{{ school.description_third_language }}</p>
+    </div>
+    {% endif %}
+    {% if school.fourth_language %}
+    <div class="stage language">
+      <h4>{{ school.fourth_language }}</h4>
+      <p>{{ school.optionality_fourth_language }}</p>
+      <p class="stage-presentation">{{ school.description_fourth_language }}</p>
+    </div>
+    {% endif %}
+  </div>
+</section>

@@ -1,0 +1,31 @@
+<section class="services">
+  <div class=section-title-div>
+    <h2 class="section-title">Services</h2>
+  </div>
+  <div class="services-div">
+    {% if school.canteen is true and school.in_house_kitchen is true %}
+    <div class="service"><div class="service-div"><p>Comedor (cocina propia)</p></div><span class="service-price"><p>{{ school.canteen_price }}€ al mes</p></span></div>
+    {% elif school.canteen is true %}
+    <div class="service"><div class="service-div"><p>Comedor (catering)</p></div><span class="service-price"><p>{{ school.canteen_price }}€ al mes</p></span></div>
+    {% endif %}
+    {% if school.horario_ampliado is true %}
+    <div class="service"><div class="service-div"><p>Horario ampliado (mañanas desde las {{ school.horario_ampliado_morning }} y tardes hasta las {{ school.horario_ampliado_afternoon }})</p></div>
+      <span class="service-price"><p>desde {{ school.horario_ampliado_price }}€ al día</p></span></div>
+    {% endif %}
+    {% if school.extracurricular_activities is true %}
+    <div class="service"><div class="service-div"><div><p>Extrascolares:</p>
+      <ul>
+        {% for activity in extracurricular_activities %}
+        <li>{{ activity }}</li>
+        {% endfor %}
+      </ul></div>
+    </div><span class="service-price"><p>desde {{ school.extracurricular_activities_price_from }}€ hasta {{ school.extracurricular_activities_price_upto }}€ al mes</p></span></div>
+    {% endif %}
+    {% if school.nurse is true%}
+    <div class="service"><div class="service-div"><p>Gabinete médico/Enfermería</p></div><span class="service-price"><p>{{ school.nurse_price }}€ al mes</p></span></div>
+    {% endif %}
+    {% if school.school_bus is true%}
+    <div class="service"><div class="service-div"><p>Ruta escolar</p></div><span class="service-price"><p>{{ school.school_bus_price }}€ al mes</p></span></div>
+    {% endif %}
+  </div>
+</section>

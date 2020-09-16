@@ -1,0 +1,433 @@
+/* General Styles */
+
+body {
+  font-family: Helvetica, sans-serif;
+}
+
+/* Separator Styles */
+
+.separator-1 {
+  width: 100%;
+  height: 15px;
+  border-top: 5px;
+  border-bottom: 5px;
+  border-style: solid;
+  border-color: #AE87B0;
+  margin: 50px auto;
+}
+
+.separator-2 {
+  width: 100%;
+  height: 15px;
+  
+  background-color: #AE87B0;
+  margin: 50px auto;
+}
+
+
+/* Header Styles */
+
+.header {
+  height: 75px;
+  width: 100%;
+  position: fixed;
+  top: 0px;
+  background-color: white;
+}
+
+.header-logo-stand-in {
+  display: inline-block;
+  position: absolute;
+  left: -9999px;
+}
+
+.header-logo {
+  height: 70px;
+  margin: 2px 10px 2px 15%;
+  display: inline-block;
+  position: absolute;
+  left: 10px;
+}
+
+.nav-list {
+  position: absolute;
+  right: 15%;
+  font-size: 1.25em;
+}
+
+.nav-choice {
+  display: inline-block;  
+  margin-left: 20px;
+  
+}
+
+.nav-choice a {
+  color: #ffad33;
+  text-decoration: none;
+}
+
+.nav-choice a:hover {
+  text-decoration: underline;
+}
+
+.active a:hover {
+  text-decoration: none;
+}
+
+/* Images */
+
+.banner-img,
+.pupils-img,
+.sports-img {
+  height: auto;
+  width: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Main Styles */
+
+.main-content-holder {
+  font-size: large;
+  width: 100%;
+  margin: 5rem auto;
+}
+
+/* School Info */
+
+.path {
+  margin-left: 3%;
+}
+
+.info {
+  display: block;
+  margin: 0px;
+}
+
+.school-title {
+  text-align: center;
+  font-size: 4rem;
+  font-weight: bold;
+}
+
+.info-div {
+  margin: 0 auto;
+  width: 100%;
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.total-score {
+  text-align: right;
+  padding: 10px;
+}
+
+.e-info,
+.a_d,
+.inst {
+  margin: 0rem 1rem;
+}
+
+/* Info-text Styles */
+
+
+
+.info-text {
+  background-color: #F2DD72;
+  margin: 1rem;
+  text-align: center;
+  width: fit-content;
+  max-width: 75%;
+  padding: 18px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+  border-radius: 10px;
+}
+
+/* Director's msg */
+
+.salute {
+  width: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 75px;
+  margin-bottom: 75px;
+}
+
+.dir-msg-cont {
+  display: flex;
+}
+
+.director-div {
+  flex: 1;
+}
+
+.dir-message-div {
+  flex: 2;
+}
+
+.dir-content {
+  margin-top: 80px;
+  margin-left: 10%;
+  max-width: 60%;
+}
+
+.dir-msg-content {
+  margin-top: 20px;
+  margin-left: 10%;
+  max-width: 60%;
+}
+
+.dir-msg {
+  font-style: italic;
+}
+
+.dir-name {
+  margin-top: 10px;
+}
+
+/* Education Stage Styles */
+
+.edu-offer {
+  width: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 3.5rem;
+  font-weight: bold;
+  padding: 20px 0px;
+}
+
+.edu-offer-div {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  margin-top: 3rem;
+}
+
+.stage {
+  flex: 1;
+  text-align: center;
+  min-width: 350px;
+  max-width: 80%;
+  margin: 30px auto 10px;
+  padding: 50px 10px;
+  background-color: #56A7C7;
+  border: 5px solid white;
+  border-radius: 10px;
+}
+
+.stage h4 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.stage-presentation {
+  max-width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Facilities Styles */
+
+.facilities {
+  margin-top: 50px;
+  margin-bottom: 100px;
+  padding: 0.5em;
+}
+
+/* Languages Styles */
+
+.languages {
+  width: 100%;
+  display: block;
+  margin-top: 2rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.language {
+  min-width: 500px;
+}
+
+/* Services Styles */
+
+.services-div {
+  width: 80%;
+  margin: 20px auto;
+  
+}
+
+.service {
+  display: flex;
+  margin: 10px;
+}
+
+.service-div {
+  flex: 2;
+}
+
+.service-div p {
+  margin-right: 0.5em;
+}
+
+.service p {
+  /*background-color: #F2DD72;*/
+  border-bottom: .25em solid #F2DD72;
+  width: fit-content;
+  padding: 0.5em;
+}
+
+.service-div ul {
+  margin-block-start: 0.5em;
+  margin-block-end: 0;
+}
+
+.service-price {
+  flex: 1;
+  float: right;
+}
+
+.service-price p {
+  float: right;
+}
+
+/* Opinions Styles */
+
+.opinions {
+  width: 90%;
+  margin: 20px auto;
+}
+
+.opinion-type {
+  display: flex;
+  margin: 10px;
+}
+
+.flex3 {
+  flex: 3;
+}
+
+.flex1 {
+  flex: 1;
+}
+
+.opinion-type p {
+  
+  background-color: #F2DD72;
+  width: fit-content;
+  padding: 18px;
+  border-radius: 7px;
+
+}
+
+.opinion-type span {
+  float: right;
+  text-align: right;
+  background-color: #F2DD72;
+  width: fit-content;
+  padding: 18px;
+  border-radius: 7px;
+}
+
+.opinion {
+  max-width: 70%;
+  margin: 3rem auto 6rem;
+}
+
+.opinion span {
+  float: right;
+  font-style: italic;
+}
+
+/* Location Styles */
+
+.location {
+  margin-top: 6rem;
+  margin-bottom: 5rem;
+}
+
+.location-flex {
+  display: flex;
+  margin: 10px;
+}
+
+#map {
+  width: 95%;
+  height: 400px;
+  margin: 0 auto;
+}
+
+.location-div {
+  text-align: center;
+}
+
+.section-title-sml {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-top: 2rem;
+}
+
+.location-info {
+  width: 90%;
+  margin: 2rem auto;
+  background-color: #56A7C7;
+  padding: 25px 7px;
+  border-radius: 5px;
+}
+
+/* Form Styles */
+
+.login {
+  padding-top: 5rem;
+  width: 100%;
+}
+
+.login-div {
+  width: min-content;
+  margin: 2rem auto;
+}
+
+.login h1 {
+  font-size: 2rem;
+}
+
+.login p {
+  margin-top: 0.75rem;
+}
+
+.login #submit {
+  background-color: #ffad33;
+}
+
+.error {
+  color: red;
+}
+
+/* School Form Styles */
+
+.page1 {
+  display: block
+}
+
+.page2 {
+  display: none;
+}
+
+/* Footer Styles */
+
+footer {
+  width: 100%;
+  height: 200px;
+  background-color: #947E75;
+}

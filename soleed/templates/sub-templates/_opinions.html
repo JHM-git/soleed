@@ -1,0 +1,18 @@
+<section class="opinions">
+  <div class=section-title-div>
+    <h2 class="section-title">Opiniones</h2>
+  </div>
+  <div class="opinion-type"><div class="flex3"><p>Valoración Global</p></div><div class="flex1"><span>{{ general_score | round(1) }}</span></div></div>
+  
+    <div class="opinion"><p>"{{ generalOpinionOne.general }}"<br><span>{{ generalOpinionOne.author.username }}</span></p></div>
+    <div class="opinion"><p>"{{ generalOpinionTwo.general }}"<br><span>{{ generalOpinionTwo.author.username }}</span></p></div>
+  <div class="opinion-type"><div class="flex3"><p>Profesorado</p></div><div class="flex1"><span>{{ teachers_score | round(1) }}</span></div></div>
+  {% set teacherOpinion = oneRandomOpinion(opinions['opinions'], opinions['index_finders']['teachers']) %}
+    <div class="opinion"><p>"{{ teacherOpinion.teachers }}"<br><span>{{ teacherOpinion.author.username }}</span></p></div>
+  <div class="opinion-type"><div class="flex3"><p>Instalaciones & Materiales</p></div><div class="flex1"><span>{{ faculties_materials_score | round(1) }}</span></div></div>
+  {% set inst_matOpinion = oneRandomOpinion(opinions['opinions'], opinions['index_finders']['faculties_materials']) %}
+    <div class="opinion"><p>"{{ inst_matOpinion.faculties_materials }}"<br><span>{{ inst_matOpinion.author.username }}</span></p></div>
+  <div class="opinion-type"><div class="flex3"><p>Comunicación & Accessibilidad</p></div><div class="flex1"><span>{{ communication_accessibility_score | round(1) }}</span></div></div>
+  {% set com_accOpinion = oneRandomOpinion(opinions['opinions'], opinions['index_finders']['communication_accessibility']) %}
+    <div class="opinion"><p>"{{ com_accOpinion.communication_accessibility }}"<br><span>{{ com_accOpinion.author.username }}</span></p></div>
+</section>
