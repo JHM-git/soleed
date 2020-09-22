@@ -4,6 +4,7 @@ from soleed.helpers.hardData import schoolx, opinionsx, picturesx
 from soleed.helpers.functions import oneRandomOpinion, twoRandomOpinions, schoolFundingLists
 from soleed.helpers.functions import facilitiesList, strToLs
 from soleed.helpers.forms import LoginForm, RegistrationForm, EditUserProfileForm, RegisterSchoolForm
+from soleed.helpers.forms import EditSchoolForm
 from soleed.models import User, School, Opinion
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
@@ -68,15 +69,53 @@ def school(name):
 @app.route('/schools/register school', methods=['GET', 'POST'])
 @login_required
 def registerSchool():
+  if current_user.headteacher is not True:
+    flash('Lo sentimos, no puedes acceder a esta página')
+    return redirect(url_for('index'))
   form = RegisterSchoolForm()
   if form.validate_on_submit():
     school = School(name=form.name.data, telephone=form.telephone.data, code_number=form.code_number.data, 
-    city=form.city.data, headteacher_email=form.headteacher_email.data)
+    city=form.city.data, headteacher_email=form.headteacher_email.data, headteacher_id=current_user.id)
     db.session.add(school)
     db.session.commit()
     flash('¡' + school.name + ' añadido!')
     return redirect(url_for('school',name=school.name))
   return render_template('register_school.html', form=form)
+
+
+@app.route('/schools/edit school', methods=['GET', 'POST'])
+@login_required
+def editSchool():
+  if current_user.is_anonymous:
+    return redirect(url_for('login'))
+  school = School.query.filter_by(headteacher_id=current_user.id).first_or_404()
+  form = EditSchoolForm()
+  if form.validate_on_submit():
+    school.name = form.name.data
+    school.telephone = form.telephone.data
+    school.webpage = form.webpage.data
+    school.email = form.email.data
+    school.code_number = form.code_number.data
+    school.number_pupils = form.number_pupils.data
+    if form.religious.data == '1':
+      school.religious = True
+    elif form.religious.data == '0':
+      school.religious = False
+    school.religion = form.religion.data
+    db.session.add(school)
+    db.session.commit()
+    flash('Hemos guardado los cambios.')
+    return redirect(url_for('school', name=school.name))
+  elif request.method == 'GET':
+    form.name.data = school.name
+    form.telephone.data = school.telephone
+    form.webpage.data = school.webpage
+    form.email.data = school.email
+    form.code_number.data = school.code_number
+    
+  return render_template('edit_school.html', form=form, school=school)
+
+
 
 @app.route('/schools/example')
 def example_school():
@@ -95,6 +134,7 @@ def schooldev():
 @login_required
 def user(username):
   user = User.query.filter_by(username=username).first_or_404()
+  school = School.query.filter_by(headteacher_id=user.id).first()
   opinions = [
     {'author': user, 'body': 'Test opinion #1', 'school_id': 1},
     {'author': user, 'body': 'Test opinion #2', 'school_id': 1}
@@ -103,7 +143,8 @@ def user(username):
     {'author': user, 'body': 'Test comment #1'},
     {'author': user, 'body': 'Test comment #1'}
   ]
-  return render_template('user.html', user=user, opinions=opinions, comments=comments)
+  return render_template('user.html', user=user, opinions=opinions, 
+  comments=comments, school=school)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -112,7 +153,8 @@ def register():
     return redirect(url_for('index'))
   form = RegistrationForm()
   if form.validate_on_submit():
-    user = User(username=form.username.data, email=form.email.data)
+    user = User(username=form.username.data, email=form.email.data, 
+    headteacher=form.headteacher.data, school_code_number=form.school_code_number.data)
     user.set_password(form.password.data)
     db.session.add(user)
     db.session.commit()

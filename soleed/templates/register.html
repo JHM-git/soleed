@@ -12,7 +12,10 @@ Soleed - Register
 {% block main %}
   <section class="login">
     <div class="login-div">
-      <h1>Regístrate</h1>
+      <h1>Regístrate</h1><span>
+        <button onclick="toggleElement('director-form-div', 'show', 'school-bt', 'Soy colegio', 'No soy colegio')" 
+        id="school-bt">Soy colegio</button>
+        </span>
       <form action="" method="POST" novalidate>
         {{ form.hidden_tag() }}
         <p>
@@ -29,6 +32,22 @@ Soleed - Register
             <span class="error">[{{ error }}]</span>
             {% endfor %}
         </p>
+        <div class="hide" id="director-form-div">
+          <p>
+            {{ form.headteacher.label }} <br>
+            {{ form.headteacher }} <br>
+            {% for error in form.headteacher.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <p>
+              {{ form.school_code_number.label }} <br>
+              {{ form.school_code_number(size=32) }} <br>
+              {% for error in form.school_code_number.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+          </p>
+      </div>
         <p>
             {{ form.password.label }} <br>
             {{ form.password(size=32) }} <br>
@@ -47,6 +66,7 @@ Soleed - Register
       </form>
     </div>
   </section>
+  <script src="{{ url_for('static', filename='js/form.js')}}"></script>
 {% endblock %}
 
 {% block footer %}

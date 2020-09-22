@@ -14,6 +14,8 @@ class User(UserMixin, db.Model):
   username = db.Column(db.String(32), index=True, unique=True)
   email = db.Column(db.String(120), index=True, unique=True)
   password_hash = db.Column(db.String(128))
+  headteacher = db.Column(db.Boolean, default=False)
+  school_code_number = db.Column(db.String(32), index=True)
   about_me = db.Column(db.String(120))
   last_seen = db.Column(db.DateTime, default=datetime.utcnow)
   opinions = db.relationship('Opinion', backref='author', lazy='dynamic')
@@ -60,6 +62,7 @@ class School(db.Model):
   headteacher = db.Column(db.String(64), index=True)
   headteacher_title = db.Column(db.String(32), index=True)
   headteacher_email = db.Column(db.String(64), index=True, unique=True)
+  headteacher_id = db.Column(db.Integer, db.ForeignKey('user.id'))
   director_message = db.Column(db.String(1000), index=True)
   #opinions
   opinions = db.relationship('Opinion', backref='school', lazy='dynamic')
@@ -128,6 +131,12 @@ class School(db.Model):
 
   def __repr__(self):
     return '<{}>'.format(self.name)
+
+  def set_password(self, password):
+    self.password_hash = generate_password_hash(password)
+
+  def check_password(self, password):
+    return check_password_hash(self.password_hash, password)
 
 '''
 class School_stages(School, db.Model):

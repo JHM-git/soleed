@@ -60,9 +60,11 @@ Soleed - {{ school.name }}
       <p class="e-info pupil-number">Número de alumnos: {{ school.number_pupils }}</p>
       <p class="e-info">
         {% if school.religious is false %}
-         <span>Colegio laico</span>
-        {% else %}
+          <span>Colegio laico</span>
+        {% elif school.religion %}
           <span>Colegio {{ school.religion }}</span>
+        {% else %}
+          <span>Colegio religioso</span> 
         {% endif %}
       </p>
       {% if school.trilingual is true %}

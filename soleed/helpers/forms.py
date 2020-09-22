@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, TextAreaField, SubmitField
+from wtforms import IntegerField, SelectField, RadioField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length
-from soleed.models import User
+from soleed.models import User, School
 
 
 class LoginForm(FlaskForm):
@@ -14,6 +15,8 @@ class LoginForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
+    headteacher = BooleanField('Soy director/a')
+    school_code_number = StringField('Código del centro')
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField('Repite la contraseña', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Registrate')
@@ -52,3 +55,27 @@ class RegisterSchoolForm(FlaskForm):
     city = StringField('Ciudad', validators=[DataRequired()])
     headteacher_email = StringField('Correo del director/de la directora', validators=[DataRequired()])
     submit = SubmitField('Registrar colegio')
+
+    def validate_code_number(self, code_number):
+        school = School.query.filter_by(code_number=code_number.data).first()
+        if school is not None:
+            raise ValidationError('Código del colegio erroneo')
+    
+    def validate_headteacher_email(self, headteacher_email):
+        school = School.query.filter_by(headteacher_email=headteacher_email.data).first()
+        if school is not None:
+            raise ValidationError('Elige otro correo electrónico')
+
+class EditSchoolForm(FlaskForm):
+    name = name = StringField('Nombre del colegio', validators=[DataRequired()])
+    telephone = StringField('Teléfono', validators=[DataRequired()])
+    webpage = StringField('Página web', validators=[DataRequired()])
+    email = StringField('Correo electrónico', validators=[DataRequired()])
+    code_number = StringField('Código del centro', validators=[DataRequired()])
+    number_pupils = IntegerField('Número de alumnos', validators=[DataRequired()])
+    religious = RadioField('Vocación', choices=[(1, 'religioso'), (0, 'laico')], 
+    validators=[DataRequired()])
+    religion = StringField('Religion')
+    submit = SubmitField('Registrar los cambios')
+
+

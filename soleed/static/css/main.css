@@ -414,7 +414,15 @@ body {
   color: red;
 }
 
-/* School Form Styles */
+/* School & Register Form Styles */
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
 
 .page1 {
   display: block
