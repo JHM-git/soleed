@@ -76,7 +76,85 @@ Soleed - Editar Colegio
         </div>
         <div class="page2" id="form-sec2">
           <h1>Editar Colegio</h1>
-          
+          <p>
+            {{ form.address_search.label }} <br>
+            {{ form.address_search(size=32) }} <br>
+            {% for error in form.address_search.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <div id="form-address-div" class="hide">
+            <p>
+              {{ form.address.label }} <br>
+              {{ form.address(size=32, id='route') }} <br>
+              {% for error in form.address.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p>
+              {{ form.street_number.label }} <br>
+              {{ form.street_number }} <br>
+              {% for error in form.street_number.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p>
+              {{ form.city.label }} <br>
+              {{ form.city(size=32, id='locality') }} <br>
+              {% for error in form.city.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p>
+              {{ form.subregion.label }} <br>
+              {{ form.subregion(size=32, id='administrative_area_level_2') }} <br>
+              {% for error in form.subregion.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p>
+              {{ form.region.label }} <br>
+              {{ form.region(size=32, id='administrative_area_level_1') }} <br>
+              {% for error in form.region.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p>
+              {{ form.borough.label }} <br>
+              {{ form.borough(size=32) }} <br>
+              {% for error in form.borough.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p>
+              {{ form.zone.label }} <br>
+              {{ form.zone(size=32) }} <br>
+              {% for error in form.zone.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p>
+              {{ form.postcode.label }} <br>
+              {{ form.postcode(size=32, id='postal_code') }} <br>
+              {% for error in form.postcode.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p id="form-country">
+              {{ form.country.label }} <br>
+              {{ form.country(size=32, id='country') }} <br>
+              {% for error in form.country.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+          </div>
+          <p>
+            {{ form.location_description.label }} <br>
+            {{ form.location_description(cols=50, rows=4) }} <br>
+            {% for error in form.location_description.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+          </p>
           <p><button id="button2" onclick="previousPage(event, 2)">Previous</button></p>
           <p>{{ form.submit() }} </p>
         </div>
@@ -85,6 +163,13 @@ Soleed - Editar Colegio
   </section>
 
 <script src="{{ url_for('static', filename='js/form.js')}}"></script>
+
+<script src="{{ url_for('static', filename='js/autocomplete.js')}}"></script>
+
+<script type="text/javascript" defer
+src="https://maps.googleapis.com/maps/api/js?key={{ googleAPI }}&callback=initAutocomplete&libraries=places"></script>
+
+
 {% endblock %}
 
 {% block footer %}

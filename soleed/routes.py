@@ -4,11 +4,14 @@ from soleed.helpers.hardData import schoolx, opinionsx, picturesx
 from soleed.helpers.functions import oneRandomOpinion, twoRandomOpinions, schoolFundingLists
 from soleed.helpers.functions import facilitiesList, strToLs
 from soleed.helpers.forms import LoginForm, RegistrationForm, EditUserProfileForm, RegisterSchoolForm
-from soleed.helpers.forms import EditSchoolForm
+from soleed.helpers.forms import EditSchoolForm, ResetPasswordRequestForm, ResetPasswordForm
 from soleed.models import User, School, Opinion
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from datetime import datetime
+from soleed.helpers.email import send_password_reset_email
+from soleed.helpers.keys import googleAPI
+
 
 @app.shell_context_processor
 def make_shell_context():
@@ -63,7 +66,7 @@ def school(name):
   return render_template('school.html', school=school, público=público, concertado=concertado, 
   privado=privado, pictures=picturesx, opinions=opinions, edu_offer=edu_offer, stages=stages, funding_type=funding_type,
   edu_stage_msg=edu_stage_msg, facilities_list=facilities_list, sports_facilities=sports_facilities, 
-  extracurricular_activities=extracurricular_activities)
+  extracurricular_activities=extracurricular_activities, googleAPI=googleAPI)
 
 
 @app.route('/schools/register school', methods=['GET', 'POST'])
@@ -97,6 +100,16 @@ def editSchool():
     school.email = form.email.data
     school.code_number = form.code_number.data
     school.number_pupils = form.number_pupils.data
+    school.address = form.address.data
+    school.street_number = form.street_number.data 
+    school.city = form.city.data
+    school.subregion = form.subregion.data
+    school.region = form.region.data
+    school.borough = form.borough.data
+    school.zone = form.zone.data
+    school.postcode = form.postcode.data
+    school.country = form.country.data
+    school.location_description = form.location_description.data
     if form.religious.data == '1':
       school.religious = True
     elif form.religious.data == '0':
@@ -112,14 +125,23 @@ def editSchool():
     form.webpage.data = school.webpage
     form.email.data = school.email
     form.code_number.data = school.code_number
+    form.address.data = school.address
+    form.street_number.data = school.street_number
+    form.city.data = school.city
+    form.subregion.data = school.subregion
+    form.region.data = school.region
+    form.borough.data = school.borough
+    form.zone.data = school.zone
+    form.postcode.data = school.postcode
+    form.location_description.data = school.location_description
     
-  return render_template('edit_school.html', form=form, school=school)
+  return render_template('edit_school.html', form=form, school=school, googleAPI=googleAPI)
 
 
 
 @app.route('/schools/example')
 def example_school():
-  return render_template('school-example.html')
+  return render_template('school-example.html', googleAPI=googleAPI)
 
 
 @app.route('/schools/inProgress')
@@ -127,7 +149,7 @@ def schooldev():
   generalOpinionOne, generalOpinionTwo = twoRandomOpinions(opinionsx['opinions'], opinionsx['index_finders']['general'])
   return render_template('school-dev.html', school=schoolx, opinions=opinionsx, 
   pictures=picturesx, generalOpinionOne=generalOpinionOne, generalOpinionTwo=generalOpinionTwo,
-  oneRandomOpinion=oneRandomOpinion)
+  oneRandomOpinion=oneRandomOpinion, googleAPI=googleAPI)
 
 
 @app.route('/user/<username>')
@@ -202,9 +224,37 @@ def edit_user_profile():
     form.about_me.data = current_user.about_me
   return render_template('edit_user_profile.html', form=form)
 
-  
+
+@app.route('/reset_password_request', methods=['GET', 'POST'])
+def reset_password_request():
+  if current_user.is_authenticated:
+    return redirect(url_for('index'))
+  form = ResetPasswordRequestForm()
+  if form.validate_on_submit():
+    user = User.query.filter_by(email=form.email.data).first()
+    if user:
+      send_password_reset_email(user)
+    #flash whether user or not makes it impossible to find out whether 
+    #an email is member or not - ref MG
+    flash('Comprueba tu correo electrónico para las instrucciones de cómo resetear tu contraseña')
+    return redirect(url_for('login'))
+  return render_template('reset_password_request.html', form=form)
 
 
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+  if current_user.is_authenticated:
+    return redirect(url_for('index'))
+  user = User.verify_reset_password_token(token)
+  if not user:
+    return redirect(url_for('index'))
+  form = ResetPasswordForm()
+  if form.validate_on_submit():
+    user.set_password(form.password.data)
+    db.session.commit()
+    flash('Tu contraseña ha sido reconfigurado.')
+    return redirect(url_for('login'))
+  return render_template('reset_password.html', form=form)
 
 @app.route('/logout')
 def logout():

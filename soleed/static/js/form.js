@@ -6,7 +6,6 @@ const nextPage = (e, number) => {
   if (!nextPage) {
     console.log('No more pages!')
   };
-  console.log('This is page ' + number)
   currentPage.style.display = 'none';
   nextPage.style.display = 'block';
   e = e || window.Event;

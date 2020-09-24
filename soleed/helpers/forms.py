@@ -17,7 +17,7 @@ class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     headteacher = BooleanField('Soy director/a')
     school_code_number = StringField('Código del centro')
-    password = PasswordField('Password', validators=[DataRequired()])
+    password = PasswordField('Contraseña', validators=[DataRequired()])
     password2 = PasswordField('Repite la contraseña', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Registrate')
 
@@ -48,6 +48,17 @@ class EditUserProfileForm(FlaskForm):
                 raise ValidationError('Por favor, elige un usuario distinto')
 
 
+class ResetPasswordRequestForm(FlaskForm):
+    email = StringField('Correo electrónico', validators=[DataRequired()])
+    submit = SubmitField('Resetea la contraseña')
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Contraseña', validators=[DataRequired()])
+    password2 = PasswordField('Repite la contraseña', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Reconfigurar contraseña')
+
+
 class RegisterSchoolForm(FlaskForm):
     name = StringField('Nombre del colegio', validators=[DataRequired()])
     telephone = StringField('Teléfono', validators=[DataRequired()])
@@ -67,6 +78,7 @@ class RegisterSchoolForm(FlaskForm):
             raise ValidationError('Elige otro correo electrónico')
 
 class EditSchoolForm(FlaskForm):
+    #General
     name = name = StringField('Nombre del colegio', validators=[DataRequired()])
     telephone = StringField('Teléfono', validators=[DataRequired()])
     webpage = StringField('Página web', validators=[DataRequired()])
@@ -76,6 +88,21 @@ class EditSchoolForm(FlaskForm):
     religious = RadioField('Vocación', choices=[(1, 'religioso'), (0, 'laico')], 
     validators=[DataRequired()])
     religion = StringField('Religion')
+    #Location
+    address_search = StringField('Encuentra tu dirección')
+    address = StringField('Nombre de via', validators=[DataRequired()])
+    street_number = StringField('Número')
+    city = StringField('Ciudad', validators=[DataRequired()])
+    subregion = StringField('Provincia', validators=[DataRequired()])
+    region = StringField('Comunidad autónoma', validators=[DataRequired()])
+    borough = StringField('Barrio')
+    zone = StringField('Zona')
+    postcode = StringField('Código postal', validators=[DataRequired()])
+    country = StringField('Pais')
+    lat = StringField('Latitud')
+    lng = StringField('Longitud')
+    location_description = TextAreaField('Descripción de la ubicación del colegio', validators=[Length(min=0, max=500)])
+
     submit = SubmitField('Registrar los cambios')
 
 

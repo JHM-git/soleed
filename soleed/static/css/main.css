@@ -432,6 +432,10 @@ body {
   display: none;
 }
 
+#form-country {
+  display: none;
+}
+
 /* Footer Styles */
 
 footer {

@@ -1,8 +1,10 @@
-from soleed import db, login
+from soleed import db, login, app
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from hashlib import md5
+from time import time
+import jwt
 
 
 @login.user_loader
@@ -32,6 +34,20 @@ class User(UserMixin, db.Model):
   def avatar(self, size):
     digest = md5(self.email.lower().encode('utf-8')).hexdigest()
     return 'https://www.gravatar.com/avatar/{}?d=retro&s={}'.format(digest, size)
+  
+  def get_reset_password_token(self, expires_in=600):
+    return jwt.encode(
+      {'reset_password': self.id, 'exp': time() + expires_in},
+      app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+
+  @staticmethod
+  def verify_reset_password_token(token):
+    try:
+      id = jwt.decode(token, app.config['SECRET_KEY'],
+      algorithm=['HS256'])['reset_password']
+    except:
+      return
+    return User.query.get(id)
 
 
 
@@ -49,12 +65,14 @@ class School(db.Model):
   religion = db.Column(db.String(64), index=True)
   #location
   address = db.Column(db.String(64), index=True)
+  street_number = db.Column(db.String(32), index=True)
   city = db.Column(db.String(32), index=True)
   region = db.Column(db.String(32), index=True)
   subregion = db.Column(db.String(32), index=True)
   borough = db.Column(db.String(32), index=True)
   zone = db.Column(db.String(32), index=True)
   postcode = db.Column(db.Integer, index=True)
+  country = db.Column(db.String(32), index=True)
   lat = db.Column(db.Float, index=True)
   lng = db.Column(db.Float, index=True)
   location_description = db.Column(db.String(500), index=True)

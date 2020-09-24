@@ -40,7 +40,14 @@ Soleed - Login
         <p>{{ form.remember_me() }} {{ form.remember_me.label }} </p>
         <p>{{ form.submit() }} </p>
       </form>
-      <p>¿Nuevo en Soleed? <a href="{{ url_for('register') }}">Regístrate aquí</a></p>
+      <p>
+        ¿Has ovlidado la contraseña?
+        <a href="{{ url_for('reset_password_request') }}">Resetéalo aquí</a>
+      </p>
+      <p>
+        ¿Nuevo en Soleed? 
+        <a href="{{ url_for('register') }}">Regístrate aquí</a>
+      </p>
     </div>
   </section>
 {% endblock %}
