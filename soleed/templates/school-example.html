@@ -214,23 +214,24 @@ Soleed - Colegio ejemplo
   </div>
 </section>
 
-<script type="text/javascript">
-let latLng = {
-  lat: 40.468635,
-  lng: -3.700575
-}
-</script>
 
-<script type="text/javascript"
-  src="https://maps.googleapis.com/maps/api/js?key={{ googleAPI }}">
-</script>
-
-<script type="text/javascript"
-src="{{ url_for('static', filename='js/map.js') }}"></script>
 
 {% endblock %}
 
-{% block script %}
-
+{% block script2 %}
+  {{ super() }}
+<script type="text/javascript">
+  let latLng = {
+    lat: 40.468635,
+    lng: -3.700575
+  }
+  </script>
+  
+  <script type="text/javascript"
+    src="https://maps.googleapis.com/maps/api/js?key={{ googleAPI }}">
+  </script>
+  
+  <script type="text/javascript"
+  src="{{ url_for('static', filename='js/map.js') }}"></script>
 
 {% endblock %}

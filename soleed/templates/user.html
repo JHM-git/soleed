@@ -17,7 +17,7 @@ Soleed - {{ user.username }}
           <td>
             <h1>Usuario: {{ user.username }}</h1>
             {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
-            {% if user.last_seen %}<p>Última visita: {{ user.last_seen }}</p>{% endif %}
+            {% if user.last_seen %}<p>Última visita: {{ moment(user.last_seen).format('LLL') }}</p>{% endif %}
           </td>
         </tr>
       </table>
@@ -50,4 +50,8 @@ Soleed - {{ user.username }}
       {% endfor %}
     </div>
   </section>
+{% endblock %}
+
+{% block script2 %}
+  {{ super() }}
 {% endblock %}

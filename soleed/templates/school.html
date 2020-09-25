@@ -149,3 +149,23 @@ Soleed - {{ school.name }}
   {% endif %}
 
   {% endblock %}
+
+  {% block script2 %}
+    {{ super() }}
+    {% if school.lat and school.lng %}
+      <script type="text/javascript">
+        let latLng = {
+          lat: {{ school.lat }},
+          lng: {{ school.lng }}
+        };
+        
+      </script>
+      
+      <script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key={{ googleAPI }}">
+      </script>
+      
+      <script type="text/javascript"
+      src="{{ url_for('static', filename='js/map.js') }}"></script>
+    {% endif %}
+  {% endblock %}

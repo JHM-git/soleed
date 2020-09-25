@@ -1,5 +1,6 @@
 
 import random
+from soleed import app
 
 def schoolFundingLists(inf1, inf2, pri, sec, bac, fp):
   público = []
@@ -99,6 +100,9 @@ def _ToWhitespace(word):
     ls.append(new_char)
   new_word = ''.join(ls)
   return new_word
+
+#t = moment('2020-09-25T08:47:02Z')
+
 
 
 
