@@ -1,5 +1,6 @@
 from flask import Flask, request
 from soleed.helpers.config import Config
+from soleed.helpers.keys import googleAPI
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
@@ -9,6 +10,7 @@ import os
 from flask_mail import Mail
 from flask_moment import Moment
 from flask_babel import Babel 
+#import googlemaps
 
 
 app = Flask(__name__)
@@ -20,6 +22,7 @@ login.login_view = 'login'
 mail = Mail(app)
 moment = Moment(app)
 babel = Babel(app)
+#gmaps = googlemaps.Client(key=googleAPI)
 
 
 if not app.debug:

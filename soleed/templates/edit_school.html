@@ -58,6 +58,11 @@ Soleed - Editar Colegio
             <span class="error">[{{ error }}]</span>
             {% endfor %}
           </p>
+          {% if school.religious is false %}
+            <p id="school-religious" class="hide">religious-1</p>
+          {% elif school.religious is true %}
+            <p id="school-religious" class="hide">religious-0</p>
+          {% endif %}
           <p>
             {{ form.religious.label }} <br>
             {{ form.religious(onchange="radioToggler('religious-0', 'religious-1', 'form-religion', 'show', 'hide')")}} <br>
@@ -76,14 +81,16 @@ Soleed - Editar Colegio
         </div>
         <div class="page2" id="form-sec2">
           <h1>Editar Colegio</h1>
-          <p>
+          <p class="hide" id="address-search">
             {{ form.address_search.label }} <br>
             {{ form.address_search(size=32) }} <br>
             {% for error in form.address_search.errors %}
             <span class="error">[{{ error }}]</span>
             {% endfor %}
           </p>
-          <div id="form-address-div" class="hide">
+          <p><button id="search-address-bt" onclick="simplyToggleElement(event, 'address-search', 'show')">
+            Cambiar la dirección</button></p>
+          <div>
             <p>
               {{ form.address.label }} <br>
               {{ form.address(size=32, id='route') }} <br>
@@ -162,15 +169,17 @@ Soleed - Editar Colegio
     </div>
   </section>
 
-<script src="{{ url_for('static', filename='js/form.js')}}"></script>
-
-<script src="{{ url_for('static', filename='js/autocomplete.js')}}"></script>
-
-<script type="text/javascript" defer
-src="https://maps.googleapis.com/maps/api/js?key={{ googleAPI }}&callback=initAutocomplete&libraries=places"></script>
-
-
 {% endblock %}
 
 {% block footer %}
+{% endblock %}
+
+{% block script2 %}
+  {{ super() }}
+  <script src="{{ url_for('static', filename='js/school_edit_form.js')}}"></script>
+
+  <script src="{{ url_for('static', filename='js/autocomplete.js')}}"></script>
+
+  <script type="text/javascript" defer
+  src="https://maps.googleapis.com/maps/api/js?key={{ googleAPI }}&callback=initAutocomplete&libraries=places"></script>
 {% endblock %}

@@ -61,11 +61,26 @@ class ResetPasswordForm(FlaskForm):
 
 
 class RegisterSchoolForm(FlaskForm):
+    #General
     name = StringField('Nombre del colegio', validators=[DataRequired()])
     telephone = StringField('Teléfono', validators=[DataRequired()])
     code_number = StringField('Código del centro', validators=[DataRequired()])
-    city = StringField('Ciudad', validators=[DataRequired()])
+    email = StringField('Correo electrónico', validators=[DataRequired()])
+    headteacher = StringField('Director/a', validators=[DataRequired()])
     headteacher_email = StringField('Correo del director/de la directora', validators=[DataRequired()])
+    #Location
+    address_search = StringField('Encuentra tu dirección')
+    address = StringField('Nombre de via', validators=[DataRequired()])
+    street_number = StringField('Número')
+    city = StringField('Ciudad', validators=[DataRequired()])
+    subregion = StringField('Provincia', validators=[DataRequired()])
+    region = StringField('Comunidad autónoma', validators=[DataRequired()])
+    borough = StringField('Barrio')
+    zone = StringField('Zona')
+    postcode = StringField('Código postal', validators=[DataRequired()])
+    country = StringField('Pais')
+    lat = StringField('Latitud')
+    lng = StringField('Longitud')
     submit = SubmitField('Registrar colegio')
 
     def validate_code_number(self, code_number):

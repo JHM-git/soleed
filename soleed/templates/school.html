@@ -19,11 +19,17 @@ Soleed - {{ school.name }}
   <section class="info">
     <h1 class="school-title">{{ school.name }}</h1>
     <div class="info-div school-info">
-      <p class="a_d address">{{ school.address }}</p>
-      <p class="a_d phone">{{ school.telephone }}</p>
-      <p class="a_d webpage"><a href="">{{ school.webpage }}</a></p>
-      <p class="a_d email">{{ school.email }}</p>
-      <p class="a_d id">{{ school.code_number }}</p>
+      {% if school.address %}
+        <p class="a_d address">{{ school.address }}</p>
+      {% endif %}
+        <p class="a_d address"><span>Tel:</span>{{ school.telephone }}</p>
+      {% if school.webpage %}
+        <p class="a_d address">{{ school.webpage }}</p>
+      {% endif %}
+      {% if school.email %}
+        <p class="a_d address">{{ school.email }}</p>
+      {% endif %}
+      <p class="a_d id"><span>Código del centro:</span>{{ school.code_number }}</p>
     </div>
     <div class="info-div education-info">
       <p class="e-info stages">Enseñanzas impartidas: 

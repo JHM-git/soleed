@@ -75,15 +75,22 @@ def registerSchool():
   if current_user.headteacher is not True:
     flash(_('Lo sentimos, no puedes acceder a esta página'))
     return redirect(url_for('index'))
+  if School.query.filter_by(headteacher_id=current_user.id).first() is not None:
+    flash(_('No puedes registrar más de un colegio. Para editar tu colegio, vea tu perfil'))
+    return redirect(url_for('index'))
   form = RegisterSchoolForm()
   if form.validate_on_submit():
     school = School(name=form.name.data, telephone=form.telephone.data, code_number=form.code_number.data, 
-    city=form.city.data, headteacher_email=form.headteacher_email.data, headteacher_id=current_user.id)
+    email=form.email.data, headteacher=form.headteacher.data, headteacher_email=form.headteacher_email.data, 
+    headteacher_id=current_user.id, address=form.address.data, street_number=form.street_number.data, 
+    city=form.city.data, subregion=form.subregion.data, region=form.region.data, borough=form.borough.data, 
+    zone=form.zone.data, postcode=form.postcode.data, country=form.country.data, lat=form.lat.data,
+    lng=form.lng.data)
     db.session.add(school)
     db.session.commit()
     flash('¡' + school.name + ' añadido!')
     return redirect(url_for('school',name=school.name))
-  return render_template('register_school.html', form=form)
+  return render_template('register_school.html', form=form, googleAPI=googleAPI)
 
 
 @app.route('/schools/edit school', methods=['GET', 'POST'])
@@ -125,6 +132,7 @@ def editSchool():
     form.webpage.data = school.webpage
     form.email.data = school.email
     form.code_number.data = school.code_number
+    form.religion.data = school.religion
     form.address.data = school.address
     form.street_number.data = school.street_number
     form.city.data = school.city

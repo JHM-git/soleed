@@ -1,5 +1,3 @@
-
-
 const nextPage = (e, number) => {
   let currentPage = document.getElementById('form-sec' + number);
   let nextPage = document.getElementById('form-sec' + (number + 1));
@@ -62,4 +60,16 @@ const radioToggler = (id, id2, target, cclass, cclass2) => {
   }
 }
 
+const radioChecker = (source) => {
+  if(typeof(source) === 'string') {
+    let value = document.getElementById(source).textContent;
+    checkButton(value);
+  }
+}
 
+const checkButton = (id) => {
+  const item = document.getElementById(id)
+  item.checked = true;
+}
+
+window.addEventListener('load', radioChecker('school-religious'))
