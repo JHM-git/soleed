@@ -3,17 +3,18 @@ from wtforms import StringField, PasswordField, BooleanField, TextAreaField, Sub
 from wtforms import IntegerField, SelectField, RadioField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length
 from soleed.models import User, School
+from flask_babel import lazy_gettext as _l
 
 
 class LoginForm(FlaskForm):
-    username = StringField('Username')
+    username = StringField(_l('Usuario'))
     email = StringField('Correo electronico')
-    password = PasswordField('Password', validators=[DataRequired()])
-    remember_me = BooleanField('Remember Me')
-    submit = SubmitField('Sign In')
+    password = PasswordField('Contraseña', validators=[DataRequired()])
+    remember_me = BooleanField('Recordarme')
+    submit = SubmitField('Entrar')
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
+    username = StringField(_l('Usuario'), validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     headteacher = BooleanField('Soy director/a')
     school_code_number = StringField('Código del centro')
@@ -29,7 +30,7 @@ class RegistrationForm(FlaskForm):
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
-            raise ValidationError('Por favor, utliza un correo elctronico distinto')
+            raise ValidationError('Por favor, utliza un correo electronico distinto')
 
 
 class EditUserProfileForm(FlaskForm):

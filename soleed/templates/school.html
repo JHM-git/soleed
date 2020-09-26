@@ -144,7 +144,7 @@ Soleed - {{ school.name }}
     {% include 'sub-templates/_opinions.html' %}
   {% endif %}
 
-  {% if school.address %}
+  {% if school.address and school.location_description %}
     {% include 'sub-templates/_location.html' %}
   {% endif %}
 
@@ -152,20 +152,5 @@ Soleed - {{ school.name }}
 
   {% block script2 %}
     {{ super() }}
-    {% if school.lat and school.lng %}
-      <script type="text/javascript">
-        let latLng = {
-          lat: {{ school.lat }},
-          lng: {{ school.lng }}
-        };
-        
-      </script>
-      
-      <script type="text/javascript"
-        src="https://maps.googleapis.com/maps/api/js?key={{ googleAPI }}">
-      </script>
-      
-      <script type="text/javascript"
-      src="{{ url_for('static', filename='js/map.js') }}"></script>
-    {% endif %}
+    
   {% endblock %}

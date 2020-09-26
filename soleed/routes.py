@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, json, request, flash, redirect
+from flask import Flask, render_template, url_for, json, request, flash, redirect, g
 from soleed import app, db
 from soleed.helpers.hardData import schoolx, opinionsx, picturesx
 from soleed.helpers.functions import oneRandomOpinion, twoRandomOpinions, schoolFundingLists
@@ -11,19 +11,19 @@ from werkzeug.urls import url_parse
 from datetime import datetime
 from soleed.helpers.email import send_password_reset_email
 from soleed.helpers.keys import googleAPI
+from flask_babel import _, get_locale
 
 
 @app.shell_context_processor
 def make_shell_context():
     return {'db': db, 'User': User, 'School': School, 'Opinion': Opinion}
-
-'''
+ 
 @app.before_request
 def before_request():
-  if current_user.is_authenticated:
-    current_user.last_seen = datetime.utcnow()
-    db.session.commit()
-'''
+  g.locale = str(get_locale())
+
+
+
 
 @app.route('/')
 @app.route('/index')
@@ -73,7 +73,7 @@ def school(name):
 @login_required
 def registerSchool():
   if current_user.headteacher is not True:
-    flash('Lo sentimos, no puedes acceder a esta página')
+    flash(_('Lo sentimos, no puedes acceder a esta página'))
     return redirect(url_for('index'))
   form = RegisterSchoolForm()
   if form.validate_on_submit():
@@ -117,7 +117,7 @@ def editSchool():
     school.religion = form.religion.data
     db.session.add(school)
     db.session.commit()
-    flash('Hemos guardado los cambios.')
+    flash(_('Hemos guardado los cambios.'))
     return redirect(url_for('school', name=school.name))
   elif request.method == 'GET':
     form.name.data = school.name
@@ -180,7 +180,7 @@ def register():
     user.set_password(form.password.data)
     db.session.add(user)
     db.session.commit()
-    flash('¡Enhorabuena ' + user.username + ', ya formas parte de nuestra comunidad!')
+    flash(_('¡Enhorabuena %(username)s, ya formas parte de nuestra comunidad!', username=user.username))
     return redirect(url_for('login'))
   return render_template('register.html', form=form)
 
@@ -196,10 +196,10 @@ def login():
     elif form.email.data is not '':
       user = User.query.filter_by(email=form.email.data).first()
     else:
-      flash('Usuario o Correo electronico requerido para login')
+      flash(_('Usuario o Correo electronico requerido para login'))
       return redirect(url_for('login'))
     if user is None or not user.check_password(form.password.data):
-      flash('Usuario o contraseña no valido')
+      flash(_('Usuario o contraseña no valido'))
       return redirect(url_for('login'))
     login_user(user, remember=form.remember_me.data)
     next_page = request.args.get('next')
@@ -217,7 +217,7 @@ def edit_user_profile():
     current_user.username = form.username.data
     current_user.about_me = form.about_me.data
     db.session.commit()
-    flash('Hemos guardado tus cambios.')
+    flash(_('Hemos guardado tus cambios.'))
     return redirect(url_for('user', username=current_user.username))
   elif request.method == 'GET':
     form.username.data = current_user.username
@@ -236,7 +236,7 @@ def reset_password_request():
       send_password_reset_email(user)
     #flash whether user or not makes it impossible to find out whether 
     #an email is member or not - ref MG
-    flash('Comprueba tu correo electrónico para las instrucciones de cómo resetear tu contraseña')
+    flash(_('Comprueba tu correo electrónico para las instrucciones de cómo resetear tu contraseña'))
     return redirect(url_for('login'))
   return render_template('reset_password_request.html', form=form)
 
@@ -252,7 +252,7 @@ def reset_password(token):
   if form.validate_on_submit():
     user.set_password(form.password.data)
     db.session.commit()
-    flash('Tu contraseña ha sido reconfigurado.')
+    flash(_('Tu contraseña ha sido reconfigurado.'))
     return redirect(url_for('login'))
   return render_template('reset_password.html', form=form)
 
@@ -272,6 +272,7 @@ def about():
 @app.route('/contact')
 def contact():
   return render_template('contact.html')
+
 
 
 
