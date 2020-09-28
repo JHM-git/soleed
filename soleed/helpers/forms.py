@@ -1,10 +1,13 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, TextAreaField, SubmitField
-from wtforms import IntegerField, SelectField, RadioField
+from wtforms import IntegerField, SelectField, RadioField, SelectMultipleField, widgets
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length
 from soleed.models import User, School
 from flask_babel import lazy_gettext as _l
 
+class MultiCheckboxField(SelectMultipleField):
+    widget = widgets.ListWidget(prefix_label=False)
+    option_widget = widgets.CheckboxInput()
 
 class LoginForm(FlaskForm):
     username = StringField(_l('Usuario'))
@@ -82,6 +85,23 @@ class RegisterSchoolForm(FlaskForm):
     lat = StringField('Latitud')
     lng = StringField('Longitud')
     submit = SubmitField('Registrar colegio')
+    #educational offer
+    educational_offer = MultiCheckboxField('Etapas educativas', choices=[('1', 'Infantil Primer Ciclo'), 
+    ('2', 'Infantil Segundo Siglo (3 años)'), ('3', 'Primaria'), ('4', 'Secundaria'), ('5', 'Bachillerato'), 
+    ('6', 'Formación Profesional')], validators=[DataRequired()])
+    #funding
+    infantil_primer_ciclo_type = RadioField('Infantil Primer Ciclo', choices=[('0', 'No aplicable'), ('público', 'Público'), 
+    ('concertado', 'Concertado'), ('privado', 'Privado')], default='0')
+    infantil_type = RadioField('Infantil (3 años)', choices=[('0', 'No aplicable'), ('público', 'Público'), 
+    ('concertado', 'Concertado'), ('privado', 'Privado')], default='0')
+    primaria_type = RadioField('Primaria', choices=[('0', 'No aplicable'), ('público', 'Público'), 
+    ('concertado', 'Concertado'), ('privado', 'Privado')], default='0')
+    secundaria_type = RadioField('Secundaria', choices=[('0', 'No aplicable'), ('público', 'Público'), 
+    ('concertado', 'Concertado'), ('privado', 'Privado')], default='0')
+    bachillerato_type = RadioField('Bachillerato', choices=[('0', 'No aplicable'), ('público', 'Público'), 
+    ('concertado', 'Concertado'), ('privado', 'Privado')], default='0')
+    formación_profesional_type = RadioField('Formación Profesional', choices=[('0', 'No aplicable'), ('público', 'Público'), 
+    ('concertado', 'Concertado'), ('privado', 'Privado')], default='0')
 
     def validate_code_number(self, code_number):
         school = School.query.filter_by(code_number=code_number.data).first()
@@ -95,7 +115,7 @@ class RegisterSchoolForm(FlaskForm):
 
 class EditSchoolForm(FlaskForm):
     #General
-    name = name = StringField('Nombre del colegio', validators=[DataRequired()])
+    name = StringField('Nombre del colegio', validators=[DataRequired()])
     telephone = StringField('Teléfono', validators=[DataRequired()])
     webpage = StringField('Página web', validators=[DataRequired()])
     email = StringField('Correo electrónico', validators=[DataRequired()])
@@ -118,6 +138,23 @@ class EditSchoolForm(FlaskForm):
     lat = StringField('Latitud')
     lng = StringField('Longitud')
     location_description = TextAreaField('Descripción de la ubicación del colegio', validators=[Length(min=0, max=500)])
+    #educational offer
+    educational_offer = MultiCheckboxField('Etapas educativas', choices=[('1', 'Infantil Primer Ciclo'), 
+    ('2', 'Infantil Segundo Siglo (3 años)'), ('3', 'Primaria'), ('4', 'Secundaria'), ('5', 'Bachillerato'), 
+    ('6', 'Formación Profesional')], validators=[DataRequired()])
+    #funding
+    infantil_primer_ciclo_type = RadioField('Infantil Primer Ciclo', choices=[('0', 'No aplicable'), ('público', 'Público'), 
+    ('concertado', 'Concertado'), ('privado', 'Privado')])
+    infantil_type = RadioField('Infantil (3 años)', choices=[('0', 'No aplicable'), ('público', 'Público'), 
+    ('concertado', 'Concertado'), ('privado', 'Privado')])
+    primaria_type = RadioField('Primaria', choices=[('0', 'No aplicable'), ('público', 'Público'), 
+    ('concertado', 'Concertado'), ('privado', 'Privado')])
+    secundaria_type = RadioField('Secundaria', choices=[('0', 'No aplicable'), ('público', 'Público'), 
+    ('concertado', 'Concertado'), ('privado', 'Privado')])
+    bachillerato_type = RadioField('Bachillerato', choices=[('0', 'No aplicable'), ('público', 'Público'), 
+    ('concertado', 'Concertado'), ('privado', 'Privado')])
+    formación_profesional_type = RadioField('Formación Profesional', choices=[('0', 'No aplicable'), ('público', 'Público'), 
+    ('concertado', 'Concertado'), ('privado', 'Privado')])
 
     submit = SubmitField('Registrar los cambios')
 

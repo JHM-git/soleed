@@ -428,13 +428,20 @@ body {
   display: block
 }
 
-.page2 {
+.page2,
+.page3 {
   display: none;
 }
+
 
 #form-country {
   display: none;
 }
+
+.page3 {
+  min-width: 350px;
+}
+
 
 /* Footer Styles */
 

@@ -17,6 +17,7 @@ class User(UserMixin, db.Model):
   email = db.Column(db.String(120), index=True, unique=True)
   password_hash = db.Column(db.String(128))
   headteacher = db.Column(db.Boolean, default=False)
+  admin = db.Column(db.Boolean, default=False)
   school_code_number = db.Column(db.String(32), index=True)
   about_me = db.Column(db.String(120))
   last_seen = db.Column(db.DateTime, default=datetime.utcnow)
@@ -73,8 +74,8 @@ class School(db.Model):
   zone = db.Column(db.String(32), index=True)
   postcode = db.Column(db.Integer, index=True)
   country = db.Column(db.String(32), index=True)
-  lat = db.Column(db.Float, index=True)
-  lng = db.Column(db.Float, index=True)
+  lat = db.Column(db.String, index=True)
+  lng = db.Column(db.String, index=True)
   location_description = db.Column(db.String(500), index=True)
   #director
   headteacher = db.Column(db.String(64), index=True)
@@ -156,21 +157,6 @@ class School(db.Model):
   def check_password(self, password):
     return check_password_hash(self.password_hash, password)
 
-'''
-class School_stages(School, db.Model):
-  infantil_primer_ciclo = db.Column(db.Boolean, index=True)
-  infantil = db.Column(db.Boolean, index=True)
-  primaria = db.Column(db.Boolean, index=True)
-  secundaria = db.Column(db.Boolean, index=True)
-  bachillerato = db.Column(db.Boolean, index=True)
-  formación_profesional = db.Column(db.Boolean, index=True)
-  infantil_primer_ciclo_type = db.Column(db.String(32), index=True)
-  infantil_type = db.Column(db.String(32), index=True)
-  primaria_type = db.Column(db.String(32), index=True)
-  secundaria_type = db.Column(db.String(32), index=True)
-  bachillerato_type = db.Column(db.String(32), index=True)
-  formación_profesional_type = db.Column(db.String(32), index=True)
-'''
 
 class Opinion(db.Model):
   id = db.Column(db.Integer, primary_key=True)

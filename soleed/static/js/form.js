@@ -62,4 +62,13 @@ const radioToggler = (id, id2, target, cclass, cclass2) => {
   }
 }
 
+const multipleRadioToggler = (e, lst1, lst2, cclass) => {
+  for(let i=0; i < lst1.length; i++) {
+    if(document.getElementById(lst1[i]).checked && document.getElementById(lst2[i]).classList.contains(cclass)===false) {
+      simplyToggleElement(e, lst2[i], cclass);
+    } else if(document.getElementById(lst2[i]).classList.contains(cclass) && document.getElementById(lst1[i]).checked===false) {
+      simplyToggleElement(e, lst2[i], cclass);
+    }
+  }
+}
 

@@ -2,7 +2,7 @@ from flask import Flask, render_template, url_for, json, request, flash, redirec
 from soleed import app, db
 from soleed.helpers.hardData import schoolx, opinionsx, picturesx
 from soleed.helpers.functions import oneRandomOpinion, twoRandomOpinions, schoolFundingLists
-from soleed.helpers.functions import facilitiesList, strToLs
+from soleed.helpers.functions import facilitiesList, strToLs, edu_offer_lstMaker
 from soleed.helpers.forms import LoginForm, RegistrationForm, EditUserProfileForm, RegisterSchoolForm
 from soleed.helpers.forms import EditSchoolForm, ResetPasswordRequestForm, ResetPasswordForm
 from soleed.models import User, School, Opinion
@@ -79,18 +79,38 @@ def registerSchool():
     flash(_('No puedes registrar más de un colegio. Para editar tu colegio, vea tu perfil'))
     return redirect(url_for('index'))
   form = RegisterSchoolForm()
+  edu_offer = ''
   if form.validate_on_submit():
     school = School(name=form.name.data, telephone=form.telephone.data, code_number=form.code_number.data, 
     email=form.email.data, headteacher=form.headteacher.data, headteacher_email=form.headteacher_email.data, 
     headteacher_id=current_user.id, address=form.address.data, street_number=form.street_number.data, 
     city=form.city.data, subregion=form.subregion.data, region=form.region.data, borough=form.borough.data, 
-    zone=form.zone.data, postcode=form.postcode.data, country=form.country.data, lat=form.lat.data,
-    lng=form.lng.data)
+    zone=form.zone.data, postcode=form.postcode.data, country=form.country.data)
+    edu_offer = form.educational_offer.data
+    for n in edu_offer:
+      if n == '1':
+        school.infantil_primer_ciclo = True
+      elif n == '2':
+        school.infantil = True
+      elif n == '3':
+        school.primaria = True
+      elif n == '4':
+        school.secundaria = True
+      elif n == '5':
+        school.bachillerato = True
+      elif n == '6':
+        school.formación_profesional == True
+    school.infantil_primer_ciclo_type = form.infantil_primer_ciclo_type.data
+    school.infantil_type = form.infantil_type.data
+    school.primaria_type = form.primaria_type.data
+    school.secundaria_type = form.secundaria_type.data
+    school.bachillerato_type = form.bachillerato_type.data
+    school.formación_profesional_type = form.formación_profesional_type.data
     db.session.add(school)
     db.session.commit()
     flash('¡' + school.name + ' añadido!')
     return redirect(url_for('school',name=school.name))
-  return render_template('register_school.html', form=form, googleAPI=googleAPI)
+  return render_template('register_school.html', form=form, googleAPI=googleAPI, edu_offer=edu_offer)
 
 
 @app.route('/schools/edit school', methods=['GET', 'POST'])
@@ -122,6 +142,26 @@ def editSchool():
     elif form.religious.data == '0':
       school.religious = False
     school.religion = form.religion.data
+    edu_offer = form.educational_offer.data
+    for n in edu_offer:
+      if n == '1':
+        school.infantil_primer_ciclo = True
+      elif n == '2':
+        school.infantil = True
+      elif n == '3':
+        school.primaria = True
+      elif n == '4':
+        school.secundaria = True
+      elif n == '5':
+        school.bachillerato = True
+      elif n == '6':
+        school.formación_profesional == True
+    school.infantil_primer_ciclo_type = form.infantil_primer_ciclo_type.data
+    school.infantil_type = form.infantil_type.data
+    school.primaria_type = form.primaria_type.data
+    school.secundaria_type = form.secundaria_type.data
+    school.bachillerato_type = form.bachillerato_type.data
+    school.formación_profesional_type = form.formación_profesional_type.data
     db.session.add(school)
     db.session.commit()
     flash(_('Hemos guardado los cambios.'))
@@ -142,8 +182,21 @@ def editSchool():
     form.zone.data = school.zone
     form.postcode.data = school.postcode
     form.location_description.data = school.location_description
+    edu_offer_boolean = [school.infantil_primer_ciclo, school.infantil, school.primaria, 
+    school.secundaria, school.bachillerato, school.formación_profesional]
+    edu_offer_ids = ['educational_offer-0', 
+            'educational_offer-1', 'educational_offer-2', 'educational_offer-3', 
+            'educational_offer-4', 'educational_offer-5']
+    edu_offer_lst = edu_offer_lstMaker(edu_offer_boolean, edu_offer_ids)
+    form.infantil_primer_ciclo_type.data = school.infantil_primer_ciclo_type
+    form.infantil_type.data = school.infantil_type
+    form.primaria_type.data = school.primaria_type
+    form.secundaria_type.data = school.secundaria_type
+    form.bachillerato_type.data = school.bachillerato_type
+    form.formación_profesional_type.data = school.formación_profesional_type
     
-  return render_template('edit_school.html', form=form, school=school, googleAPI=googleAPI)
+  return render_template('edit_school.html', form=form, school=school, 
+  googleAPI=googleAPI, edu_offer_lst=edu_offer_lst)
 
 
 

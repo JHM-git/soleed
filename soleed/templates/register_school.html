@@ -126,7 +126,7 @@ Soleed - Registrar Colegio
               <span class="error">[{{ error }}]</span>
               {% endfor %}
             </p>
-            <div>
+            <div class="hide">
               <p>
                 {{ form.country.label }} <br>
                 {{ form.country(size=32, id='country') }} <br>
@@ -151,6 +151,89 @@ Soleed - Registrar Colegio
             </div>
           </div>
           <p><button id="button2" onclick="previousPage(event, 2)">Previous</button></p>
+          <p><button id="button1" onclick="nextPage(event, 2)">Next</button></p>
+        </div>
+        <div class="page3" id="form-sec3">
+          <h1>Registrar Colegio</h1>
+          <p class="checkbox-holder">
+            {{ form.educational_offer.label }} <br>
+            {{ form.educational_offer(onchange="multipleRadioToggler(event, ['educational_offer-0', 
+            'educational_offer-1', 'educational_offer-2', 'educational_offer-3', 
+            'educational_offer-4', 'educational_offer-5'], ['type1', 'type2', 'type3', 'type4', 
+            'type5', 'type6'], 'show')") }} <br>
+            <!--
+            {% for subfield in form.educational_offer %}
+              <tr>
+                  <td>{{ subfield(onchange="multipleRadioToggler(event, ['educational_offer-0', 
+                    'educational_offer-1', 'educational_offer-2', 'educational_offer-3', 
+                    'educational_offer-4', 'educational_offer-5'], ['type1', 'type2', 'type3', 'type4', 
+                    'type5', 'type6'], 'show')") }}</td>
+                  <td>{{ subfield.label }}</td>
+              </tr><br>
+            {% endfor %}
+            -->
+            {% for error in form.educational_offer.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <div id="form-funding-div">
+            <div id="type1" class="hide">
+              <p>
+                {{ form.infantil_primer_ciclo_type.label }} <br>
+                {{ form.infantil_primer_ciclo_type }} <br>
+                {% for error in form.infantil_primer_ciclo_type.errors %}
+                <span class="error">[{{ error }}]</span>
+                {% endfor %}
+              </p>
+            </div>
+            <div id="type2" class="hide">
+              <p>
+                {{ form.infantil_type.label }} <br>
+                {{ form.infantil_type }} <br>
+                {% for error in form.infantil_type.errors %}
+                <span class="error">[{{ error }}]</span>
+                {% endfor %}
+              </p>
+            </div>
+            <div id="type3" class="hide">
+              <p>
+                {{ form.primaria_type.label }} <br>
+                {{ form.primaria_type }} <br>
+                {% for error in form.primaria_type.errors %}
+                <span class="error">[{{ error }}]</span>
+                {% endfor %}
+              </p>
+            </div>
+            <div id="type4" class="hide">
+              <p>
+                {{ form.secundaria_type.label }} <br>
+                {{ form.secundaria_type }} <br>
+                {% for error in form.secundaria_type.errors %}
+                <span class="error">[{{ error }}]</span>
+                {% endfor %}
+              </p>
+            </div>
+            <div id="type5" class="hide">
+              <p>
+                {{ form.bachillerato_type.label }} <br>
+                {{ form.bachillerato_type }} <br>
+                {% for error in form.bachillerato_type.errors %}
+                <span class="error">[{{ error }}]</span>
+                {% endfor %}
+              </p>
+            </div>
+            <div id="type6" class="hide">
+              <p>
+                {{ form.formación_profesional_type.label }} <br>
+                {{ form.formación_profesional_type }} <br>
+                {% for error in form.formación_profesional_type.errors %}
+                <span class="error">[{{ error }}]</span>
+                {% endfor %}
+              </p>
+            </div>
+            <p>{{ edu_offer }}</p>
+          </div>
+          <p><button id="button2" onclick="previousPage(event, 3)">Previous</button></p>
           <p>{{ form.submit() }} </p>
         </div>
       </form>

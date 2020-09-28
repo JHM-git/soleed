@@ -20,7 +20,7 @@ Soleed - {{ school.name }}
     <h1 class="school-title">{{ school.name }}</h1>
     <div class="info-div school-info">
       {% if school.address %}
-        <p class="a_d address">{{ school.address }}</p>
+        <p class="a_d address">{{ school.address }}, {{ school.street_number }}</p>
       {% endif %}
         <p class="a_d address"><span>Tel:</span>{{ school.telephone }}</p>
       {% if school.webpage %}
@@ -63,14 +63,14 @@ Soleed - {{ school.name }}
           <span>Privado ({{ privado }})</span>
         {% endif %}
       </p>
-      <p class="e-info pupil-number">Número de alumnos: {{ school.number_pupils }}</p>
+      {% if school.number_pupils %}
+        <p class="e-info pupil-number">Número de alumnos: {{ school.number_pupils }}</p>
+      {% endif %}
       <p class="e-info">
         {% if school.religious is false %}
           <span>Colegio laico</span>
         {% elif school.religion %}
-          <span>Colegio {{ school.religion }}</span>
-        {% else %}
-          <span>Colegio religioso</span> 
+          <span>Colegio religioso: {{ school.religion }}</span> 
         {% endif %}
       </p>
       {% if school.trilingual is true %}

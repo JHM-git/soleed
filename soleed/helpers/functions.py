@@ -54,6 +54,12 @@ def facilitiesList(st1, st2, st3):
     facilities_list.append('Huerto propio')
   return facilities_list
 
+def edu_offer_lstMaker(booleanlst, idlst):
+  edu_offer_lst = []
+  for i in range(len(booleanlst)):
+    if booleanlst[i] == True:
+      edu_offer_lst.append(idlst[i])
+  return edu_offer_lst
   
 
 test = 'working!'
