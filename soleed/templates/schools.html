@@ -15,4 +15,9 @@ Soleed - Find Your School
   <p>School page in development <a href="{{ url_for('schooldev') }}">here!</a></p>
   <p>School page from database <a href="{{ url_for('school',name='Colegio Hipopótamo') }}">here!</a></p>
   <p>School register page <a href="{{ url_for('registerSchool') }}">here!</a></p>
+  {% if current_user.admin %}
+    {% for school in schools %}
+      <p>{{ school.name }} <a href="{{ url_for('school', name=school.name)}}">ver</a></p>
+    {% endfor %}
+  {% endif %}
 {% endblock %}

@@ -33,7 +33,8 @@ def index():
 
 @app.route('/schools')
 def schools():
-  return render_template('schools.html')
+  schools = School.query.all()
+  return render_template('schools.html', schools=schools)
 
 @app.route('/schools/<name>')
 def school(name):
@@ -120,6 +121,7 @@ def editSchool():
     return redirect(url_for('login'))
   school = School.query.filter_by(headteacher_id=current_user.id).first_or_404()
   form = EditSchoolForm()
+  edu_offer_lst = []
   if form.validate_on_submit():
     school.name = form.name.data
     school.telephone = form.telephone.data
@@ -162,6 +164,19 @@ def editSchool():
     school.secundaria_type = form.secundaria_type.data
     school.bachillerato_type = form.bachillerato_type.data
     school.formación_profesional_type = form.formación_profesional_type.data
+    school.description_infantil_primer_ciclo = form.description_infantil_primer_ciclo.data
+    school.description_infantil = form.description_infantil.data
+    school.description_primaria = form.description_primaria.data
+    school.description_secundaria = form.description_secundaria.data
+    school.description_bachillerato = form.description_bachillerato.data
+    school.description_formación_profesional = form.description_formación_profesional.data
+    school.headteacher = form.headteacher.data
+    school.headteacher_email = form.headteacher_email.data
+    school.headteacher_title = form.headteacher_title.data
+    school.director_message = form.director_message.data
+    school.bulletpoint_presentation = form.bulletpoint_presentation.data
+    school.bulletpoint_methods_and_priorities = form.bulletpoint_methods_and_priorities.data
+    school.bulletpoint_specialities = form.bulletpoint_specialities.data
     db.session.add(school)
     db.session.commit()
     flash(_('Hemos guardado los cambios.'))
@@ -194,7 +209,19 @@ def editSchool():
     form.secundaria_type.data = school.secundaria_type
     form.bachillerato_type.data = school.bachillerato_type
     form.formación_profesional_type.data = school.formación_profesional_type
-    
+    form.description_infantil_primer_ciclo.data = school.description_infantil_primer_ciclo
+    form.description_infantil.data = school.description_infantil
+    form.description_primaria.data = school.description_primaria
+    form.description_secundaria.data =school.description_secundaria
+    form.description_bachillerato.data = school.description_bachillerato
+    form.description_formación_profesional.data = school.description_formación_profesional
+    form.headteacher.data = school.headteacher
+    form.headteacher_email.data = school.headteacher_email
+    form.headteacher_title.data = school.headteacher_title
+    form.director_message.data = school.director_message
+    form.bulletpoint_presentation.data = school.bulletpoint_presentation
+    form.bulletpoint_methods_and_priorities.data = school.bulletpoint_methods_and_priorities
+    form.bulletpoint_specialities.data = school.bulletpoint_specialities
   return render_template('edit_school.html', form=form, school=school, 
   googleAPI=googleAPI, edu_offer_lst=edu_offer_lst)
 

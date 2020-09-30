@@ -2,7 +2,7 @@
   <div class="location-flex">
     <div class="flex1 location-div">
       <h3 class="section-title-sml">Ubicación</h3>
-      <p class="location-info">{{ school.address }}</p>
+      <p class="location-info">{{ school.address }}, {{ school.street_number }}</p>
       <p class="location-info">{{ school.location_description }}</p>
     </div>
     {% if school.lat and school.lng %}

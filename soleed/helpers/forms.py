@@ -142,6 +142,18 @@ class EditSchoolForm(FlaskForm):
     educational_offer = MultiCheckboxField('Etapas educativas', choices=[('1', 'Infantil Primer Ciclo'), 
     ('2', 'Infantil Segundo Siglo (3 años)'), ('3', 'Primaria'), ('4', 'Secundaria'), ('5', 'Bachillerato'), 
     ('6', 'Formación Profesional')], validators=[DataRequired()])
+    description_infantil_primer_ciclo = TextAreaField('Descripción:', 
+    validators=[Length(min=0, max=750)])
+    description_infantil = TextAreaField('Descripción:', 
+    validators=[Length(min=0, max=750)])
+    description_primaria = TextAreaField('Descripción:', 
+    validators=[Length(min=0, max=750)])
+    description_secundaria = TextAreaField('Descripción:', 
+    validators=[Length(min=0, max=750)])
+    description_bachillerato = TextAreaField('Descripción:', 
+    validators=[Length(min=0, max=750)])
+    description_formación_profesional = TextAreaField('Descripción:', 
+    validators=[Length(min=0, max=750)])
     #funding
     infantil_primer_ciclo_type = RadioField('Infantil Primer Ciclo', choices=[('0', 'No aplicable'), ('público', 'Público'), 
     ('concertado', 'Concertado'), ('privado', 'Privado')])
@@ -155,6 +167,14 @@ class EditSchoolForm(FlaskForm):
     ('concertado', 'Concertado'), ('privado', 'Privado')])
     formación_profesional_type = RadioField('Formación Profesional', choices=[('0', 'No aplicable'), ('público', 'Público'), 
     ('concertado', 'Concertado'), ('privado', 'Privado')])
+    #headteacher msg & bulletpoints
+    headteacher = StringField('Director/a', validators=[DataRequired()])
+    headteacher_email = StringField('Correo del director/de la directora', validators=[DataRequired()])
+    headteacher_title = SelectField('Título del director/de la directora', choices=[('Sr', 'Sr'), ('Sra', 'Sra'), ('Dr', 'Dr'), ('Dra', 'Dra')])
+    director_message = TextAreaField('Mensaje del director/de la directora', validators=[Length(min=0, max=750)])
+    bulletpoint_presentation = TextAreaField('Presentación del colegio', validators=[Length(min=0, max=500)])
+    bulletpoint_methods_and_priorities = TextAreaField('Los métodos de aprendizaje y las prioridades en la enseñanza', validators=[Length(min=0, max=500)])
+    bulletpoint_specialities = TextAreaField('¿En qué se direfencia el colegio de otros?', validators=[Length(min=0, max=500)])
 
     submit = SubmitField('Registrar los cambios')
 
