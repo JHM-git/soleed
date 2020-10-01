@@ -5,7 +5,8 @@ from soleed.helpers.functions import oneRandomOpinion, twoRandomOpinions, school
 from soleed.helpers.functions import facilitiesList, strToLs, edu_offer_lstMaker
 from soleed.helpers.forms import LoginForm, RegistrationForm, EditUserProfileForm, RegisterSchoolForm
 from soleed.helpers.forms import EditSchoolForm, ResetPasswordRequestForm, ResetPasswordForm
-from soleed.models import User, School, Opinion
+from soleed.helpers.forms import LanguageForm
+from soleed.models import User, School, Opinion, Language
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from datetime import datetime
@@ -116,12 +117,32 @@ def registerSchool():
 
 @app.route('/schools/edit school', methods=['GET', 'POST'])
 @login_required
-def editSchool():
+def edit_school():
   if current_user.is_anonymous:
     return redirect(url_for('login'))
   school = School.query.filter_by(headteacher_id=current_user.id).first_or_404()
   form = EditSchoolForm()
+  language_form = LanguageForm()
   edu_offer_lst = []
+  if language_form.validate_on_submit():
+    languages_db = Language.query.filter_by(school_id=school.id).all()
+    languages = []
+    for language in languages_db:
+      languages.append(language.language)
+    if language_form.language.data in languages:
+      flash('Idioma ya está en la oferta del colegio. Puedes editarlo abajo')
+      return redirect(url_for('edit_school'))
+    
+    language = Language(language=language_form.language.data, 
+starting_age=language_form.starting_age.data, weekly_hours=language_form.weekly_hours.data, 
+description=language_form.description.data, school_id=school.id)
+    if language_form.is_obligatory.data == '1':
+      language.is_obligatory = True
+    elif language_form.is_obligatory.data == '0':
+      language.is_obligatory = False
+    db.session.add(language)
+    db.session.commit()
+    return redirect(url_for('edit_school'))
   if form.validate_on_submit():
     school.name = form.name.data
     school.telephone = form.telephone.data
@@ -222,7 +243,7 @@ def editSchool():
     form.bulletpoint_presentation.data = school.bulletpoint_presentation
     form.bulletpoint_methods_and_priorities.data = school.bulletpoint_methods_and_priorities
     form.bulletpoint_specialities.data = school.bulletpoint_specialities
-  return render_template('edit_school.html', form=form, school=school, 
+  return render_template('edit_school.html', form=form, school=school, language_form=language_form, 
   googleAPI=googleAPI, edu_offer_lst=edu_offer_lst)
 
 

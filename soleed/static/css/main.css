@@ -439,7 +439,8 @@ body {
 
 .page2,
 .page3,
-.page4 {
+.page4,
+.page5 {
   display: none;
 }
 
@@ -448,7 +449,8 @@ body {
   display: none;
 }
 
-.page3 {
+.page3,
+.page5 {
   min-width: 350px;
 }
 
@@ -463,6 +465,14 @@ body {
 
 .page-bt {
   display: inline-block;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.lang-bool {
+  min-width: 50px;
 }
 
 

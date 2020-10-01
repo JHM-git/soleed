@@ -4,6 +4,7 @@ from wtforms import IntegerField, SelectField, RadioField, SelectMultipleField, 
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length
 from soleed.models import User, School
 from flask_babel import lazy_gettext as _l
+from soleed.helpers.functions import range_list
 
 class MultiCheckboxField(SelectMultipleField):
     widget = widgets.ListWidget(prefix_label=False)
@@ -175,7 +176,22 @@ class EditSchoolForm(FlaskForm):
     bulletpoint_presentation = TextAreaField('Presentación del colegio', validators=[Length(min=0, max=500)])
     bulletpoint_methods_and_priorities = TextAreaField('Los métodos de aprendizaje y las prioridades en la enseñanza', validators=[Length(min=0, max=500)])
     bulletpoint_specialities = TextAreaField('¿En qué se direfencia el colegio de otros?', validators=[Length(min=0, max=500)])
-
+    #languages
+    no = BooleanField('No')
+    bilingual = BooleanField('Bilingüe')
+    trilingual = BooleanField('Trilingüe')
+    
     submit = SubmitField('Registrar los cambios')
 
+
+class LanguageForm(FlaskForm):
+    language = StringField('El idioma', validators=[DataRequired()])
+    is_obligatory = RadioField('¿Es obligatorio?', choices=[(0, 'No'), (1, 'Sí')], validators=[DataRequired()])
+    starting_age = SelectField('Edad de comienzo', choices=range_list(17), validators=[DataRequired()])
+    weekly_hours = IntegerField('Horas semanales', validators=[DataRequired()])
+    description = TextAreaField('Descripción del idioma y su enseñanza')
+    
+    submit = SubmitField('Añadir idioma')
+
+    
 

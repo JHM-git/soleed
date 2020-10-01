@@ -158,6 +158,18 @@ class School(db.Model):
     return check_password_hash(self.password_hash, password)
 
 
+class Language(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  language = db.Column(db.String(32), index=True)
+  is_obligatory = db.Column(db.Boolean, index=True)
+  starting_age = db.Column(db.Integer, index=True)
+  weekly_hours = db.Column(db.Integer, index=True)
+  description = db.Column(db.String(500), index=True)
+  school_id = db.Column(db.Integer, db.ForeignKey('school.id'))
+
+  def __repr__(self):
+    return '<{}, school: {}>'.format(self.language, self.school_id)
+
 class Opinion(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   score_general = db.Column(db.Integer, index=True)

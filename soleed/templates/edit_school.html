@@ -164,7 +164,6 @@ Soleed - Editar Colegio
           </p>
           <button class="page-bt" id="button2" onclick="previousPage(event, 2)">Previous</button>
           <button class="page-bt" id="button1" onclick="nextPage(event, 2)">Next</button>
-          <p>{{ form.submit() }} </p>
         </div>
         <div class="page3" id="form-sec3">
           <h1>Editar Colegio</h1>
@@ -356,7 +355,41 @@ Soleed - Editar Colegio
             <span class="error">[{{ error }}]</span>
             {% endfor %}
           </p>
-          <button class="page-bt" id="button2" onclick="previousPage(event, 3)">Previous</button>
+          <button class="page-bt" id="button2" onclick="previousPage(event, 4)">Previous</button>
+          <button class="page-bt" id="button1" onclick="nextPage(event, 4)">Next</button>
+        </div>
+        <div class="page5" id="form-sec5">
+          <h1>Editar Colegio</h1>
+          <p>¿Es bilingüe/trilingüe?</p>
+          <div id="language-booleans">
+            <p class="inline-block lang-bool">
+              {{ form.no.label }} <br>
+              {{ form.no }} <br>
+              {% for error in form.no.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p class="inline-block">
+              {{ form.bilingual.label }} <br>
+              {{ form.bilingual }} <br>
+              {% for error in form.bilingual.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p class="inline-block">
+              {{ form.trilingual.label }} <br>
+              {{ form.trilingual }} <br>
+              {% for error in form.trilingual.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+          </div>
+          <button id="add-language-bt" onclick="toggleElement(event, 'add-language-div', 'show', 
+          'add-language-bt', 'Añadir un idioma', 'No quiero añadir idioma')">Añadir un idioma</button>
+          <div id="add-language-div" class="hide">
+            {% include 'sub-templates/_language-form.html' %}
+          </div> <br>
+          <button class="page-bt" id="button2" onclick="previousPage(event, 5)">Previous</button>
           <p>{{ form.submit() }} </p>
         </div>
       </form>

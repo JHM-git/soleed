@@ -22,9 +22,11 @@ const previousPage = (e, number) => {
   e.preventDefault();
 }
 
-const toggleElement = (target, cclass, target2, txt1, txt2) => {
+const toggleElement = (e, target, cclass, target2, txt1, txt2) => {
   document.getElementById(target).classList.toggle(cclass);
   buttonChanger(target2, txt1, txt2);
+  e = e || window.Event;
+  e.preventDefault(); 
 }
 
 const buttonChanger = (target, txt1, txt2) => {
@@ -86,6 +88,11 @@ const multipleRadioToggler = (e, lst1, lst2, cclass) => {
       simplyToggleElement(e, lst2[i], cclass);
     }
   }
+}
+
+const noDefault = (e) => {
+  e = e || window.Event;
+  e.preventDefault();
 }
 
 window.addEventListener('load', radioChecker('school-religious'))

@@ -60,6 +60,12 @@ def edu_offer_lstMaker(booleanlst, idlst):
     if booleanlst[i] == True:
       edu_offer_lst.append(idlst[i])
   return edu_offer_lst
+
+def range_list(num):
+  range_lst = []
+  for n in range(1, num):
+    range_lst.append((n, n))
+  return range_lst
   
 
 test = 'working!'
