@@ -2,11 +2,11 @@ from flask import Flask, render_template, url_for, json, request, flash, redirec
 from soleed import app, db
 from soleed.helpers.hardData import schoolx, opinionsx, picturesx
 from soleed.helpers.functions import oneRandomOpinion, twoRandomOpinions, schoolFundingLists
-from soleed.helpers.functions import facilitiesList, strToLs, edu_offer_lstMaker
+from soleed.helpers.functions import facilitiesList, strToLs, edu_offer_lstMaker, tuple_maker
 from soleed.helpers.forms import LoginForm, RegistrationForm, EditUserProfileForm, RegisterSchoolForm
 from soleed.helpers.forms import EditSchoolForm, ResetPasswordRequestForm, ResetPasswordForm
 from soleed.helpers.forms import LanguageForm
-from soleed.models import User, School, Opinion, Language
+from soleed.models import User, School, Opinion, Language, Religion, SportsFacilities, Languages
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from datetime import datetime

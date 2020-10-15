@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, TextAreaField, SubmitField
 from wtforms import IntegerField, SelectField, RadioField, SelectMultipleField, widgets
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length
-from soleed.models import User, School
+from soleed.models import User, School, Religion, Languages, Language
 from flask_babel import lazy_gettext as _l
 from soleed.helpers.functions import range_list
 

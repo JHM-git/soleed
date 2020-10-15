@@ -63,7 +63,7 @@ class School(db.Model):
   code_number = db.Column(db.Integer, index=True, unique=True)
   number_pupils = db.Column(db.Integer, index=True)
   religious = db.Column(db.Boolean, index=True)
-  religion = db.Column(db.String(64), index=True)
+  religion = db.Column(db.Integer, db.ForeignKey('religion.id'))
   #location
   address = db.Column(db.String(64), index=True)
   street_number = db.Column(db.String(32), index=True)
@@ -108,24 +108,12 @@ class School(db.Model):
   #languages
   trilingual = db.Column(db.Boolean, index=True)
   bilingual = db.Column(db.Boolean, index=True)
-  first_language = db.Column(db.String(32), index=True)
-  second_language = db.Column(db.String(32), index=True)
-  third_language = db.Column(db.String(32), index=True)
-  fourth_language = db.Column(db.String(32), index=True)
-  optionality_first_language = db.Column(db.String(32), index=True)
-  optionality_second_language = db.Column(db.String(32), index=True)
-  optionality_third_language = db.Column(db.String(32), index=True)
-  optionality_fourth_language = db.Column(db.String(32), index=True)
-  description_first_language = db.Column(db.String(1000), index=True)
-  description_second_language = db.Column(db.String(1000), index=True)
-  description_third_language = db.Column(db.String(1000), index=True)
-  description_fourth_language = db.Column(db.String(1000), index=True)
   #facilities
   patio_separado_infantil = db.Column(db.Boolean, index=True)
   library = db.Column(db.Boolean, index=True)
   vegetable_garden = db.Column(db.Boolean, index=True)
   facilities_information = db.Column(db.String(1000), index=True)
-  sports_facilities = db.Column(db.String(240), index=True)
+  
   #services
   canteen = db.Column(db.Boolean, index=True)
   in_house_kitchen = db.Column(db.Boolean, index=True)
@@ -160,15 +148,31 @@ class School(db.Model):
 
 class Language(db.Model):
   id = db.Column(db.Integer, primary_key=True)
-  language = db.Column(db.String(32), index=True)
   is_obligatory = db.Column(db.Boolean, index=True)
   starting_age = db.Column(db.Integer, index=True)
   weekly_hours = db.Column(db.Integer, index=True)
   description = db.Column(db.String(500), index=True)
   school_id = db.Column(db.Integer, db.ForeignKey('school.id'))
+  language_id = db.Column(db.Integer, db.ForeignKey('languages.id'))
 
   def __repr__(self):
     return '<{}, school: {}>'.format(self.language, self.school_id)
+
+class Languages(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  language = db.Column(db.String(32), index=True)
+
+class Religion(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  religion = db.Column(db.String(64), index=True)
+
+class SportsFacilities(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  sports_facility = db.Column(db.String(64), index=True)
+
+  def __init__(self, sports_fac):
+    self.sports_facility = sports_fac
+
 
 class Opinion(db.Model):
   id = db.Column(db.Integer, primary_key=True)

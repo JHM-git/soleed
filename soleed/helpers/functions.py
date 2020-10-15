@@ -66,6 +66,12 @@ def range_list(num):
   for n in range(1, num):
     range_lst.append((n, n))
   return range_lst
+
+def tuple_maker(lst):
+  tuples = []
+  for item in lst:
+    tuples.append((item, item))
+  return tuples
   
 
 test = 'working!'
