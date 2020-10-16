@@ -55,10 +55,10 @@ def school(name):
   school.description_secundaria, school.description_bachillerato, school.description_formación_profesional]
   #facilities
   facilities_list = facilitiesList(school.patio_separado_infantil, school.library, school.vegetable_garden)
-  if school.sports_facilities:
-    sports_facilities = strToLs(school.sports_facilities)
-  else:
-    sports_facilities = None
+  #if school.sports_facilities:
+  #  sports_facilities = strToLs(school.sports_facilities)
+  #else:
+  #  sports_facilities = None
   if school.extracurricular_activities_list:
     extracurricular_activities = strToLs(school.extracurricular_activities_list)  
   else:
@@ -67,7 +67,7 @@ def school(name):
   opinions = Opinion.query.filter_by(school_id=school.id).all()
   return render_template('school.html', school=school, público=público, concertado=concertado, 
   privado=privado, pictures=picturesx, opinions=opinions, edu_offer=edu_offer, stages=stages, funding_type=funding_type,
-  edu_stage_msg=edu_stage_msg, facilities_list=facilities_list, sports_facilities=sports_facilities, 
+  edu_stage_msg=edu_stage_msg, facilities_list=facilities_list, 
   extracurricular_activities=extracurricular_activities, googleAPI=googleAPI)
 
 
@@ -126,14 +126,18 @@ def edit_school():
   edu_offer_lst = []
   if language_form.validate_on_submit():
     languages_db = Language.query.filter_by(school_id=school.id).all()
+    language_ids = []
     languages = []
     for language in languages_db:
-      languages.append(language.language)
+      language_ids.append(language.language_id)
+    for lid in language_ids:
+      languages.append(Languages.query.filter_by(id=lid).first())
     if language_form.language.data in languages:
       flash('Idioma ya está en la oferta del colegio. Puedes editarlo abajo')
       return redirect(url_for('edit_school'))
     
-    language = Language(language=language_form.language.data, 
+    language = Languages.query.filter_by(language=language_form.language.data).first()
+    language_to_db = Language(language_id=language.id, 
 starting_age=language_form.starting_age.data, weekly_hours=language_form.weekly_hours.data, 
 description=language_form.description.data, school_id=school.id)
     if language_form.is_obligatory.data == '1':
@@ -162,9 +166,10 @@ description=language_form.description.data, school_id=school.id)
     school.location_description = form.location_description.data
     if form.religious.data == '1':
       school.religious = True
+      school.religion = form.religion.data
     elif form.religious.data == '0':
       school.religious = False
-    school.religion = form.religion.data
+      school.religion = None
     edu_offer = form.educational_offer.data
     for n in edu_offer:
       if n == '1':

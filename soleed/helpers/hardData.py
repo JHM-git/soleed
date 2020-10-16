@@ -45,12 +45,12 @@ schoolx = {
     'msg': 'En el Colegio Hipopótamo trabajamos incansablemente para mejorar el futuro de nuestros alumnos. Incorporamos lo más novedoso que el mundo de la educación nos ofrece para siempre estar en vanguardia en la teoría educativa. Los padres forman una parte importante del colegio y estamos continuamente en contacto con ellos, escuchando sus propuestas e intentando solucionar sus problemas.'
   },
   'bulletpoint_info': {
-    'presentation': 'Colegio Hipopotamo es un colegio público situado en Las Tablas, en el norte de Madrid. Ofrecemos eduación infantil y primaria con posibilidad de cursaslo en bilingüe.',
-    'methods_priorities': 'El alumno es el centro de la educación. Nos adaptamos a cada alumno y hacemos un seguimiento exhaustivo sobre las cualidades de cada uno de los niños y niñas que forman nuestro alumnado. Los profesores preparan las clases con las necesidades de sus alumnos en la mente. Hasta tercero de primaria no se hace examenes, y la evaluación se basa más en la actuación y actividades en clase.',
-    'specialities': 'Somos un centro que se adapta a las necesidades de los hijos y en la manera que es posible, a las de los padres. Preparamos los alumnos tanto para la vida real como la academica, y estamos orgullosos de decir que muchos antiguos alumnos han triunfado en sus vidas.'
+    'presentation': 'Colegio Hipopótamo es un colegio público situado en Las Tablas, en el norte de Madrid. Ofrecemos educación infantil y primaria con posibilidad de cursarlo en bilingüe.',
+    'methods_priorities': 'El alumno es el centro de la educación. Nos adaptamos a cada alumno y hacemos un seguimiento exhaustivo sobre las cualidades de cada uno de los niños y niñas que forman nuestro alumnado. Los profesores preparan las clases con las necesidades de sus alumnos en la mente. Hasta tercero de primaria no se hace exámenes, y la evaluación se basa más en la actuación y actividades en clase.',
+    'specialities': 'Somos un centro que se adapta a las necesidades de los hijos y en la manera que es posible, a las de los padres. Preparamos los alumnos tanto para la vida real como la académica, y estamos orgullosos de decir que muchos antiguos alumnos han triunfado en sus vidas.'
   },
   'educational_offer': {
-    'Infantil Primer Ciclo': 'Descripción de la étapa educativa en unas cinco lineas. Qué quieren destacar, sean métodos, cultura de aprendizaje etcetera. Diferente para cada etapa.',
+    'Infantil Primer Ciclo': 'Descripción de la etapa educativa en unas cinco líneas. Qué quieren destacar, sean métodos, cultura de aprendizaje etcétera. Diferente para cada etapa.',
     'Infantil Segundo Ciclo (3 años)': 'Descripción de la étapa educativa en unas cinco lineas. Qué quieren destacar, sean métodos, cultura de aprendizaje etcetera. Diferente para cada etapa.',
     'Primaria': 'Descripción de la étapa educativa en unas cinco lineas. Qué quieren destacar, sean métodos, cultura de aprendizaje etcetera. Diferente para cada etapa.',
     'Secundaria': False,

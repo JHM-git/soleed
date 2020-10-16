@@ -4,7 +4,7 @@ from wtforms import IntegerField, SelectField, RadioField, SelectMultipleField, 
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length
 from soleed.models import User, School, Religion, Languages, Language
 from flask_babel import lazy_gettext as _l
-from soleed.helpers.functions import range_list
+from soleed.helpers.functions import range_list, tuple_maker
 
 class MultiCheckboxField(SelectMultipleField):
     widget = widgets.ListWidget(prefix_label=False)
@@ -124,7 +124,8 @@ class EditSchoolForm(FlaskForm):
     number_pupils = IntegerField('Número de alumnos', validators=[DataRequired()])
     religious = RadioField('Vocación', choices=[(1, 'religioso'), (0, 'laico')], 
     validators=[DataRequired()])
-    religion = StringField('Religion')
+    religion_choices = Religion.query.all()
+    religion = SelectField('Religion', choices=tuple_maker(religion_choices))
     #Location
     address_search = StringField('Encuentra tu dirección')
     address = StringField('Nombre de via', validators=[DataRequired()])
@@ -185,7 +186,8 @@ class EditSchoolForm(FlaskForm):
 
 
 class LanguageForm(FlaskForm):
-    language = StringField('El idioma', validators=[DataRequired()])
+    language_selection = Languages.query.all()
+    language = SelectField('El idioma', choices=tuple_maker(language_selection), validators=[DataRequired()])
     is_obligatory = RadioField('¿Es obligatorio?', choices=[(0, 'No'), (1, 'Sí')], validators=[DataRequired()])
     starting_age = SelectField('Edad de comienzo', choices=range_list(17), validators=[DataRequired()])
     weekly_hours = IntegerField('Horas semanales', validators=[DataRequired()])

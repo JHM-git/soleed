@@ -72,7 +72,7 @@ Soleed - Editar Colegio
           </p>
           <p class="hide" id="form-religion">
           {{ form.religion.label }} <br>
-          {{ form.religion(size=32) }} <br>
+          {{ form.religion }} <br>
           {% for error in form.religion.errors %}
           <span class="error">[{{ error }}]</span>
           {% endfor %}

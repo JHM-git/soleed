@@ -108,6 +108,7 @@ class School(db.Model):
   #languages
   trilingual = db.Column(db.Boolean, index=True)
   bilingual = db.Column(db.Boolean, index=True)
+  languages = db.relationship('Language', backref='school', lazy='dynamic')
   #facilities
   patio_separado_infantil = db.Column(db.Boolean, index=True)
   library = db.Column(db.Boolean, index=True)
@@ -162,9 +163,17 @@ class Languages(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   language = db.Column(db.String(32), index=True)
 
+  def __repr__(self):
+    return f'{self.language}'
+
+
+
 class Religion(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   religion = db.Column(db.String(64), index=True)
+
+  def __repr__(self):
+    return f'{self.religion}'
 
 class SportsFacilities(db.Model):
   id = db.Column(db.Integer, primary_key=True)
@@ -173,6 +182,15 @@ class SportsFacilities(db.Model):
   def __init__(self, sports_fac):
     self.sports_facility = sports_fac
 
+  def __repr__(self):
+    return f'{self.sports_facility}'
+
+'''
+school_languages = db.Table('school_languages',
+  db.Column('language_id', db.Integer, db.ForeignKey('religion.id'))
+  db.Column('school_id', db.Inteher, db.ForeignKey('school.id'))
+)
+'''
 
 class Opinion(db.Model):
   id = db.Column(db.Integer, primary_key=True)
