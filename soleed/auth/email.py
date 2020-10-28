@@ -1,7 +1,7 @@
 from flask_mail import Message
 from soleed import mail
 from flask import render_template
-from soleed import app
+from soleed.auth import bp
 from threading import Thread
 
 def send_async_email(app, msg):

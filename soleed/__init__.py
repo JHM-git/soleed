@@ -18,11 +18,21 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
-login.login_view = 'login'
+login.login_view = 'auth.login'
 mail = Mail(app)
 moment = Moment(app)
 babel = Babel(app)
 #gmaps = googlemaps.Client(key=googleAPI)
+
+#import and initialize modules
+from soleed.errors import bp as errors_bp
+app.register_blueprint(errors_bp)
+from soleed.auth import bp as auth_bp
+app.register_blueprint(auth_bp, url_prefix='/auth')
+from soleed.main import bp as main_bp
+app.register_blueprint(main_bp)
+from soleed.development import bp as dev_bp
+app.register_blueprint(dev_bp, url_prefix='/development')
 
 
 if not app.debug:
@@ -64,4 +74,4 @@ if __name__ == "__main__":
 
 
 #Import routes (at end to ensure there is no circular import)
-import soleed.routes, soleed.models, soleed.errors
+import soleed.routes, soleed.models

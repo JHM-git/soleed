@@ -10,32 +10,6 @@ class MultiCheckboxField(SelectMultipleField):
     widget = widgets.ListWidget(prefix_label=False)
     option_widget = widgets.CheckboxInput()
 
-class LoginForm(FlaskForm):
-    username = StringField(_l('Usuario'))
-    email = StringField('Correo electronico')
-    password = PasswordField('Contraseña', validators=[DataRequired()])
-    remember_me = BooleanField('Recordarme')
-    submit = SubmitField('Entrar')
-
-class RegistrationForm(FlaskForm):
-    username = StringField(_l('Usuario'), validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    headteacher = BooleanField('Soy director/a')
-    school_code_number = StringField('Código del centro')
-    password = PasswordField('Contraseña', validators=[DataRequired()])
-    password2 = PasswordField('Repite la contraseña', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Registrate')
-
-    def validate_username(self, username):
-        user = User.query.filter_by(username=username.data).first()
-        if user is not None:
-            raise ValidationError('Por favor, elige un usuario distinto')
-
-    def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
-        if user is not None:
-            raise ValidationError('Por favor, utliza un correo electronico distinto')
-
 
 class EditUserProfileForm(FlaskForm):
     username = StringField('Usuario', validators=[DataRequired()])
@@ -53,15 +27,6 @@ class EditUserProfileForm(FlaskForm):
                 raise ValidationError('Por favor, elige un usuario distinto')
 
 
-class ResetPasswordRequestForm(FlaskForm):
-    email = StringField('Correo electrónico', validators=[DataRequired()])
-    submit = SubmitField('Resetea la contraseña')
-
-
-class ResetPasswordForm(FlaskForm):
-    password = PasswordField('Contraseña', validators=[DataRequired()])
-    password2 = PasswordField('Repite la contraseña', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Reconfigurar contraseña')
 
 
 class RegisterSchoolForm(FlaskForm):
