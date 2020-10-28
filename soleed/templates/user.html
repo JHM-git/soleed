@@ -24,7 +24,7 @@ Soleed - {{ user.username }}
       <div>
         {% if user == current_user and user.headteacher and school %}
           <p><a href="{{ url_for('school',name=school.name)}}">Tu colegio</a></p>
-          <p><a href="{{ url_for('editSchool')}}">Edita los datos de tu colegio</a></p>
+          <p><a href="{{ url_for('edit_school')}}">Edita los datos de tu colegio</a></p>
           <p><a href="{{ url_for('edit_user_profile')}}">Haz cambios a tu perfil</a></p>
         {% elif user == current_user %}
           <p><a href="{{ url_for('edit_user_profile')}}">Haz cambios a tu perfil</a></p>

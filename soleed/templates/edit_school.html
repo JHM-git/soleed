@@ -72,12 +72,12 @@ Soleed - Editar Colegio
           </p>
           <p class="hide" id="form-religion">
           {{ form.religion.label }} <br>
-          {{ form.religion(size=32) }} <br>
+          {{ form.religion }} <br>
           {% for error in form.religion.errors %}
           <span class="error">[{{ error }}]</span>
           {% endfor %}
           </p>
-          <p><button id="button1" onclick="nextPage(event, 1)">Next</button></p>
+          <button class="page-bt" id="button1" onclick="nextPage(event, 1)">Next</button>
         </div>
         <div class="page2" id="form-sec2">
           <h1>Editar Colegio</h1>
@@ -162,7 +162,234 @@ Soleed - Editar Colegio
             <span class="error">[{{ error }}]</span>
             {% endfor %}
           </p>
-          <p><button id="button2" onclick="previousPage(event, 2)">Previous</button></p>
+          <button class="page-bt" id="button2" onclick="previousPage(event, 2)">Previous</button>
+          <button class="page-bt" id="button1" onclick="nextPage(event, 2)">Next</button>
+        </div>
+        <div class="page3" id="form-sec3">
+          <h1>Editar Colegio</h1>
+          <p class="checkbox-holder">
+            {{ form.educational_offer.label }} <br>
+            {{ form.educational_offer(onchange="multipleRadioToggler(event, ['educational_offer-0', 
+            'educational_offer-1', 'educational_offer-2', 'educational_offer-3', 
+            'educational_offer-4', 'educational_offer-5'], ['type1', 'type2', 'type3', 'type4', 
+            'type5', 'type6'], 'show')") }} <br>
+            {% for error in form.educational_offer.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+            <p id="edu-offer-lst" class="hide">{{ edu_offer_lst }}</p>
+          </p>
+          <div id="form-funding-div">
+            {% if school.infantil_primer_ciclo %}
+              <div id="type1" class="hide show">
+            {% else %}
+              <div id="type1" class="hide">
+            {% endif %}
+                <p>
+                  {{ form.infantil_primer_ciclo_type.label }} <br>
+                  {{ form.infantil_primer_ciclo_type }} <br>
+                  {% for error in form.infantil_primer_ciclo_type.errors %}
+                  <span class="error">[{{ error }}]</span>
+                  {% endfor %}
+                </p>
+                <p>
+                  {{ form.description_infantil_primer_ciclo.label }} <br>
+                  {{ form.description_infantil_primer_ciclo(cols=50, rows=4) }} <br>
+                  {% for error in form.description_infantil_primer_ciclo.errors %}
+                  <span class="error">[{{ error }}]</span>
+                  {% endfor %}
+                </p>
+              </div>
+            {% if school.infantil %}
+              <div id="type1" class="hide show">
+            {% else %}
+              <div id="type1" class="hide">
+            {% endif %}
+                <p>
+                  {{ form.infantil_type.label }} <br>
+                  {{ form.infantil_type }} <br>
+                  {% for error in form.infantil_type.errors %}
+                  <span class="error">[{{ error }}]</span>
+                  {% endfor %}
+                </p>
+                <p>
+                  {{ form.description_infantil.label }} <br>
+                  {{ form.description_infantil(cols=50, rows=4) }} <br>
+                  {% for error in form.description_infantil.errors %}
+                  <span class="error">[{{ error }}]</span>
+                  {% endfor %}
+                </p>
+              </div>
+            {% if school.primaria %}
+              <div id="type1" class="hide show">
+            {% else %}
+              <div id="type1" class="hide">
+            {% endif %}
+                <p>
+                  {{ form.primaria_type.label }} <br>
+                  {{ form.primaria_type }} <br>
+                  {% for error in form.primaria_type.errors %}
+                  <span class="error">[{{ error }}]</span>
+                  {% endfor %}
+                </p>
+                <p>
+                  {{ form.description_primaria.label }} <br>
+                  {{ form.description_primaria(cols=50, rows=4) }} <br>
+                  {% for error in form.description_primaria.errors %}
+                  <span class="error">[{{ error }}]</span>
+                  {% endfor %}
+                </p>
+              </div>
+            {% if school.secundaria %}
+              <div id="type1" class="hide show">
+            {% else %}
+              <div id="type1" class="hide">
+            {% endif %}
+                <p>
+                  {{ form.secundaria_type.label }} <br>
+                  {{ form.secundaria_type }} <br>
+                  {% for error in form.secundaria_type.errors %}
+                  <span class="error">[{{ error }}]</span>
+                  {% endfor %}
+                </p>
+                <p>
+                  {{ form.description_secundaria.label }} <br>
+                  {{ form.description_secundaria(cols=50, rows=4) }} <br>
+                  {% for error in form.description_secundaria.errors %}
+                  <span class="error">[{{ error }}]</span>
+                  {% endfor %}
+                </p>
+              </div>
+            {% if school.bachillerato %}
+              <div id="type1" class="hide show">
+            {% else %}
+              <div id="type1" class="hide">
+            {% endif %}
+                <p>
+                  {{ form.bachillerato_type.label }} <br>
+                  {{ form.bachillerato_type }} <br>
+                  {% for error in form.bachillerato_type.errors %}
+                  <span class="error">[{{ error }}]</span>
+                  {% endfor %}
+                </p>
+                <p>
+                  {{ form.description_bachillerato.label }} <br>
+                  {{ form.description_bachillerato(cols=50, rows=4) }} <br>
+                  {% for error in form.description_bachillerato.errors %}
+                  <span class="error">[{{ error }}]</span>
+                  {% endfor %}
+                </p>
+              </div>
+            {% if school.formación_profesional %}
+              <div id="type1" class="hide show">
+            {% else %}
+              <div id="type1" class="hide">
+            {% endif %}
+                <p>
+                  {{ form.formación_profesional_type.label }} <br>
+                  {{ form.formación_profesional_type }} <br>
+                  {% for error in form.formación_profesional_type.errors %}
+                  <span class="error">[{{ error }}]</span>
+                  {% endfor %}
+                </p>
+                <p>
+                  {{ form.description_formación_profesional.label }} <br>
+                  {{ form.description_formación_profesional(cols=50, rows=4) }} <br>
+                  {% for error in form.description_formación_profesional.errors %}
+                  <span class="error">[{{ error }}]</span>
+                  {% endfor %}
+                </p>
+              </div>
+            <p>{{ edu_offer }}</p>
+          </div>
+          <button class="page-bt" id="button2" onclick="previousPage(event, 3)">Previous</button>
+          <button class="page-bt" id="button1" onclick="nextPage(event, 3)">Next</button>
+        </div>
+        <div class="page4" id="form-sec4">
+          <h1>Editar Colegio</h1>
+          <p>
+            {{ form.headteacher.label }} <br>
+            {{ form.headteacher(size=40) }} <br>
+            {% for error in form.headteacher.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <p>
+            {{ form.headteacher_email.label }} <br>
+            {{ form.headteacher_email(size=40) }} <br>
+            {% for error in form.headteacher_email.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <p>
+            {{ form.headteacher_title.label }} <br>
+            {{ form.headteacher_title }} <br>
+            {% for error in form.headteacher_title.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <p>
+            {{ form.director_message.label }} <br>
+            {{ form.director_message(cols=50, rows=4) }} <br>
+            {% for error in form.director_message.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <p>
+            {{ form.bulletpoint_presentation.label }} <br>
+            {{ form.bulletpoint_presentation(cols=50, rows=4) }} <br>
+            {% for error in form.bulletpoint_presentation.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <p>
+            {{ form.bulletpoint_methods_and_priorities.label }} <br>
+            {{ form.bulletpoint_methods_and_priorities(cols=50, rows=4) }} <br>
+            {% for error in form.bulletpoint_methods_and_priorities.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <p>
+            {{ form.bulletpoint_specialities.label }} <br>
+            {{ form.bulletpoint_specialities(cols=50, rows=4) }} <br>
+            {% for error in form.bulletpoint_specialities.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <button class="page-bt" id="button2" onclick="previousPage(event, 4)">Previous</button>
+          <button class="page-bt" id="button1" onclick="nextPage(event, 4)">Next</button>
+        </div>
+        <div class="page5" id="form-sec5">
+          <h1>Editar Colegio</h1>
+          <p>¿Es bilingüe/trilingüe?</p>
+          <div id="language-booleans">
+            <p class="inline-block lang-bool">
+              {{ form.no.label }} <br>
+              {{ form.no }} <br>
+              {% for error in form.no.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p class="inline-block">
+              {{ form.bilingual.label }} <br>
+              {{ form.bilingual }} <br>
+              {% for error in form.bilingual.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p class="inline-block">
+              {{ form.trilingual.label }} <br>
+              {{ form.trilingual }} <br>
+              {% for error in form.trilingual.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+          </div>
+          <button id="add-language-bt" onclick="toggleElement(event, 'add-language-div', 'show', 
+          'add-language-bt', 'Añadir un idioma', 'No quiero añadir idioma')">Añadir un idioma</button>
+          <div id="add-language-div" class="hide">
+            {% include 'sub-templates/_language-form.html' %}
+          </div> <br>
+          <button class="page-bt" id="button2" onclick="previousPage(event, 5)">Previous</button>
           <p>{{ form.submit() }} </p>
         </div>
       </form>
