@@ -1,0 +1,31 @@
+<section class="location">
+  <div class="location-flex">
+    <div class="flex1 location-div">
+      <h3 class="section-title-sml">Ubicación</h3>
+      <p class="location-info">{{ school.address }}, {{ school.street_number }}</p>
+      <p class="location-info">{{ school.location_description }}</p>
+    </div>
+    {% if school.lat and school.lng %}
+      <div class="flex3">
+        <div id="map"></div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% if school.lat and school.lng %}
+      <script type="text/javascript">
+        let latLng = {
+          lat: {{ school.lat }},
+          lng: {{ school.lng }}
+        };
+        
+      </script>
+      
+      <script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key={{ googleAPI }}">
+      </script>
+      
+      <script type="text/javascript"
+      src="{{ url_for('static', filename='js/map.js') }}"></script>
+    {% endif %}

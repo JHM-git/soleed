@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+Soleed - About
+{% endblock %}
+
+{% block header %}
+{{ super() }}
+{% endblock %}
+
+{% block main %}
+{{ super() }}
+  <h1>This is the about page</h1>
+  <p>Contact us <a href="{{ url_for('main.contact')}}">here</a></p>
+{% endblock %}

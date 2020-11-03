@@ -1,0 +1,102 @@
+2020-10-15 10:27:25,496 ERROR: Exception on /favicon.ico [GET] [in c:\users\heikki\appdata\local\programs\python\python38\lib\site-packages\flask\app.py:1891]
+Traceback (most recent call last):
+  File "c:\users\heikki\appdata\local\programs\python\python38\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\heikki\appdata\local\programs\python\python38\lib\site-packages\flask\app.py", line 1926, in dispatch_request
+    self.raise_routing_exception(req)
+  File "c:\users\heikki\appdata\local\programs\python\python38\lib\site-packages\flask\app.py", line 1908, in raise_routing_exception
+    raise request.routing_exception
+  File "c:\users\heikki\appdata\local\programs\python\python38\lib\site-packages\flask\ctx.py", line 350, in match_request
+    result = self.url_adapter.match(return_rule=True)
+  File "c:\users\heikki\appdata\local\programs\python\python38\lib\site-packages\werkzeug\routing.py", line 1945, in match
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\heikki\appdata\local\programs\python\python38\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\heikki\appdata\local\programs\python\python38\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\heikki\appdata\local\programs\python\python38\lib\site-packages\flask\app.py", line 1816, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "c:\users\heikki\appdata\local\programs\python\python38\lib\site-packages\flask\app.py", line 1744, in handle_http_exception
+    return handler(e)
+  File "C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\errors.py", line 8, in not_found_error
+    return render_template('404.html'), 404
+  File "c:\users\heikki\appdata\local\programs\python\python38\lib\site-packages\flask\templating.py", line 137, in render_template
+    return _render(
+  File "c:\users\heikki\appdata\local\programs\python\python38\lib\site-packages\flask\templating.py", line 120, in _render
+    rv = template.render(context)
+  File "c:\users\heikki\appdata\local\programs\python\python38\lib\site-packages\jinja2\environment.py", line 1090, in render
+    self.environment.handle_exception()
+  File "c:\users\heikki\appdata\local\programs\python\python38\lib\site-packages\jinja2\environment.py", line 832, in handle_exception
+    reraise(*rewrite_traceback_stack(source=source))
+  File "c:\users\heikki\appdata\local\programs\python\python38\lib\site-packages\jinja2\_compat.py", line 28, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\templates\404.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\templates\base.html", line 18, in top-level template code
+    {% block header %}
+  File "C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\templates\404.html", line 8, in block "header"
+    {{ super() }}
+  File "C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\templates\base.html", line 23, in block "header"
+    {{ nav_link('index', 'Home') }}
+  File "c:\users\heikki\appdata\local\programs\python\python38\lib\site-packages\jinja2\runtime.py", line 679, in _invoke
+    rv = self._func(*arguments)
+  File "C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\templates\macros.html", line 2, in template
+    {% if request.endpoint.endswith(endpoint) %}
+jinja2.exceptions.UndefinedError: 'None' has no attribute 'endswith'
+2020-10-15 10:36:16,221 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:38:05,702 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:38:37,562 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:38:48,784 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:39:01,235 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:40:09,455 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:40:47,785 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:41:26,319 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:42:27,733 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:42:45,071 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:44:27,859 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:44:37,735 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:44:46,335 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:44:55,971 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:45:14,242 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:45:39,594 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:45:49,616 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:46:36,741 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:46:50,461 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:46:57,912 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:47:21,223 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:47:29,501 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:48:54,625 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:49:05,416 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:49:22,457 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:49:40,706 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:50:00,604 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:51:36,036 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:52:01,163 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:52:56,307 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:55:39,748 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:56:46,389 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 10:59:17,337 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 11:01:45,805 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 11:01:57,994 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 11:02:44,180 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 11:04:35,057 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 11:04:53,826 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 11:05:51,749 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 11:08:08,295 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 11:08:40,466 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 11:08:56,480 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 11:16:22,840 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 11:16:52,519 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 11:17:00,162 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 11:17:35,903 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 11:17:51,538 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 11:18:02,732 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 11:25:47,069 INFO: Soleed startup [in C:\users\heikki\documents\webdev\colegios\flask\soleed\__init__.py:53]
+2020-10-15 11:26:50,455 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 11:27:02,816 INFO: Soleed startup [in C:\Users\Heikki\Documents\WebDev\colegios\Flask\soleed\__init__.py:53]
+2020-10-15 11:28:34,441 INFO: Soleed startup [in C:\users\heikki\documents\webdev\colegios\flask\soleed\__init__.py:53]

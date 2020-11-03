@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+
+{% block title %}
+Soleed - Registrar Colegio
+{% endblock %}
+
+{% block header %}
+{{ super() }}
+{% endblock %}
+
+
+{% block main %}
+  <section class="login">
+    <div class="login-div">
+      <form action="" method="POST" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="page1" id="form-sec1">
+          <h1>Registrar Colegio</h1>
+          <p>
+            {{ form.name.label }} <br>
+            {{ form.name(size=40) }} <br>
+            {% for error in form.name.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <p>
+            {{ form.telephone.label }} <br>
+            {{ form.telephone(size=40) }} <br>
+            {% for error in form.telephone.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <p>
+            {{ form.email.label }} <br>
+            {{ form.email(size=40) }} <br>
+            {% for error in form.email.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <p>
+            {{ form.headteacher.label }} <br>
+            {{ form.headteacher(size=40) }} <br>
+            {% for error in form.headteacher.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <p>
+            {{ form.headteacher_email.label }} <br>
+            {{ form.headteacher_email(size=40) }} <br>
+            {% for error in form.headteacher_email.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <p>
+            {{ form.code_number.label }} <br>
+            {{ form.code_number }} <br>
+            {% for error in form.code_number.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <p><button id="button1" onclick="nextPage(event, 1)">Next</button></p>
+        </div>
+        <div class="page2" id="form-sec2">
+          <h1>Registrar Colegio</h1>
+          <p>
+            {{ form.address_search.label }} <br>
+            {{ form.address_search(size=32) }} <br>
+            {% for error in form.address_search.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <div id="form-address-div" class="hide">
+            <p>
+              {{ form.address.label }} <br>
+              {{ form.address(size=32, id='route') }} <br>
+              {% for error in form.address.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p>
+              {{ form.street_number.label }} <br>
+              {{ form.street_number }} <br>
+              {% for error in form.street_number.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p>
+              {{ form.city.label }} <br>
+              {{ form.city(size=32, id='locality') }} <br>
+              {% for error in form.city.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p>
+              {{ form.subregion.label }} <br>
+              {{ form.subregion(size=32, id='administrative_area_level_2') }} <br>
+              {% for error in form.subregion.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p>
+              {{ form.region.label }} <br>
+              {{ form.region(size=32, id='administrative_area_level_1') }} <br>
+              {% for error in form.region.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p>
+              {{ form.borough.label }} <br>
+              {{ form.borough(size=32) }} <br>
+              {% for error in form.borough.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p>
+              {{ form.zone.label }} <br>
+              {{ form.zone(size=32) }} <br>
+              {% for error in form.zone.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p>
+              {{ form.postcode.label }} <br>
+              {{ form.postcode(size=32, id='postal_code') }} <br>
+              {% for error in form.postcode.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <div class="hide">
+              <p>
+                {{ form.country.label }} <br>
+                {{ form.country(size=32, id='country') }} <br>
+                {% for error in form.country.errors %}
+                <span class="error">[{{ error }}]</span>
+                {% endfor %}
+              </p>
+              <p>
+                {{ form.lat.label }} <br>
+                {{ form.lat(size=32) }} <br>
+                {% for error in form.lat.errors %}
+                <span class="error">[{{ error }}]</span>
+                {% endfor %}
+              </p>
+              <p>
+                {{ form.lng.label }} <br>
+                {{ form.lng(size=32) }} <br>
+                {% for error in form.lng.errors %}
+                <span class="error">[{{ error }}]</span>
+                {% endfor %}
+              </p>
+            </div>
+          </div>
+          <p><button id="button2" onclick="previousPage(event, 2)">Previous</button></p>
+          <p><button id="button1" onclick="nextPage(event, 2)">Next</button></p>
+        </div>
+        <div class="page3" id="form-sec3">
+          <h1>Registrar Colegio</h1>
+          <p class="checkbox-holder">
+            {{ form.educational_offer.label }} <br>
+            {{ form.educational_offer(onchange="multipleRadioToggler(event, ['educational_offer-0', 
+            'educational_offer-1', 'educational_offer-2', 'educational_offer-3', 
+            'educational_offer-4', 'educational_offer-5'], ['type1', 'type2', 'type3', 'type4', 
+            'type5', 'type6'], 'show')") }} <br>
+            <!--
+            {% for subfield in form.educational_offer %}
+              <tr>
+                  <td>{{ subfield(onchange="multipleRadioToggler(event, ['educational_offer-0', 
+                    'educational_offer-1', 'educational_offer-2', 'educational_offer-3', 
+                    'educational_offer-4', 'educational_offer-5'], ['type1', 'type2', 'type3', 'type4', 
+                    'type5', 'type6'], 'show')") }}</td>
+                  <td>{{ subfield.label }}</td>
+              </tr><br>
+            {% endfor %}
+            -->
+            {% for error in form.educational_offer.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <div id="form-funding-div">
+            <div id="type1" class="hide">
+              <p>
+                {{ form.infantil_primer_ciclo_type.label }} <br>
+                {{ form.infantil_primer_ciclo_type }} <br>
+                {% for error in form.infantil_primer_ciclo_type.errors %}
+                <span class="error">[{{ error }}]</span>
+                {% endfor %}
+              </p>
+            </div>
+            <div id="type2" class="hide">
+              <p>
+                {{ form.infantil_type.label }} <br>
+                {{ form.infantil_type }} <br>
+                {% for error in form.infantil_type.errors %}
+                <span class="error">[{{ error }}]</span>
+                {% endfor %}
+              </p>
+            </div>
+            <div id="type3" class="hide">
+              <p>
+                {{ form.primaria_type.label }} <br>
+                {{ form.primaria_type }} <br>
+                {% for error in form.primaria_type.errors %}
+                <span class="error">[{{ error }}]</span>
+                {% endfor %}
+              </p>
+            </div>
+            <div id="type4" class="hide">
+              <p>
+                {{ form.secundaria_type.label }} <br>
+                {{ form.secundaria_type }} <br>
+                {% for error in form.secundaria_type.errors %}
+                <span class="error">[{{ error }}]</span>
+                {% endfor %}
+              </p>
+            </div>
+            <div id="type5" class="hide">
+              <p>
+                {{ form.bachillerato_type.label }} <br>
+                {{ form.bachillerato_type }} <br>
+                {% for error in form.bachillerato_type.errors %}
+                <span class="error">[{{ error }}]</span>
+                {% endfor %}
+              </p>
+            </div>
+            <div id="type6" class="hide">
+              <p>
+                {{ form.formación_profesional_type.label }} <br>
+                {{ form.formación_profesional_type }} <br>
+                {% for error in form.formación_profesional_type.errors %}
+                <span class="error">[{{ error }}]</span>
+                {% endfor %}
+              </p>
+            </div>
+            <p>{{ edu_offer }}</p>
+          </div>
+          <p><button id="button2" onclick="previousPage(event, 3)">Previous</button></p>
+          <p>{{ form.submit() }} </p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block script2 %}
+  {{ super() }}
+  <script src="{{ url_for('static', filename='js/form.js')}}"></script>
+
+  <script src="{{ url_for('static', filename='js/autocomplete.js')}}"></script>
+
+  <script type="text/javascript" defer
+  src="https://maps.googleapis.com/maps/api/js?key={{ googleAPI }}&callback=initAutocomplete&libraries=places"></script>
+{% endblock %}

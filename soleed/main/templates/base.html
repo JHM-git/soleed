@@ -1,0 +1,69 @@
+{% from "macros.html" import nav_link with context %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  {% block script1 %}
+
+  {% endblock %}
+  
+  <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+  
+  {% block header %}
+  <header class="header">
+    <h1 class="header-logo-stand-in">Soleed</h1>
+    <img class="header-logo" src="{{ url_for('static', filename='images/Logo_1.png') }}" alt="Soleed logo">
+    <ul class="nav-list">
+      {{ nav_link('main.index', 'Home') }}
+      {{ nav_link('main.schools', 'Schools') }}
+      {{ nav_link('main.about', 'About') }}
+      {% if current_user.is_anonymous %}
+      {{ nav_link('auth.login', 'Login') }}
+      {% else %}
+      {{ nav_link('main.user', 'Profile', username=current_user.username) }}
+      {{ nav_link('main.logout', 'Logout') }}
+      {% endif %}
+    </ul>
+  </header>
+  {% endblock %}
+  <main class="main-content-holder">
+
+    <div>
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+    </div>
+    
+  {% block main %}
+    <img class="banner-img" src="{{ url_for('static', filename='images/notebook-table-mid.jpg') }}" alt="Notebook and table">
+    
+  {% endblock %}
+
+  </main>
+
+  
+  {% block footer %}
+  <footer>
+    <p>This is the footer...</p>
+  </footer>
+  {% endblock %}
+
+</body>
+{% block script2 %}
+  <script src="{{ url_for('static', filename='js/jquery-3.5.1.js')}}"></script>
+  {{ moment.include_moment() }}
+  {{ moment.lang(g.locale) }}
+{% endblock %}
+</html>

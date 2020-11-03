@@ -1,6 +1,6 @@
 
 import random
-from soleed import app
+
 
 def schoolFundingLists(inf1, inf2, pri, sec, bac, fp):
   público = []
@@ -54,6 +54,24 @@ def facilitiesList(st1, st2, st3):
     facilities_list.append('Huerto propio')
   return facilities_list
 
+def edu_offer_lstMaker(booleanlst, idlst):
+  edu_offer_lst = []
+  for i in range(len(booleanlst)):
+    if booleanlst[i] == True:
+      edu_offer_lst.append(idlst[i])
+  return edu_offer_lst
+
+def range_list(num):
+  range_lst = []
+  for n in range(1, num):
+    range_lst.append((n, n))
+  return range_lst
+
+def tuple_maker(lst):
+  tuples = []
+  for item in lst:
+    tuples.append((item, item))
+  return tuples
   
 
 test = 'working!'

@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+
+
+
+{% block title %}
+Soleed - {{ school.info.name }}
+{% endblock %}
+
+{% block header %}
+{{ super() }}
+{% endblock %}
+
+{% block main %}
+{% if pictures.banner is not sameas none %}
+  <img class="banner-img" src="{{ pictures.banner }}" alt="toBeImplemented">
+{% else %}
+  {{ super() }}
+{% endif %}
+  <section class="info">
+    <h1 class="school-title">{{ school.info.name }}</h1>
+    <div class="info-div school-info">
+      <p class="a_d address">{{ school.info.location.address }}</p>
+      <p class="a_d phone">{{ school.info.telephone }}</p>
+      <p class="a_d webpage"><a href="">{{ school.info.webpage }}</a></p>
+      <p class="a_d email">{{ school.info.e_mail }}</p>
+      <p class="a_d id">{{ school.info.code_number }}</p>
+    </div>
+    <div class="info-div education-info">
+      <p class="e-info stages">Enseñanzas impartidas: 
+        {% for stage, value in school.info.stages.items() %}
+          {% if value is true  %}
+            <span>{{ stage }}</span>
+      </p>
+          {% endif %}
+        {% endfor %}
+      <p class="e-info org">Centro {% for stage, value in school.info.funding.items() %}
+        {% if value is not sameas None %}
+          <span>{{  value }}({{ stage }})</span>
+      </p>
+        {% endif %}
+        {% endfor %}
+      <p class="e-info pupil-number">Número de alumnos: {{ school.info.numberPupils }}</p>
+      <p class="e-info">{{ school.info.beliefs }}</p>
+      {% if school.info.languages.trilingual is not false %}
+      <p class="e-info">Trilingüe ({{ school.info.languages.trilingual }})</p>
+      {% elif school.info.languages.bilingual is not false %}
+      <p class="e-info">Bilingüe ({{ school.info.languages.bilingual }})</p>
+      {% else %}
+      {% endif %}
+    </div>
+    <div class="total-score">
+      {% set number_opinions = opinions.opinions | length() %}
+      {% set general_score = opinions.opinions | sum(attribute='general_score') / number_opinions %}
+      {% set teachers_score = opinions.opinions | sum(attribute='teachers_score') / number_opinions %}
+      {% set faculties_materials_score = opinions.opinions | sum(attribute='faculties_materials_score') / number_opinions %}
+      {% set communication_accessibility_score = opinions.opinions | sum(attribute='communication_accessibility_score') / number_opinions %}
+      {% set total_score = (general_score + teachers_score + faculties_materials_score + communication_accessibility_score) / 4 %}
+      <p>{{ total_score | round(1) }} ({{ number_opinions }} valoraciones)</p>
+    </div>
+    
+  </section>
+
+  <section class="teasers">
+    <div class="info-text point-1"><p>{{ school.bulletpoint_info.presentation }}</p></div>
+    <div class="info-text point-2"><p>{{ school.bulletpoint_info.methods_priorities }}</p></div>
+    <div class="info-text point-3"><p>{{ school.bulletpoint_info.specialities }}</p></div>
+  </section>
+
+  <div>
+    {% if pictures.presentation %}
+    <img class="pupils-img" src="{{ pictures.presentation }}" alt="toBeImplemented">
+    {% else %}
+    <img class="pupils-img" src="{{ url_for ('static', filename='images/teachers-mid.jpg') }}" alt="teachers in front of a blackboard">
+    {% endif %}
+    
+  </div>
+
+  <section class="salute">
+    <div class="dir-msg-cont">
+      <div class="director-div">
+        <div class="dir-content">
+          {% if school.director.gender is sameas 'hombre' %}
+          <h3>Saludo del director del {{ school.info.name }}:</h3>
+          {% else %}
+          <h3>Saludo de la directora del {{ school.info.name }}:</h3>
+          {% endif %}
+        </div>
+        
+      </div>
+      <div class="dir-message-div">
+        <div class="dir-msg-content">
+          <p class="dir-msg">"{{ school.director.msg }}"</p>
+          <p class="dir-name">{{ school.director.name }}</p>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+  <div class="separator-1"></div>
+
+  <section class="edu-offer">
+    <div class=section-title-div>
+      <h2 class="section-title">Etapas Educativas</h2>
+    </div>
+    <div class="edu-offer-div">
+      {% for stage, value in school.educational_offer.items() %}
+        {% if value is not false %}
+      <div class="stage">
+        <h4>{{ stage }}</h4>
+        <p>{{ school.info.funding.stage }}</p>
+        <p class="stage-presentation">{{ value }}</p>
+      </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
+
+  <div class="separator-2"></div>
+
+  <section class="facilities">
+    <div class=section-title-div>
+      <h2 class="section-title">Instalaciones</h2>
+    </div>
+    <div class="info-div">
+      {% for key, value in school.facilities.items() %}
+        {% if value is true %}
+      <p>{{ key }}</p>
+        {% endif %}
+      {% endfor %}
+      {% if school.facilities.Instalaciones_deportivas is not false%}
+        <div>
+          <span>Instalaciones deportivas: 
+            {% for value in school.facilities.Instalaciones_deportivas %}
+            {{ value }}
+          </span>
+            {% endfor %}
+      {% endif %}
+    </div>
+    </div>
+    <div class="info-text"><p>{{ school.facilities.information }}</p></div>
+    
+  </section>
+
+  <div>
+    {% if pictures.facilities is not sameas none %}
+    <img class="sports-img" src="{{ pictures.facilities }}" alt="toBeImplemented">
+    {% else %}
+    <img class="sports-img" src="{{ url_for('static', filename='images/football-full.jpg') }}" alt="children at football practice">
+    {% endif %}
+  </div>
+
+  <section class="languages">
+    <div class=section-title-div>
+      <h2 class="section-title">Lenguajes</h2>
+    </div>
+    <div class="edu-offer-div">
+      {% for language in school.languages %}
+      <div class="stage language">
+        <h4>{{ language.language }}</h4>
+        <p>{{ language.optionality }}</p>
+        <p class="stage-presentation">{{ language.description }}</p>
+      </div>
+      {% endfor %}
+      </div>
+  </section>
+
+  <div class="separator-1"></div>
+
+  <section class="services">
+    <div class=section-title-div>
+      <h2 class="section-title">Services</h2>
+    </div>
+    <div class="services-div">
+      {% if school.services.comedor.comedor is true and school.services.comedor.cocina_propia is true %}
+      <div class="service"><p>Comedor (cocina propia)</p><span class="service-price"><p>precio {{ school.services.comedor.price }} € al mes</p></span></div>
+      {% elif school.services.comedor.comedor is true %}
+      <div class="service"><p>Comedor (catering)</p><span class="service-price"><p>precio {{ school.services.comedor.price }} € al mes</p></span></div>
+      {% endif %}
+      {% if school.services.horario.horario_ampliado is true %}
+      <div class="service"><p>Horario ampliado (mañanas desde las {{ school.services.horario.mañana }} y tardes hasta las {{ school.services.horario.tarde }})</p>
+        <span class="service-price"><p>precio desde {{ school.services.horario.price }} € al día</p></span></div>
+      {% endif %}
+      {% if school.services.extraescolares.provided is true %}
+      <div class="service"><div>Extrascolares: 
+        {% for activity in school.services.extraescolares.include %}
+        {{ activity }},
+        {% endfor %}
+      etc.</div><span class="service-price"><p></p></span></div>
+      {% endif %}
+      {% if school.services.nurse.available is true%}
+      <div class="service"><p>Gabinete médico/Enfermería</p><span class="service-price"><p>precio {{ school.services.nurse.price }} € al mes</p></span></div>
+      {% endif %}
+      {% if school.services.school_bus.available is true%}
+      <div class="service"><p>Ruta escolar</p><span class="service-price"><p>precio {{ school.services.school_bus.price }} € al mes</p></span></div>
+      {% endif %}
+    </div>
+  </section>
+
+  <div class="separator-2"></div>
+
+  <section class="opinions">
+    <div class=section-title-div>
+      <h2 class="section-title">Opiniones</h2>
+    </div>
+    <div class="opinion-type"><div class="flex3"><p>Valoración Global</p></div><div class="flex1"><span>{{ general_score | round(1) }}</span></div></div>
+    
+    <div class="opinion"><p>"{{ generalOpinionOne.general }}"<br><span>{{ generalOpinionOne.author.username }}</span></p></div>
+<div class="opinion"><p>"{{ generalOpinionTwo.general }}"<br><span>{{ generalOpinionTwo.author.username }}</span></p></div>
+    <div class="opinion-type"><div class="flex3"><p>Profesorado</p></div><div class="flex1"><span>{{ teachers_score | round(1) }}</span></div></div>
+    {% set teacherOpinion = oneRandomOpinion(opinions['opinions'], opinions['index_finders']['teachers']) %}
+    <div class="opinion"><p>"{{ teacherOpinion.teachers }}"<br><span>{{ teacherOpinion.author.username }}</span></p></div>
+    <div class="opinion-type"><div class="flex3"><p>Instalaciones & Materiales</p></div><div class="flex1"><span>{{ faculties_materials_score | round(1) }}</span></div></div>
+    {% set inst_matOpinion = oneRandomOpinion(opinions['opinions'], opinions['index_finders']['faculties_materials']) %}
+    <div class="opinion"><p>"{{ inst_matOpinion.faculties_materials }}"<br><span>{{ inst_matOpinion.author.username }}</span></p></div>
+    <div class="opinion-type"><div class="flex3"><p>Comunicación & Accessibilidad</p></div><div class="flex1"><span>{{ communication_accessibility_score | round(1) }}</span></div></div>
+    {% set com_accOpinion = oneRandomOpinion(opinions['opinions'], opinions['index_finders']['communication_accessibility']) %}
+    <div class="opinion"><p>"{{ com_accOpinion.communication_accessibility }}"<br><span>{{ com_accOpinion.author.username }}</span></p></div>
+  </section>
+
+  <div class="separator-1"></div>
+
+  <section class="location">
+    <div class="location-flex">
+      <div class="flex1 location-div">
+        <h3 class="section-title-sml">Ubicación</h3>
+        <p class="location-info">{{ school.info.location.address }}</p>
+        <p class="location-info">{{ school.info.location.description }}</p>
+      </div>
+      <div class="flex3">
+        <div id="map"></div>
+      </div>
+    </div>
+  </section>
+  
+{% endblock %}
+
+{% block script2 %}
+  {{ super() }}
+  <script type="text/javascript">
+    let latLng = {
+      lat: {{ school.info.location.lat }},
+      lng: {{ school.info.location.lng }}
+    };
+    
+    </script>
+    
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key={{ googleAPI }}">
+    </script>
+    
+    <script type="text/javascript"
+    src="{{ url_for('static', filename='js/map.js') }}"></script>
+    
+{% endblock %}
