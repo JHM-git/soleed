@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}
+Soleed - Find Your School
+{% endblock %}
+
+{% block header %}
+{{ super() }}
+{% endblock %}
+
+{% block main %}
+  {{ super() }}
+  <h1>This is the schools index/search page</h1>
+  <p>Hard coded example school <a href="{{ url_for('development.example_school') }}">here!</a></p>
+  <p>School page in development <a href="{{ url_for('development.schooldev') }}">here!</a></p>
+  <p>School page from database <a href="{{ url_for('main.school',name='Colegio Hipopótamo') }}">here!</a></p>
+  <p>School register page <a href="{{ url_for('main.registerSchool') }}">here!</a></p>
+  {% if current_user.admin %}
+    {% for school in schools %}
+      <p>{{ school.name }} <a href="{{ url_for('main.school', name=school.name)}}">ver</a></p>
+    {% endfor %}
+  {% endif %}
+{% endblock %}

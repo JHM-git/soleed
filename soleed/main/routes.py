@@ -1,43 +1,39 @@
-from flask import Flask, render_template, url_for, json, request, flash, redirect, g
-from soleed import app, db
+from flask import render_template, url_for, json, request, flash
+from flask import redirect, g, current_app
+from soleed import db
 from soleed.helpers.hardData import schoolx, opinionsx, picturesx
 from soleed.helpers.functions import oneRandomOpinion, twoRandomOpinions, schoolFundingLists
 from soleed.helpers.functions import facilitiesList, strToLs, edu_offer_lstMaker, tuple_maker
-from soleed.helpers.forms import LoginForm, RegistrationForm, EditUserProfileForm, RegisterSchoolForm
-from soleed.helpers.forms import EditSchoolForm, ResetPasswordRequestForm, ResetPasswordForm
-from soleed.helpers.forms import LanguageForm
+from soleed.main.forms import EditUserProfileForm, RegisterSchoolForm
+from soleed.main.forms import EditSchoolForm, LanguageForm
 from soleed.models import User, School, Opinion, Language, Religion, SportsFacilities, Languages
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from datetime import datetime
-from soleed.helpers.email import send_password_reset_email
 from soleed.helpers.keys import googleAPI
 from flask_babel import _, get_locale
+from soleed.main import bp
 
 
-@app.shell_context_processor
-def make_shell_context():
-    return {'db': db, 'User': User, 'School': School, 'Opinion': Opinion}
- 
-@app.before_request
+@bp.before_app_request
 def before_request():
   g.locale = str(get_locale())
 
 
 
 
-@app.route('/')
-@app.route('/index')
+@bp.route('/')
+@bp.route('/index')
 def index():
   return render_template('index.html')
 
 
-@app.route('/schools')
+@bp.route('/schools')
 def schools():
   schools = School.query.all()
   return render_template('schools.html', schools=schools)
 
-@app.route('/schools/<name>')
+@bp.route('/schools/<name>')
 def school(name):
   school = School.query.filter_by(name=name).first_or_404()
   #educational offer
@@ -71,15 +67,15 @@ def school(name):
   extracurricular_activities=extracurricular_activities, googleAPI=googleAPI)
 
 
-@app.route('/schools/register school', methods=['GET', 'POST'])
+@bp.route('/schools/register school', methods=['GET', 'POST'])
 @login_required
 def registerSchool():
-  if current_user.headteacher is not True:
+  if current_user.headteacher is not True and current_user.admin is not True:
     flash(_('Lo sentimos, no puedes acceder a esta página'))
-    return redirect(url_for('index'))
+    return redirect(url_for('main.index'))
   if School.query.filter_by(headteacher_id=current_user.id).first() is not None:
     flash(_('No puedes registrar más de un colegio. Para editar tu colegio, vea tu perfil'))
-    return redirect(url_for('index'))
+    return redirect(url_for('main.index'))
   form = RegisterSchoolForm()
   edu_offer = ''
   if form.validate_on_submit():
@@ -111,15 +107,15 @@ def registerSchool():
     db.session.add(school)
     db.session.commit()
     flash('¡' + school.name + ' añadido!')
-    return redirect(url_for('school',name=school.name))
+    return redirect(url_for('main.school',name=school.name))
   return render_template('register_school.html', form=form, googleAPI=googleAPI, edu_offer=edu_offer)
 
 
-@app.route('/schools/edit school', methods=['GET', 'POST'])
+@bp.route('/schools/edit school', methods=['GET', 'POST'])
 @login_required
 def edit_school():
   if current_user.is_anonymous:
-    return redirect(url_for('login'))
+    return redirect(url_for('auth.login'))
   school = School.query.filter_by(headteacher_id=current_user.id).first_or_404()
   form = EditSchoolForm()
   language_form = LanguageForm()
@@ -128,25 +124,26 @@ def edit_school():
     languages_db = Language.query.filter_by(school_id=school.id).all()
     language_ids = []
     languages = []
-    for language in languages_db:
-      language_ids.append(language.language_id)
+    for lan in languages_db:
+      language_ids.append(lan.language_id)
     for lid in language_ids:
       languages.append(Languages.query.filter_by(id=lid).first())
     if language_form.language.data in languages:
       flash('Idioma ya está en la oferta del colegio. Puedes editarlo abajo')
-      return redirect(url_for('edit_school'))
+      return redirect(url_for('main.edit_school'))
     
     language = Languages.query.filter_by(language=language_form.language.data).first()
     language_to_db = Language(language_id=language.id, 
 starting_age=language_form.starting_age.data, weekly_hours=language_form.weekly_hours.data, 
 description=language_form.description.data, school_id=school.id)
     if language_form.is_obligatory.data == '1':
-      language.is_obligatory = True
+      language_to_db.is_obligatory = True
     elif language_form.is_obligatory.data == '0':
-      language.is_obligatory = False
-    db.session.add(language)
+      language_to_db.is_obligatory = False
+    db.session.add(language_to_db)
     db.session.commit()
-    return redirect(url_for('edit_school'))
+    flash('idioma añadido')
+    return redirect(url_for('main.edit_school'))
   if form.validate_on_submit():
     school.name = form.name.data
     school.telephone = form.telephone.data
@@ -206,7 +203,7 @@ description=language_form.description.data, school_id=school.id)
     db.session.add(school)
     db.session.commit()
     flash(_('Hemos guardado los cambios.'))
-    return redirect(url_for('school', name=school.name))
+    return redirect(url_for('main.school', name=school.name))
   elif request.method == 'GET':
     form.name.data = school.name
     form.telephone.data = school.telephone
@@ -253,20 +250,7 @@ description=language_form.description.data, school_id=school.id)
 
 
 
-@app.route('/schools/example')
-def example_school():
-  return render_template('school-example.html', googleAPI=googleAPI)
-
-
-@app.route('/schools/inProgress')
-def schooldev():
-  generalOpinionOne, generalOpinionTwo = twoRandomOpinions(opinionsx['opinions'], opinionsx['index_finders']['general'])
-  return render_template('school-dev.html', school=schoolx, opinions=opinionsx, 
-  pictures=picturesx, generalOpinionOne=generalOpinionOne, generalOpinionTwo=generalOpinionTwo,
-  oneRandomOpinion=oneRandomOpinion, googleAPI=googleAPI)
-
-
-@app.route('/user/<username>')
+@bp.route('/user/<username>')
 @login_required
 def user(username):
   user = User.query.filter_by(username=username).first_or_404()
@@ -283,47 +267,13 @@ def user(username):
   comments=comments, school=school)
 
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-  if current_user.is_authenticated:
-    return redirect(url_for('index'))
-  form = RegistrationForm()
-  if form.validate_on_submit():
-    user = User(username=form.username.data, email=form.email.data, 
-    headteacher=form.headteacher.data, school_code_number=form.school_code_number.data)
-    user.set_password(form.password.data)
-    db.session.add(user)
-    db.session.commit()
-    flash(_('¡Enhorabuena %(username)s, ya formas parte de nuestra comunidad!', username=user.username))
-    return redirect(url_for('login'))
-  return render_template('register.html', form=form)
 
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-  if current_user.is_authenticated:
-    return redirect(url_for('index'))
-  form = LoginForm()
-  if form.validate_on_submit():
-    if form.username.data is not '':
-      user = User.query.filter_by(username=form.username.data).first()
-    elif form.email.data is not '':
-      user = User.query.filter_by(email=form.email.data).first()
-    else:
-      flash(_('Usuario o Correo electronico requerido para login'))
-      return redirect(url_for('login'))
-    if user is None or not user.check_password(form.password.data):
-      flash(_('Usuario o contraseña no valido'))
-      return redirect(url_for('login'))
-    login_user(user, remember=form.remember_me.data)
-    next_page = request.args.get('next')
-    if not next_page or url_parse(next_page).netloc != '':
-      next_page = url_for('index')
-    return redirect(url_for('index'))
-  return render_template('login.html', form=form)
 
 
-@app.route('/edit_user_profile', methods=['GET', 'POST'])
+
+
+@bp.route('/edit_user_profile', methods=['GET', 'POST'])
 @login_required
 def edit_user_profile():
   form = EditUserProfileForm(current_user.username)
@@ -332,60 +282,33 @@ def edit_user_profile():
     current_user.about_me = form.about_me.data
     db.session.commit()
     flash(_('Hemos guardado tus cambios.'))
-    return redirect(url_for('user', username=current_user.username))
+    return redirect(url_for('main.user', username=current_user.username))
   elif request.method == 'GET':
     form.username.data = current_user.username
     form.about_me.data = current_user.about_me
   return render_template('edit_user_profile.html', form=form)
 
 
-@app.route('/reset_password_request', methods=['GET', 'POST'])
-def reset_password_request():
-  if current_user.is_authenticated:
-    return redirect(url_for('index'))
-  form = ResetPasswordRequestForm()
-  if form.validate_on_submit():
-    user = User.query.filter_by(email=form.email.data).first()
-    if user:
-      send_password_reset_email(user)
-    #flash whether user or not makes it impossible to find out whether 
-    #an email is member or not - ref MG
-    flash(_('Comprueba tu correo electrónico para las instrucciones de cómo resetear tu contraseña'))
-    return redirect(url_for('login'))
-  return render_template('reset_password_request.html', form=form)
 
-
-@app.route('/reset_password/<token>', methods=['GET', 'POST'])
-def reset_password(token):
-  if current_user.is_authenticated:
-    return redirect(url_for('index'))
-  user = User.verify_reset_password_token(token)
-  if not user:
-    return redirect(url_for('index'))
-  form = ResetPasswordForm()
-  if form.validate_on_submit():
-    user.set_password(form.password.data)
-    db.session.commit()
-    flash(_('Tu contraseña ha sido reconfigurado.'))
-    return redirect(url_for('login'))
-  return render_template('reset_password.html', form=form)
-
-@app.route('/logout')
+@bp.route('/logout')
 def logout():
   current_user.last_seen = datetime.utcnow()
   db.session.commit()
   logout_user()
-  return redirect(url_for('index'))
+  return redirect(url_for('main.index'))
 
 
-@app.route('/about')
+@bp.route('/about')
 def about():
   return render_template('about.html')
 
 
-@app.route('/contact')
+@bp.route('/contact')
 def contact():
   return render_template('contact.html')
+
+
+from soleed.soleed import db
 
 
 

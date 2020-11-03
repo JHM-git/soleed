@@ -18,16 +18,16 @@
   {% block header %}
   <header class="header">
     <h1 class="header-logo-stand-in">Soleed</h1>
-    <img class="header-logo" src="../static/images/Logo_1.png" alt="Soleed logo">
+    <img class="header-logo" src="{{ url_for('static', filename='images/Logo_1.png') }}" alt="Soleed logo">
     <ul class="nav-list">
-      {{ nav_link('index', 'Home') }}
-      {{ nav_link('schools', 'Schools') }}
-      {{ nav_link('about', 'About') }}
+      {{ nav_link('main.index', 'Home') }}
+      {{ nav_link('main.schools', 'Schools') }}
+      {{ nav_link('main.about', 'About') }}
       {% if current_user.is_anonymous %}
-      {{ nav_link('login', 'Login') }}
+      {{ nav_link('auth.login', 'Login') }}
       {% else %}
-      {{ nav_link('user', 'Profile', username=current_user.username) }}
-      {{ nav_link('logout', 'Logout') }}
+      {{ nav_link('main.user', 'Profile', username=current_user.username) }}
+      {{ nav_link('main.logout', 'Logout') }}
       {% endif %}
     </ul>
   </header>
@@ -47,7 +47,7 @@
     </div>
     
   {% block main %}
-    <img class="banner-img" src="../static/images/notebook-table-mid.jpg" alt="Notebook and table">
+    <img class="banner-img" src="{{ url_for('static', filename='images/notebook-table-mid.jpg') }}" alt="Notebook and table">
     
   {% endblock %}
 

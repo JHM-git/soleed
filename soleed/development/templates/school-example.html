@@ -42,7 +42,7 @@ Soleed - Colegio ejemplo
   <div class="info-text point-3"><p>Short info three: What is special about the school? Why is it a good choice for a parent that is choosing a school</p></div>
 </section>
 <div>
-  <img class="pupils-img" src="../static/images/teachers-mid.jpg" alt="teachers in front of a blackboard">
+  <img class="pupils-img" src="{{ url_for ('static', filename='images/teachers-mid.jpg') }}" alt="teachers in front of a blackboard">
 </div>
 <section class="salute">
   <div class="dir-msg-cont">
@@ -140,7 +140,7 @@ Soleed - Colegio ejemplo
 </section>
 
 <div>
-  <img class="sports-img" src="../static/images/football-full.jpg" alt="children at football practice">
+  <img class="sports-img" src="{{ url_for('static', filename='images/football-full.jpg') }}" alt="children at football practice">
 </div>
 
 <section class="languages">

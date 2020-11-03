@@ -42,11 +42,11 @@ Soleed - Login
       </form>
       <p>
         ¿Has ovlidado la contraseña?
-        <a href="{{ url_for('reset_password_request') }}">Resetéalo aquí</a>
+        <a href="{{ url_for('auth.reset_password_request') }}">Resetéalo aquí</a>
       </p>
       <p>
         ¿Nuevo en Soleed? 
-        <a href="{{ url_for('register') }}">Regístrate aquí</a>
+        <a href="{{ url_for('auth.register') }}">Regístrate aquí</a>
       </p>
     </div>
   </section>

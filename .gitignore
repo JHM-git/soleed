@@ -49,4 +49,4 @@ app.db
 messages.pot
 messages.po
 messages.mo
-
+.env
