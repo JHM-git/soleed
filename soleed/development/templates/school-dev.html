@@ -70,7 +70,7 @@ Soleed - {{ school.info.name }}
     {% if pictures.presentation %}
     <img class="pupils-img" src="{{ pictures.presentation }}" alt="toBeImplemented">
     {% else %}
-    <img class="pupils-img" src="../static/images/teachers-mid.jpg" alt="teachers in front of a blackboard">
+    <img class="pupils-img" src="{{ url_for ('static', filename='images/teachers-mid.jpg') }}" alt="teachers in front of a blackboard">
     {% endif %}
     
   </div>
@@ -146,7 +146,7 @@ Soleed - {{ school.info.name }}
     {% if pictures.facilities is not sameas none %}
     <img class="sports-img" src="{{ pictures.facilities }}" alt="toBeImplemented">
     {% else %}
-    <img class="sports-img" src="../static/images/football-full.jpg" alt="children at football practice">
+    <img class="sports-img" src="{{ url_for('static', filename='images/football-full.jpg') }}" alt="children at football practice">
     {% endif %}
   </div>
 

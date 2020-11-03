@@ -1,4 +1,5 @@
 from flask import render_template
+from soleed import db
 from soleed.errors import bp
 import werkzeug
 from werkzeug.exceptions import NotFound, InternalServerError

@@ -1,6 +1,6 @@
 
 import random
-from soleed import app
+
 
 def schoolFundingLists(inf1, inf2, pri, sec, bac, fp):
   público = []

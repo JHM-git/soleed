@@ -1,4 +1,5 @@
 from flask import Flask, render_template, url_for, request, flash, redirect, g
+from werkzeug.urls import url_parse
 from soleed import db
 from soleed.auth import bp
 from soleed.models import User
