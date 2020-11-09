@@ -1,0 +1,45 @@
+<form action="" method="POST" novalidate class="edit-language-form" id="edit-language-form">
+  {{ edit_language_form.hidden_tag() }}
+  <p>
+    {{ edit_language_form.language.label }} <br>
+    {{ edit_language_form.language }} <br>
+    {% for error in edit_language_form.language.errors %}
+    <span class="error">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ edit_language_form.edit_is_obligatory.label }} <br>
+    {{ edit_language_form.edit_is_obligatory }} <br>
+    {% for error in edit_language_form.edit_is_obligatory.errors %}
+    <span class="error">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ edit_language_form.starting_age.label }} <br>
+    {{ edit_language_form.starting_age(id='edit_starting_age') }} <br>
+    {% for error in edit_language_form.starting_age.errors %}
+    <span class="error">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ edit_language_form.weekly_hours.label }} <br>
+    {{ edit_language_form.weekly_hours(id='edit_weekly_hours') }} <br>
+    {% for error in edit_language_form.weekly_hours.errors %}
+    <span class="error">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ edit_language_form.description.label }} <br>
+    {{ edit_language_form.description(cols=50, rows=4, id='edit_description') }} <br>
+    {% for error in edit_language_form.language.errors %}
+    <span class="error">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>{{ edit_language_form.submit(onclick="sendData(event, 'edit-language-form', 
+    ['#edit_description', '#edit_weekly_hours', 'edit_is_obligatory-0', 'edit_is_obligatory-1'],
+    urlEditLan, 'edit-language-bt', '#languages')") }} </p>
+</form>
+
+<script>
+  const urlEditLan = "{{ url_for('main.edit_language') }}";
+</script>

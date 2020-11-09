@@ -1,5 +1,4 @@
 
-from flask import current_app
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
@@ -110,6 +109,7 @@ class School(db.Model):
   bachillerato_type = db.Column(db.String(32), index=True)
   formación_profesional_type = db.Column(db.String(32), index=True)
   #languages
+  monolingual = db.Column(db.Boolean, index=True)
   trilingual = db.Column(db.Boolean, index=True)
   bilingual = db.Column(db.Boolean, index=True)
   languages = db.relationship('Language', backref='school', lazy='dynamic')

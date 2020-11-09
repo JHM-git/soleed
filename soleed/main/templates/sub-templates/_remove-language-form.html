@@ -1,0 +1,16 @@
+<form action="" method="POST" novalidate class="remove-language-form" id="delete-language">
+  {{ remove_language_form.hidden_tag() }}
+  <p>
+    {{ remove_language_form.language.label }} <br>
+    {{ remove_language_form.language }} <br>
+    {% for error in remove_language_form.language.errors %}
+    <span class="error">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>{{ remove_language_form.submit(onclick="removeLang(event, 'remove-language-form',
+    urlDelLan, 'remove-language-bt', '#languages', ['#delete-language', '#edit-language-form'])")}}</p>
+</form>
+
+<script>
+  const urlDelLan = "{{ url_for('main.remove_language') }}";
+</script>

@@ -3,7 +3,7 @@ from soleed.models import User, School, Opinion, Religion, Language, Languages
 
 
 app = create_app()
-app.app_context().push()
+#app.app_context().push()
 #@app.cli.command()
 
 

@@ -3,12 +3,21 @@
     <h2 class="section-title">Lenguajes</h2>
   </div>
   <div class="edu-offer-div">
-    {% if school.first_language %}
+    {% for language in school_lang_list %}
     <div class="stage language">
-      <h4>{{ school.first_language }}</h4>
-      <p>{{ school.optionality_first_language }}</p>
-      <p class="stage-presentation">{{ school.description_first_language }}</p>
+      <h4>{{ language.language }}</h4>
+      {% if language.is_obligatory is true %}
+        <p>Obligatorio</p>
+      {% else %}
+        <p>Opcional</p>
+      {% endif %}
+      <p>Desde {{ language.starting_age }} años</p>
+      <p>{{ language.weekly_hours }} horas semanales</p>
+      <p class="stage-presentation">{{ language.description }}</p>
     </div>
+    {% endfor %}
+    {% if school.first_language %}
+    
     {% endif %}
     {% if school.second_language %}
     <div class="stage language">

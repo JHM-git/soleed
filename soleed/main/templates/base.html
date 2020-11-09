@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
   {% block script1 %}
-
+  <script src="{{ url_for('static', filename='js/jquery-3.5.1.js')}}"></script>
   {% endblock %}
   
   <title>{% block title %}{% endblock %}</title>
@@ -62,7 +62,7 @@
 
 </body>
 {% block script2 %}
-  <script src="{{ url_for('static', filename='js/jquery-3.5.1.js')}}"></script>
+  
   {{ moment.include_moment() }}
   {{ moment.lang(g.locale) }}
 {% endblock %}

@@ -8,6 +8,10 @@ Soleed - Editar Colegio
 {{ super() }}
 {% endblock %}
 
+{% block script1 %}
+{{ super() }}
+{% endblock %}
+
 
 {% block main %}
   <section class="login">
@@ -363,9 +367,9 @@ Soleed - Editar Colegio
           <p>¿Es bilingüe/trilingüe?</p>
           <div id="language-booleans">
             <p class="inline-block lang-bool">
-              {{ form.no.label }} <br>
-              {{ form.no }} <br>
-              {% for error in form.no.errors %}
+              {{ form.monolingual.label }} <br>
+              {{ form.monolingual }} <br>
+              {% for error in form.monolingual.errors %}
               <span class="error">[{{ error }}]</span>
               {% endfor %}
             </p>
@@ -384,11 +388,41 @@ Soleed - Editar Colegio
               {% endfor %}
             </p>
           </div>
-          <button id="add-language-bt" onclick="toggleElement(event, 'add-language-div', 'show', 
-          'add-language-bt', 'Añadir un idioma', 'No quiero añadir idioma')">Añadir un idioma</button>
+          <div id="languages">
+            <h2>Idiomas:</h2>
+            {% for language in school_lang_list %}
+              <p>{{ language.language}}</p>
+              <div>
+                {% if language.is_obligatory is true %}
+                  <p class="inline-block">Obligatorio <span>-</span></p>
+                {% elif language.is_obligatory is false %}
+                  <p class="inline-block">Opcional <span>-</span></p>
+                {% endif %}
+                
+                <p class="inline-block">Desde {{ language.starting_age }} años <span>-</span></p>
+                <p class="inline-block">{{ language.weekly_hours }} horas a la semana</p>
+              </div>
+              
+              <p>Descripción: <span>{{ language.description }}</span></p>
+            {% endfor %}
+          </div>
           <div id="add-language-div" class="hide">
             {% include 'sub-templates/_language-form.html' %}
-          </div> <br>
+            
+          </div>
+          <div id="edit-language-div" class="hide">
+            {% include 'sub-templates/_edit-language-form.html' %}
+          </div>
+          <div id="remove-language-div" class="hide">
+            {% include 'sub-templates/_remove-language-form.html' %}
+          </div>
+          <button id="add-language-bt" onclick="toggleElement(event, 'add-language-div', 'show', 
+          'add-language-bt', 'Añadir un idioma', 'No quiero añadir idioma')">Añadir un idioma</button>
+          <button id="edit-language-bt" onclick="toggleElement(event, 'edit-language-div', 'show', 
+          'edit-language-bt', 'Editar un idioma', 'Rechazar los cambios')">Editar un idioma</button>
+          <button id="remove-language-bt" onclick="toggleElement(event, 'remove-language-div', 'show', 
+          'remove-language-bt', 'Eliminar un idioma', 'No quiero eliminar un idioma')">Eliminar un idioma</button>
+           <br>
           <button class="page-bt" id="button2" onclick="previousPage(event, 5)">Previous</button>
           <p>{{ form.submit() }} </p>
         </div>
@@ -406,6 +440,8 @@ Soleed - Editar Colegio
   <script src="{{ url_for('static', filename='js/school_edit_form.js')}}"></script>
 
   <script src="{{ url_for('static', filename='js/autocomplete.js')}}"></script>
+
+  <script src="{{ url_for('static', filename='js/languageForm.js')}}"></script>
 
   <script type="text/javascript" defer
   src="https://maps.googleapis.com/maps/api/js?key={{ googleAPI }}&callback=initAutocomplete&libraries=places"></script>

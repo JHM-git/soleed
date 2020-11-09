@@ -6,7 +6,12 @@ const initMap = function(locationObj) {
   const marker = new google.maps.Marker({position: location, map: map});
 }
 
-google.maps.event.addDomListener(window, 'load', initMap(latLng));
+latLngNum = {
+  lat: parseFloat(latLng.lat),
+  lng: parseFloat(latLng.lng)
+}
+
+google.maps.event.addDomListener(window, 'load', initMap(latLngNum));
 
 
 //const testFunction = function() {

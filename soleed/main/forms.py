@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, current_app
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, TextAreaField, SubmitField
 from wtforms import IntegerField, SelectField, RadioField, SelectMultipleField, widgets
@@ -6,6 +6,8 @@ from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Le
 from soleed.models import User, School, Religion, Languages, Language
 from flask_babel import lazy_gettext as _l
 from soleed.helpers.functions import range_list, tuple_maker
+from soleed.main import bp
+from flask_login import current_user
 
 class MultiCheckboxField(SelectMultipleField):
     widget = widgets.ListWidget(prefix_label=False)
@@ -144,7 +146,7 @@ class EditSchoolForm(FlaskForm):
     bulletpoint_methods_and_priorities = TextAreaField('Los métodos de aprendizaje y las prioridades en la enseñanza', validators=[Length(min=0, max=500)])
     bulletpoint_specialities = TextAreaField('¿En qué se direfencia el colegio de otros?', validators=[Length(min=0, max=500)])
     #languages
-    no = BooleanField('No')
+    monolingual = BooleanField('No')
     bilingual = BooleanField('Bilingüe')
     trilingual = BooleanField('Trilingüe')
     
@@ -160,6 +162,21 @@ class LanguageForm(FlaskForm):
     description = TextAreaField('Descripción del idioma y su enseñanza')
     
     submit = SubmitField('Añadir idioma')
+
+
+
+class EditLanguageForm(LanguageForm, FlaskForm):
+    language = SelectField('El idioma', choices=[], validators=[DataRequired()])
+    is_obligatory = None
+    edit_is_obligatory = RadioField('¿Es obligatorio?', choices=[(0, 'No'), (1, 'Sí')], validators=[DataRequired()])
+    submit = SubmitField('Cambiar los datos del idioma')
+
+class RemoveLanguageForm(FlaskForm):
+    language = SelectField('El idioma', choices=[], validators=[DataRequired()])
+
+    submit = SubmitField('Quitar el idioma')
+
+
 
     
 

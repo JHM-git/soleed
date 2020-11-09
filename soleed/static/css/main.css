@@ -399,7 +399,7 @@ body {
 }
 
 .login-div {
-  width: min-content;
+  width: 500px;
   margin: 2rem auto;
 }
 
@@ -474,7 +474,6 @@ body {
 .lang-bool {
   min-width: 50px;
 }
-
 
 /* Footer Styles */
 

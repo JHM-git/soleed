@@ -1,3 +1,5 @@
+
+
 const nextPage = (e, number) => {
   let currentPage = document.getElementById('form-sec' + number);
   let nextPage = document.getElementById('form-sec' + (number + 1));
@@ -93,6 +95,8 @@ const multipleRadioToggler = (e, lst1, lst2, cclass) => {
 const noDefault = (e) => {
   e = e || window.Event;
   e.preventDefault();
+  console.log($('.edit-language-form').serialize());
+  console.log($('.language-form').serialize());
 }
 
 window.addEventListener('load', radioChecker('school-religious'))
