@@ -11,7 +11,7 @@ from flask_mail import Mail
 from flask_moment import Moment
 from flask_babel import Babel
 from flask_babel import lazy_gettext as _l
-#import googlemaps
+
 
 
 
@@ -23,7 +23,7 @@ login.login_message = _l('Por favor, haz el login para acceder a esta página')
 mail = Mail()
 moment = Moment()
 babel = Babel()
-#gmaps = googlemaps.Client(key=googleAPI)
+
 
 def create_app(config_class=Config):
   app = Flask(__name__)

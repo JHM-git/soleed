@@ -36,6 +36,7 @@ function fillInAddress() {
     document.getElementById(component).value = "";
     document.getElementById(component).disabled = false;
   }
+  console.log(place.address_components)
 
   // Get each component of the address from the place details,
   // and then fill-in the corresponding field on the form.
@@ -50,9 +51,9 @@ function fillInAddress() {
     }
   }
   if(document.getElementById('form-address-div')) {
-    getLatLong();
     changeCSSClass("form-address-div", 'show');
   }
+  //getLatLong();
 }
 
 

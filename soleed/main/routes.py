@@ -13,6 +13,11 @@ from datetime import datetime
 from soleed.helpers.keys import googleAPI
 from flask_babel import _, get_locale
 from soleed.main import bp
+import googlemaps
+
+
+gmaps = googlemaps.Client(key=googleAPI)
+
 
 
 @bp.before_app_request
@@ -164,6 +169,9 @@ def edit_school():
     school.number_pupils = form.number_pupils.data
     school.address = form.address.data
     school.street_number = form.street_number.data 
+    geocode_result = gmaps.geocode(f'{form.address.data}, {form.street_number.data}, {form.city.data}, {form.country.data}')
+    school.lat = geocode_result[0]['geometry']['location']['lat']
+    school.lng = geocode_result[0]['geometry']['location']['lng']
     school.city = form.city.data
     school.subregion = form.subregion.data
     school.region = form.region.data
