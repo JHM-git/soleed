@@ -6,7 +6,7 @@ from soleed.helpers.functions import facilitiesList, strToLs, edu_offer_lstMaker
 from soleed.helpers.hardData import picturesx
 from soleed.main.forms import EditUserProfileForm, RegisterSchoolForm
 from soleed.main.forms import EditSchoolForm, LanguageForm, EditLanguageForm, RemoveLanguageForm
-from soleed.models import User, School, Opinion, Language, Religion, SportsFacilities, Languages
+from soleed.models import User, School, Opinion, Language, Religion, Sports_facilities, Languages
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from datetime import datetime
@@ -56,14 +56,13 @@ def school(name):
   school.description_secundaria, school.description_bachillerato, school.description_formación_profesional]
   #facilities
   facilities_list = facilitiesList(school.patio_separado_infantil, school.library, school.vegetable_garden)
-  #if school.sports_facilities:
-  #  sports_facilities = strToLs(school.sports_facilities)
+  sports_facilities = school.sports_facilities.all()
+  #services
+  
+  #if school.extracurricular_activities_list:
+  #  extracurricular_activities = strToLs(school.extracurricular_activities_list)  
   #else:
-  #  sports_facilities = None
-  if school.extracurricular_activities_list:
-    extracurricular_activities = strToLs(school.extracurricular_activities_list)  
-  else:
-    extracurricular_activities = None
+  #  extracurricular_activities = None
   #languages
   school_languages = Language.query.filter_by(school_id=school.id).all()
   school_lang_list = []
@@ -81,8 +80,8 @@ def school(name):
   opinions = Opinion.query.filter_by(school_id=school.id).all()
   return render_template('school.html', school=school, público=público, concertado=concertado, 
   privado=privado, pictures=picturesx, opinions=opinions, edu_offer=edu_offer, stages=stages, funding_type=funding_type,
-  edu_stage_msg=edu_stage_msg, facilities_list=facilities_list, 
-  extracurricular_activities=extracurricular_activities, school_lang_list=school_lang_list, googleAPI=googleAPI)
+  edu_stage_msg=edu_stage_msg, facilities_list=facilities_list, sports_facilities=sports_facilities, 
+  school_lang_list=school_lang_list, googleAPI=googleAPI)
 
 
 @bp.route('/schools/register school', methods=['GET', 'POST'])
@@ -135,6 +134,7 @@ def edit_school():
   if current_user.is_anonymous:
     return redirect(url_for('auth.login'))
   school = School.query.filter_by(headteacher_id=current_user.id).first_or_404()
+  all_sports_facilities = Sports_facilities.query.all()
   form = EditSchoolForm()
   language_form = LanguageForm()
   edit_language_form = EditLanguageForm()
@@ -221,9 +221,20 @@ def edit_school():
     school.bulletpoint_specialities = form.bulletpoint_specialities.data
     school.monolingual = form.monolingual.data 
     school.bilingual = form.bilingual.data 
-    school.trilingual = form.trilingual.data 
+    school.trilingual = form.trilingual.data
+    school.patio_separado_infantil = form.patio_separado_infantil.data 
+    school.library = form.library.data 
+    school.vegetable_garden = form.vegetable_garden.data 
+    school_sports_facilities = form.sports_facilities.data
+    for facility in all_sports_facilities:
+      if facility.sports_facility in school_sports_facilities:
+        school.add_sports_facility(facility)
+      else:
+        school.remove_sports_facility(facility)
+    school.facilities_information = form.facilities_information.data
     db.session.add(school)
     db.session.commit()
+    
     flash(_('Hemos guardado los cambios.'))
     return redirect(url_for('main.school', name=school.name))
   elif request.method == 'GET':

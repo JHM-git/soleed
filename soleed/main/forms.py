@@ -3,7 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, TextAreaField, SubmitField
 from wtforms import IntegerField, SelectField, RadioField, SelectMultipleField, widgets
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length
-from soleed.models import User, School, Religion, Languages, Language
+from soleed.models import User, School, Religion, Languages, Language, Sports_facilities
 from flask_babel import lazy_gettext as _l
 from soleed.helpers.functions import range_list, tuple_maker
 from soleed.main import bp
@@ -149,6 +149,17 @@ class EditSchoolForm(FlaskForm):
     monolingual = BooleanField('No')
     bilingual = BooleanField('Bilingüe')
     trilingual = BooleanField('Trilingüe')
+    #facilities
+    patio_separado_infantil = BooleanField('Patio separado para Infantil')
+    library = BooleanField('Biblioteca')
+    vegetable_garden = BooleanField('Huerto propio')
+    sports_facs = Sports_facilities.query.all()
+    sports_facilities_list = []
+    for fac in sports_facs:
+        sports_facilities_list.append(fac.sports_facility)
+    sports_facilities = MultiCheckboxField('Instalaciones deportivas', choices=tuple_maker(sports_facilities_list))
+    facilities_information = TextAreaField('Información sobre las instalaciones del colegio', validators=[Length(min=0, max=500)])
+    
     
     submit = SubmitField('Registrar los cambios')
 
@@ -156,7 +167,7 @@ class EditSchoolForm(FlaskForm):
 class LanguageForm(FlaskForm):
     language_selection = Languages.query.all()
     language = SelectField('El idioma', choices=tuple_maker(language_selection), validators=[DataRequired()])
-    is_obligatory = RadioField('¿Es obligatorio?', choices=[(0, 'No'), (1, 'Sí')], validators=[DataRequired()])
+    is_obligatory = RadioField('¿Es obligatorio?', choices=[(0, 'No'), (1, 'Sí')])
     starting_age = SelectField('Edad de comienzo', choices=range_list(17), validators=[DataRequired()])
     weekly_hours = IntegerField('Horas semanales', validators=[DataRequired()])
     description = TextAreaField('Descripción del idioma y su enseñanza')

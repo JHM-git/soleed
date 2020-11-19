@@ -1,47 +1,43 @@
 
-<form action=""></form> <!-- subsequent form only visible with this-->
-<form action="" method="POST" novalidate class="language-form" id="language-form">
-  {{ language_form.hidden_tag() }}
-  
-    <p>
-      {{ language_form.language.label }} <br>
-      {{ language_form.language }} <br>
-      {% for error in language_form.language.errors %}
-      <span class="error">[{{ error }}]</span>
-      {% endfor %}
-    </p>
-    <p>
-      {{ language_form.is_obligatory.label }} <br>
-      {{ language_form.is_obligatory }} <br>
-      {% for error in language_form.is_obligatory.errors %}
-      <span class="error">[{{ error }}]</span>
-      {% endfor %}
-    </p>
-    <p>
-      {{ language_form.starting_age.label }} <br>
-      {{ language_form.starting_age }} <br>
-      {% for error in language_form.starting_age.errors %}
-      <span class="error">[{{ error }}]</span>
-      {% endfor %}
-    </p>
-    <p>
-      {{ language_form.weekly_hours.label }} <br>
-      {{ language_form.weekly_hours }} <br>
-      {% for error in language_form.weekly_hours.errors %}
-      <span class="error">[{{ error }}]</span>
-      {% endfor %}
-    </p>
-    <p>
-      {{ language_form.description.label }} <br>
-      {{ language_form.description(cols=50, rows=4) }} <br>
-      {% for error in language_form.language.errors %}
-      <span class="error">[{{ error }}]</span>
-      {% endfor %}
-    </p>
-    <p>{{ language_form.submit(onclick="addLang(event, 'language-form', 
-      ['#description', '#weekly_hours', 'is_obligatory-0', 'is_obligatory-1'],
-      urlAddLan, 'add-language-bt', '#languages', ['#delete-language', '#edit-language-form'])") }} </p>
-</form>
+
+<p>
+  {{ language_form.language.label }} <br>
+  {{ language_form.language(id="add-language", form="language-form") }} <br>
+  {% for error in language_form.language.errors %}
+  <span class="error">[{{ error }}]</span>
+  {% endfor %}
+</p>
+<p>
+  {{ language_form.is_obligatory.label }} <br>
+  {{ language_form.is_obligatory(form="language-form") }} <br>
+  {% for error in language_form.is_obligatory.errors %}
+  <span class="error">[{{ error }}]</span>
+  {% endfor %}
+</p>
+<p>
+  {{ language_form.starting_age.label }} <br>
+  {{ language_form.starting_age(form="language-form") }} <br>
+  {% for error in language_form.starting_age.errors %}
+  <span class="error">[{{ error }}]</span>
+  {% endfor %}
+</p>
+<p>
+  {{ language_form.weekly_hours.label }} <br>
+  {{ language_form.weekly_hours(form="language-form") }} <br>
+  {% for error in language_form.weekly_hours.errors %}
+  <span class="error">[{{ error }}]</span>
+  {% endfor %}
+</p>
+<p>
+  {{ language_form.description.label }} <br>
+  {{ language_form.description(cols=50, rows=4, form="language-form") }} <br>
+  {% for error in language_form.language.errors %}
+  <span class="error">[{{ error }}]</span>
+  {% endfor %}
+</p>
+<p><button onclick="addLang(event, 'language-form', 
+  ['#description', '#weekly_hours', 'is_obligatory-0', 'is_obligatory-1'],
+  urlAddLan, 'add-language-bt', '#languages', ['#delete-language', '#edit-language-form'])">Añadir idioma</button> </p>
 <script>
   const urlAddLan = "{{ url_for('main.add_language') }}"
 </script>

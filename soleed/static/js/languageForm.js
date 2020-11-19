@@ -9,7 +9,15 @@ const sendData = (e, form, ids, urlToSend, bt, reload) => {
     alert('Por favor, elige si el idioma es obligatorio');
     e.preventDefault();
   } else {
-    const data = $('.' + form).serialize(); // serializes the form's elements.
+    let isObligatory;
+    if(document.getElementById(ids[2]).checked) {
+      isObligatory = $('#' + ids[2]).serialize();
+    } else if(document.getElementById(ids[3]).checked) {
+      isObligatory = $('#' + ids[3]).serialize();
+    }
+    const CSRFToken = $('#csrf_token').serialize();
+    const data = $('.' + form).serialize() + '&' + isObligatory + '&' + CSRFToken; // serializes the form's elements.
+    console.log(data);
     $.ajax({
         type: "POST",
         url: urlToSend, // send the form data here.
@@ -39,7 +47,7 @@ const sendData = (e, form, ids, urlToSend, bt, reload) => {
     $.ajaxSetup({
       beforeSend: function(xhr, settings) {
         if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-            xhr.setRequestHeader("X-CSRFToken", "{{ language_form.csrf_token._value() }}")
+            xhr.setRequestHeader("X-CSRFToken", "{{ form.csrf_token._value() }}")
         }
       }
     })
@@ -48,7 +56,9 @@ const sendData = (e, form, ids, urlToSend, bt, reload) => {
 
 const removeData = (e, form, urlToSend, bt, reload, reload2) => {
   e = e || window.Event;
-  const data = $('.' + form).serialize(); // serializes the form's elements.
+  const CSRFToken = $('#csrf_token').serialize();
+  const data = $('.' + form).serialize() + '&' + CSRFToken; // serializes the form's elements.
+  console.log(data)
   $.ajax({
     type: "POST",
     url: urlToSend, // send the form data here.

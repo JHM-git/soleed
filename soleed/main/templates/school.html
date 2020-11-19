@@ -118,7 +118,7 @@ Soleed - {{ school.name }}
     {% include 'sub-templates/_edu-offer.html' %}
   {% endif %}
 
-  {% if facilites_list or school.sports_facilities %}
+  {% if facilities_list or school.sports_facilities.all()|length > 0 %}
     <div class="separator-2"></div>
     {% include 'sub-templates/_facilities.html' %}
     <div>

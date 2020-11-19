@@ -15,6 +15,9 @@ Soleed - Editar Colegio
 
 {% block main %}
   <section class="login">
+    <form action="" method="POST" novalidate class="language-form" id="language-form"></form>
+    <form action="" method="POST" novalidate class="edit-language-form" id="edit-language-form"></form>
+    <form action="" method="POST" novalidate class="remove-language-form" id="remove-language-form"></form>
     <div class="login-div">
       <form action="" method="POST" novalidate>
         {{ form.hidden_tag() }}
@@ -166,8 +169,8 @@ Soleed - Editar Colegio
             <span class="error">[{{ error }}]</span>
             {% endfor %}
           </p>
-          <button class="page-bt" id="button2" onclick="previousPage(event, 2)">Previous</button>
-          <button class="page-bt" id="button1" onclick="nextPage(event, 2)">Next</button>
+          <button class="page-bt" onclick="previousPage(event, 2)">Previous</button>
+          <button class="page-bt" onclick="nextPage(event, 2)">Next</button>
         </div>
         <div class="page3" id="form-sec3">
           <h1>Editar Colegio</h1>
@@ -305,8 +308,8 @@ Soleed - Editar Colegio
               </div>
             <p>{{ edu_offer }}</p>
           </div>
-          <button class="page-bt" id="button2" onclick="previousPage(event, 3)">Previous</button>
-          <button class="page-bt" id="button1" onclick="nextPage(event, 3)">Next</button>
+          <button class="page-bt" onclick="previousPage(event, 3)">Previous</button>
+          <button class="page-bt" onclick="nextPage(event, 3)">Next</button>
         </div>
         <div class="page4" id="form-sec4">
           <h1>Editar Colegio</h1>
@@ -359,8 +362,8 @@ Soleed - Editar Colegio
             <span class="error">[{{ error }}]</span>
             {% endfor %}
           </p>
-          <button class="page-bt" id="button2" onclick="previousPage(event, 4)">Previous</button>
-          <button class="page-bt" id="button1" onclick="nextPage(event, 4)">Next</button>
+          <button class="page-bt" onclick="previousPage(event, 4)">Previous</button>
+          <button class="page-bt" onclick="nextPage(event, 4)">Next</button>
         </div>
         <div class="page5" id="form-sec5">
           <h1>Editar Colegio</h1>
@@ -423,10 +426,59 @@ Soleed - Editar Colegio
           <button id="remove-language-bt" onclick="toggleElement(event, 'remove-language-div', 'show', 
           'remove-language-bt', 'Eliminar un idioma', 'No quiero eliminar un idioma')">Eliminar un idioma</button>
            <br>
-          <button class="page-bt" id="button2" onclick="previousPage(event, 5)">Previous</button>
+          <button class="page-bt" onclick="previousPage(event, 5)">Previous</button>
+          <button class="page-bt" onclick="nextPage(event, 5)">Next</button>
           <p>{{ form.submit() }} </p>
         </div>
+        <p>am i inside the form?</p>
+
+        <div class="page6" id="form-sec6">
+          <h1>Editar Colegio - Instalaciones</h1>
+          <div>
+            <p>
+              {{ form.patio_separado_infantil }}
+              {{ form.patio_separado_infantil.label }} <br>
+              {% for error in form.patio_separado_infantil.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p>
+              {{ form.library }}
+              {{ form.library.label }} <br>
+              {% for error in form.library.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p>
+              {{ form.vegetable_garden }}
+              {{ form.vegetable_garden.label }} <br>
+              {% for error in form.vegetable_garden.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p>
+            {{ form.sports_facilities.label }} <br>
+            {{ form.sports_facilities }} <br>
+            {% for error in form.sports_facilities.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <p>
+            {{ form.facilities_information.label }} <br>
+            {{ form.facilities_information(cols=40, rows=4) }} <br>
+            {% for error in form.facilities_information.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          </div>
+          <button class="page-bt" onclick="previousPage(event, 6)">Previous</button>
+          <button class="page-bt" onclick="nextPage(event, 6)">Next</button>
+          <p>{{ form.submit() }} </p>
+        </div>
+        
+        
       </form>
+      
     </div>
   </section>
 
