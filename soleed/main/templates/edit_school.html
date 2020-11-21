@@ -22,7 +22,7 @@ Soleed - Editar Colegio
       <form action="" method="POST" novalidate>
         {{ form.hidden_tag() }}
         <div class="page1" id="form-sec1">
-          <h1>Editar Colegio</h1>
+          <h1>Editar Colegio - Datos generales</h1>
           <p>
             {{ form.name.label }} <br>
             {{ form.name(size=32) }} <br>
@@ -84,10 +84,10 @@ Soleed - Editar Colegio
           <span class="error">[{{ error }}]</span>
           {% endfor %}
           </p>
-          <button class="page-bt" id="button1" onclick="nextPage(event, 1)">Next</button>
+          <button class="page-bt" id="button1" onclick="nextPage(event, 1)">Siguiente</button>
         </div>
-        <div class="page2" id="form-sec2">
-          <h1>Editar Colegio</h1>
+        <div class="page" id="form-sec2">
+          <h1>Editar Colegio - Ubicación</h1>
           <p class="hide" id="address-search">
             {{ form.address_search.label }} <br>
             {{ form.address_search(size=32) }} <br>
@@ -169,11 +169,11 @@ Soleed - Editar Colegio
             <span class="error">[{{ error }}]</span>
             {% endfor %}
           </p>
-          <button class="page-bt" onclick="previousPage(event, 2)">Previous</button>
-          <button class="page-bt" onclick="nextPage(event, 2)">Next</button>
+          <button class="page-bt" onclick="previousPage(event, 2)">Anterior</button>
+          <button class="page-bt" onclick="nextPage(event, 2)">Siguiente</button>
         </div>
-        <div class="page3" id="form-sec3">
-          <h1>Editar Colegio</h1>
+        <div class="page" id="form-sec3">
+          <h1>Editar Colegio - Oferta educativa</h1>
           <p class="checkbox-holder">
             {{ form.educational_offer.label }} <br>
             {{ form.educational_offer(onchange="multipleRadioToggler(event, ['educational_offer-0', 
@@ -308,11 +308,12 @@ Soleed - Editar Colegio
               </div>
             <p>{{ edu_offer }}</p>
           </div>
-          <button class="page-bt" onclick="previousPage(event, 3)">Previous</button>
-          <button class="page-bt" onclick="nextPage(event, 3)">Next</button>
+          <button class="page-bt" onclick="previousPage(event, 3)">Anterior</button>
+          <button class="page-bt" onclick="nextPage(event, 3)">Siguiente</button>
+          <button class="page-bt" onclick="lastPage(event, 3)">Ir a la última página</button>
         </div>
-        <div class="page4" id="form-sec4">
-          <h1>Editar Colegio</h1>
+        <div class="page" id="form-sec4">
+          <h1>Editar Colegio - Presentación</h1>
           <p>
             {{ form.headteacher.label }} <br>
             {{ form.headteacher(size=40) }} <br>
@@ -362,52 +363,34 @@ Soleed - Editar Colegio
             <span class="error">[{{ error }}]</span>
             {% endfor %}
           </p>
-          <button class="page-bt" onclick="previousPage(event, 4)">Previous</button>
-          <button class="page-bt" onclick="nextPage(event, 4)">Next</button>
+          <button class="page-bt" onclick="previousPage(event, 4)">Anterior</button>
+          <button class="page-bt" onclick="nextPage(event, 4)">Siguiente</button>
+          <button class="page-bt" onclick="lastPage(event, 4)">Ir a la última página</button>
         </div>
-        <div class="page5" id="form-sec5">
-          <h1>Editar Colegio</h1>
-          <p>¿Es bilingüe/trilingüe?</p>
-          <div id="language-booleans">
-            <p class="inline-block lang-bool">
-              {{ form.monolingual.label }} <br>
-              {{ form.monolingual }} <br>
-              {% for error in form.monolingual.errors %}
-              <span class="error">[{{ error }}]</span>
-              {% endfor %}
-            </p>
-            <p class="inline-block">
-              {{ form.bilingual.label }} <br>
-              {{ form.bilingual }} <br>
-              {% for error in form.bilingual.errors %}
-              <span class="error">[{{ error }}]</span>
-              {% endfor %}
-            </p>
-            <p class="inline-block">
-              {{ form.trilingual.label }} <br>
-              {{ form.trilingual }} <br>
-              {% for error in form.trilingual.errors %}
-              <span class="error">[{{ error }}]</span>
-              {% endfor %}
-            </p>
-          </div>
+        <div class="page" id="form-sec5">
+          <h1>Editar Colegio - Lenguajes</h1>
+          
           <div id="languages">
             <h2>Idiomas:</h2>
-            {% for language in school_lang_list %}
-              <p>{{ language.language}}</p>
-              <div>
-                {% if language.is_obligatory is true %}
-                  <p class="inline-block">Obligatorio <span>-</span></p>
-                {% elif language.is_obligatory is false %}
-                  <p class="inline-block">Opcional <span>-</span></p>
-                {% endif %}
+            {% if school_lang_list|length > 0 %}
+              {% for language in school_lang_list %}
+                <p>{{ language.language}}</p>
+                <div>
+                  {% if language.is_obligatory is true %}
+                    <p class="inline-block">Obligatorio <span>-</span></p>
+                  {% elif language.is_obligatory is false %}
+                    <p class="inline-block">Opcional <span>-</span></p>
+                  {% endif %}
+                  
+                  <p class="inline-block">Desde {{ language.starting_age }} años <span>-</span></p>
+                  <p class="inline-block">{{ language.weekly_hours }} horas a la semana</p>
+                </div>
                 
-                <p class="inline-block">Desde {{ language.starting_age }} años <span>-</span></p>
-                <p class="inline-block">{{ language.weekly_hours }} horas a la semana</p>
-              </div>
-              
-              <p>Descripción: <span>{{ language.description }}</span></p>
-            {% endfor %}
+                <p>Descripción: <span>{{ language.description }}</span></p>
+              {% endfor %}
+            {% else %}
+              <p>No se ha añadido idiomas</p>
+            {% endif %}
           </div>
           <div id="add-language-div" class="hide">
             {% include 'sub-templates/_language-form.html' %}
@@ -426,13 +409,45 @@ Soleed - Editar Colegio
           <button id="remove-language-bt" onclick="toggleElement(event, 'remove-language-div', 'show', 
           'remove-language-bt', 'Eliminar un idioma', 'No quiero eliminar un idioma')">Eliminar un idioma</button>
            <br>
-          <button class="page-bt" onclick="previousPage(event, 5)">Previous</button>
-          <button class="page-bt" onclick="nextPage(event, 5)">Next</button>
-          <p>{{ form.submit() }} </p>
+           <p>¿Es bilingüe/trilingüe?</p>
+          <div id="language-booleans">
+            <p class="inline-block lang-bool">
+              {{ form.monolingual.label }} <br>
+              {{ form.monolingual }} <br>
+              {% for error in form.monolingual.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p class="inline-block">
+              {{ form.bilingual.label }} <br>
+              {{ form.bilingual(onchange="simplyToggleElement(event, 'bi-tri', 'show')") }} <br>
+              {% for error in form.bilingual.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p class="inline-block">
+              {{ form.trilingual.label }} <br>
+              {{ form.trilingual(onchange="simplyToggleElement(event, 'bi-tri', 'show')") }} <br>
+              {% for error in form.trilingual.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p id="bi-tri-list" class="hide">{{ bi_tri_list }}</p>
+            <div id="bi-tri" class="hide">
+              <p>
+                {{ form.bi_tri_languages.label }} <br>
+                {{ form.bi_tri_languages }} <br>
+                {% for error in form.bi_tri_languages.errors %}
+                <span class="error">[{{ error }}]</span>
+                {% endfor %}
+              </p>
+            </div>
+          </div>
+          <button class="page-bt" onclick="previousPage(event, 5)">Anterior</button>
+          <button class="page-bt" onclick="nextPage(event, 5)">Siguiente</button>
+          <button class="page-bt" onclick="lastPage(event, 5)">Ir a la última página</button>
         </div>
-        <p>am i inside the form?</p>
-
-        <div class="page6" id="form-sec6">
+        <div class="page" id="form-sec6">
           <h1>Editar Colegio - Instalaciones</h1>
           <div>
             <p>
@@ -456,6 +471,7 @@ Soleed - Editar Colegio
               <span class="error">[{{ error }}]</span>
               {% endfor %}
             </p>
+            <p id="sports-facilities-lst" class="hide">{{ sports_facilities_lst }}</p>
             <p>
             {{ form.sports_facilities.label }} <br>
             {{ form.sports_facilities }} <br>
@@ -471,11 +487,141 @@ Soleed - Editar Colegio
             {% endfor %}
           </p>
           </div>
-          <button class="page-bt" onclick="previousPage(event, 6)">Previous</button>
-          <button class="page-bt" onclick="nextPage(event, 6)">Next</button>
+          <button class="page-bt" onclick="previousPage(event, 6)">Anterior</button>
+          <button class="page-bt" onclick="nextPage(event, 6)">Siguiente</button>
+          <button class="page-bt" onclick="lastPage(event, 6)">Ir a la última página</button>
+        </div>
+        <div class="page" id="form-sec7">
+          <h1>Editar Colegio - Servicios</h1>
+          <div>
+            <p>
+              {{ form.canteen(onchange="simplyToggleElement(event, 'canteen-div', 'show')") }}
+              {{ form.canteen.label }} <br>
+              {% for error in form.canteen.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <div id="canteen-div" class="hide" >
+              <p>
+                {{ form.in_house_kitchen }}
+                {{ form.in_house_kitchen.label }} <br>
+                {% for error in form.in_house_kitchen.errors %}
+                <span class="error">[{{ error }}]</span>
+                {% endfor %}
+              </p>
+              <p>
+                {{ form.canteen_price.label }} <br>
+                {{ form.canteen_price }} <br>
+                {% for error in form.canteen_price.errors %}
+                <span class="error">[{{ error }}]</span>
+                {% endfor %}
+              </p>
+            </div>            
+          </div>
+          <hr>
+          <div>
+            <p>
+              {{ form.horario_ampliado(onchange="simplyToggleElement(event, 'horario-amppliado-div', 'show')") }}
+              {{ form.horario_ampliado.label }} <br>
+              {% for error in form.horario_ampliado.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <div id="horario-ampliado-div" class="hide" >
+              <p>
+                {{ form.horario_ampliado_morning.label }} <br>
+                {{ form.horario_ampliado_morning }} <br>
+                {% for error in form.horario_ampliado_morning.errors %}
+                <span class="error">[{{ error }}]</span>
+                {% endfor %}
+              </p>
+              <p>
+                {{ form.horario_ampliado_afternoon.label }} <br>
+                {{ form.horario_ampliado_afternoon }} <br>
+                {% for error in form.horario_ampliado_afternoon.errors %}
+                <span class="error">[{{ error }}]</span>
+                {% endfor %}
+              </p>
+              <p>
+                {{ form.horario_ampliado_price.label }} <br>
+                {{ form.horario_ampliado_price }} <br>
+                {% for error in form.horario_ampliado_price.errors %}
+                <span class="error">[{{ error }}]</span>
+                {% endfor %}
+              </p>
+            </div>                        
+          </div>
+          <hr>
+          <div>
+            <p>
+              {{ form.nurse(onchange="simplyToggleElement(event, 'nurse-div', 'show')") }}
+              {{ form.nurse.label }} <br>
+              {% for error in form.nurse.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p id="nurse-div" class="hide" >
+              {{ form.nurse_price.label }} <br>
+              {{ form.nurse_price }} <br>
+              {% for error in form.nurse_price.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+          </div>
+          <hr>
+          <div>
+            <p>
+              {{ form.school_bus(onchange="simplyToggleElement(event, 'school-bus-div', 'show')") }}
+              {{ form.school_bus.label }} <br>
+              {% for error in form.school_bus.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p id="school-bus-div" class="hide">
+              {{ form.school_bus_price.label }} <br>
+              {{ form.school_bus_price }} <br>
+              {% for error in form.school_bus_price.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+          </div>
+          <hr>
+          <div>
+            <p>
+              {{ form.extracurricular_activities_offered(onchange="simplyToggleElement(event, 'extracurricular-div', 'show')") }}
+              {{ form.extracurricular_activities_offered.label }} <br>
+              {% for error in form.extracurricular_activities_offered.errors %}
+              <span class="error">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p id="extracurriculars-lst" class="hide">{{ extracurricular_lst }}</p>
+            <div id="extracurricular-div" class="hide" >
+              <p>
+                {{ form.extracurricular_activities_price_from.label }}
+                {{ form.extracurricular_activities_price_from }} <br>
+                {% for error in form.extracurricular_activities_price_from.errors %}
+                <span class="error">[{{ error }}]</span>
+                {% endfor %}
+              </p>
+              <p>
+                {{ form.extracurricular_activities_price_upto.label }}
+                {{ form.extracurricular_activities_price_upto }} <br>
+                {% for error in form.extracurricular_activities_price_upto.errors %}
+                <span class="error">[{{ error }}]</span>
+                {% endfor %}
+              </p>
+              <p>
+                {{ form.extracurricular_activities.label }}
+                {{ form.extracurricular_activities }} <br>
+                {% for error in form.extracurricular_activities.errors %}
+                <span class="error">[{{ error }}]</span>
+                {% endfor %}
+              </p>
+            </div>
+          </div>
+          <button class="page-bt" onclick="previousPage(event, 7)">Anterior</button>
           <p>{{ form.submit() }} </p>
         </div>
-        
         
       </form>
       

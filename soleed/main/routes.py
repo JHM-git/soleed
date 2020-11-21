@@ -7,6 +7,7 @@ from soleed.helpers.hardData import picturesx
 from soleed.main.forms import EditUserProfileForm, RegisterSchoolForm
 from soleed.main.forms import EditSchoolForm, LanguageForm, EditLanguageForm, RemoveLanguageForm
 from soleed.models import User, School, Opinion, Language, Religion, Sports_facilities, Languages
+from soleed.models import Extracurricular
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from datetime import datetime
@@ -58,11 +59,7 @@ def school(name):
   facilities_list = facilitiesList(school.patio_separado_infantil, school.library, school.vegetable_garden)
   sports_facilities = school.sports_facilities.all()
   #services
-  
-  #if school.extracurricular_activities_list:
-  #  extracurricular_activities = strToLs(school.extracurricular_activities_list)  
-  #else:
-  #  extracurricular_activities = None
+  extracurricular_activities = school.extracurricular_activities.all()
   #languages
   school_languages = Language.query.filter_by(school_id=school.id).all()
   school_lang_list = []
@@ -81,7 +78,7 @@ def school(name):
   return render_template('school.html', school=school, público=público, concertado=concertado, 
   privado=privado, pictures=picturesx, opinions=opinions, edu_offer=edu_offer, stages=stages, funding_type=funding_type,
   edu_stage_msg=edu_stage_msg, facilities_list=facilities_list, sports_facilities=sports_facilities, 
-  school_lang_list=school_lang_list, googleAPI=googleAPI)
+  school_lang_list=school_lang_list, extracurricular_activities=extracurricular_activities, googleAPI=googleAPI)
 
 
 @bp.route('/schools/register school', methods=['GET', 'POST'])
@@ -135,6 +132,7 @@ def edit_school():
     return redirect(url_for('auth.login'))
   school = School.query.filter_by(headteacher_id=current_user.id).first_or_404()
   all_sports_facilities = Sports_facilities.query.all()
+  all_extracurriculars = Extracurricular.query.all()
   form = EditSchoolForm()
   language_form = LanguageForm()
   edit_language_form = EditLanguageForm()
@@ -144,10 +142,14 @@ def edit_school():
   for lid in languages_db:
     lan_to_add = Languages.query.filter_by(id=lid.language_id).first()
     languages.append(lan_to_add.language)
+  form.bi_tri_languages.choices = tuple_maker(languages)
   edit_language_form.language.choices = tuple_maker(languages)
   remove_language_form.language.choices = tuple_maker(languages)
   edu_offer_lst = []
+  sports_facilities_lst = []
+  extracurricular_lst = []
   school_lang_list = []
+  bi_tri_list = []
   for lang in languages_db:
     language_obj = Languages.query.filter_by(id=lang.language_id).first()
     languages_dict = {
@@ -222,6 +224,14 @@ def edit_school():
     school.monolingual = form.monolingual.data 
     school.bilingual = form.bilingual.data 
     school.trilingual = form.trilingual.data
+    if len(form.bi_tri_languages.data) == 1 and form.bilingual.data == True:
+      school.bilingual_language = form.bi_tri_languages.data[0]
+    elif len(form.bi_tri_languages.data) == 2 and form.trilingual.data == True:
+      school.bilingual_language = form.bi_tri_languages.data[0]
+      school.trilingual_language = form.bi_tri_languages.data[1]
+    else:
+      flash('Elige el correcto número de idiomas para bilingüe o trilingüe')
+      return redirect(url_for('main.edit_school'))
     school.patio_separado_infantil = form.patio_separado_infantil.data 
     school.library = form.library.data 
     school.vegetable_garden = form.vegetable_garden.data 
@@ -232,6 +242,26 @@ def edit_school():
       else:
         school.remove_sports_facility(facility)
     school.facilities_information = form.facilities_information.data
+    school.canteen = form.canteen.data 
+    school.in_house_kitchen = form.in_house_kitchen.data 
+    school.canteen_price = form.canteen_price.data 
+    school.horario_ampliado = form.horario_ampliado.data
+    school.horario_ampliado_morning = form.horario_ampliado_morning.data
+    school.horario_ampliado_afternoon = form.horario_ampliado_afternoon.data
+    school.horario_ampliado_price = form.horario_ampliado_price.data
+    school.nurse = form.nurse.data
+    school.nurse_price = form.nurse_price.data
+    school.school_bus = form.school_bus.data
+    school.school_bus_price = form.school_bus_price.data
+    school.extracurricular_activities_offered = form.extracurricular_activities_offered.data
+    school.extracurricular_activities_price_from = form.extracurricular_activities_price_from.data
+    school.extracurricular_activities_price_upto = form.extracurricular_activities_price_upto.data
+    school_extracurriculars = form.extracurricular_activities.data
+    for activity in all_extracurriculars:
+      if activity.activity in school_extracurriculars:
+        school.add_extracurricular(activity)
+      else:
+        school.remove_extracurricular(activity)
     db.session.add(school)
     db.session.commit()
     
@@ -281,10 +311,59 @@ def edit_school():
     form.monolingual.data = school.monolingual
     form.bilingual.data = school.bilingual
     form.trilingual.data = school.trilingual
-  
+    bi_tri_ids = []
+    for num in range(len(languages)):
+      bi_tri_ids.append('bi_tri_languages-' + str(num))
+    bi_tri_booleans = []
+    for lan in languages:
+      if lan in school.bilingual_language or lan in school.trilingual_language:
+        bi_tri_booleans.append(True)
+      else:
+        bi_tri_booleans.append(False)
+    bi_tri_list = edu_offer_lstMaker(bi_tri_booleans, bi_tri_ids)
+    form.patio_separado_infantil.data = school.patio_separado_infantil
+    form.library.data = school.library
+    form.vegetable_garden.data = school.vegetable_garden
+    sports_facilities_ids = ['sports_facilities-0', 'sports_facilities-1', 'sports_facilities-2',
+    'sports_facilities-3', 'sports_facilities-4', 'sports_facilities-5']
+    sports_facilities_booleans = []
+    sports_facilities = school.sports_facilities.all()
+    for facility in all_sports_facilities:
+      if facility in sports_facilities:
+        sports_facilities_booleans.append(True)
+      else:
+        sports_facilities_booleans.append(False)
+    sports_facilities_lst = edu_offer_lstMaker(sports_facilities_booleans, sports_facilities_ids)
+    form.facilities_information.data = school.facilities_information
+    form.canteen.data = school.canteen
+    form.in_house_kitchen.data = school.in_house_kitchen
+    form.canteen_price.data = school.canteen_price
+    form.horario_ampliado.data = school.horario_ampliado
+    form.horario_ampliado_morning.data = school.horario_ampliado_morning
+    form.horario_ampliado_afternoon.data = school.horario_ampliado_afternoon
+    form.horario_ampliado_price.data = school.horario_ampliado_price
+    form.nurse.data = school.nurse
+    form.nurse_price.data = school.nurse_price
+    form.school_bus.data = school.school_bus
+    form.school_bus_price.data = school.school_bus_price
+    form.extracurricular_activities_offered.data = school.extracurricular_activities_offered
+    form.extracurricular_activities_price_from.data = school.extracurricular_activities_price_from
+    form.extracurricular_activities_price_upto.data = school.extracurricular_activities_price_upto
+    extracurricular_ids = []
+    for num in range(0,20):
+      extracurricular_ids.append('extracurricular_activities-'+str(num))
+    extracurriculars = school.extracurricular_activities.all()
+    extracurricular_booleans = []
+    for activity in all_extracurriculars:
+      if activity in extracurriculars:
+        extracurricular_booleans.append(True)
+      else:
+        extracurricular_booleans.append(False)
+    extracurricular_lst = edu_offer_lstMaker(extracurricular_booleans, extracurricular_ids)
   return render_template('edit_school.html', form=form, school=school, language_form=language_form, 
   edit_language_form=edit_language_form, remove_language_form=remove_language_form, googleAPI=googleAPI, 
-  edu_offer_lst=edu_offer_lst, school_lang_list=school_lang_list)
+  edu_offer_lst=edu_offer_lst, school_lang_list=school_lang_list, sports_facilities_lst=sports_facilities_lst,
+  extracurricular_lst=extracurricular_lst, bi_tri_list=bi_tri_list)
 
 @bp.route('/schools/edit_language', methods=['GET', 'POST'])
 def edit_language():

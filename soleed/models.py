@@ -58,6 +58,11 @@ school_sports_facilities = db.Table('school_sports_facilities',
   db.Column('school_id', db.Integer, db.ForeignKey('school.id'))
 )
 
+school_extracurricular_activities = db.Table('school_extracurricular_activities',
+  db.Column('extracurricular_id', db.Integer, db.ForeignKey('extracurricular.id')),
+  db.Column('school_id', db.Integer, db.ForeignKey('school.id'))
+)
+
 
 class School(db.Model):
   id = db.Column(db.Integer, primary_key=True)
@@ -116,6 +121,8 @@ class School(db.Model):
   trilingual = db.Column(db.Boolean, index=True)
   bilingual = db.Column(db.Boolean, index=True)
   languages = db.relationship('Language', backref='school', lazy='dynamic')
+  bilingual_language = db.Column(db.String(32), index=True)
+  trilingual_language = db.Column(db.String(32), index=True)
   #facilities
   patio_separado_infantil = db.Column(db.Boolean, index=True)
   library = db.Column(db.Boolean, index=True)
@@ -131,8 +138,9 @@ class School(db.Model):
   horario_ampliado_morning = db.Column(db.String(32), index=True)
   horario_ampliado_afternoon = db.Column(db.String(32), index=True)
   horario_ampliado_price = db.Column(db.Integer, index=True)
-  
-  
+  extracurricular_activities_offered = db.Column(db.Boolean, index=True)
+  extracurricular_activities = db.relationship('Extracurricular', secondary=school_extracurricular_activities,
+  backref='schools', lazy='dynamic')
   extracurricular_activities_price_from = db.Column(db.Integer, index=True)
   extracurricular_activities_price_upto = db.Column(db.Integer, index=True)
   nurse = db.Column(db.Boolean, index=True)
@@ -165,6 +173,20 @@ class School(db.Model):
   def has_sports_facility(self, sports_facility):
     return self.sports_facilities.filter(
       school_sports_facilities.c.sports_facility_id == sports_facility.id).count() > 0
+
+  def add_extracurricular(self, extracurricular):
+    if not self.has_extracurricular(extracurricular):
+      self.extracurricular_activities.append(extracurricular)
+
+  def remove_extracurricular(self, extracurricular):
+    if self.has_extracurricular(extracurricular):
+      self.extracurricular_activities.remove(extracurricular)
+
+  def has_extracurricular(self, extracurricular):
+    return self.extracurricular_activities.filter(
+      school_extracurricular_activities.c.extracurricular_id == extracurricular.id).count() > 0
+
+
 
 
 
@@ -209,6 +231,18 @@ class Sports_facilities(db.Model):
 
   def __repr__(self):
     return f'{self.sports_facility}'
+
+class Extracurricular(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  activity = db.Column(db.String(64), index=True)
+  school = db.relationship('School', secondary=school_extracurricular_activities,
+  backref='extracurricular activity', lazy='dynamic')
+
+  def __init__(self, activity):
+    self.activity = activity
+
+  def __repr__(self):
+    return f'{self.activity}'
 
 
 

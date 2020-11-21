@@ -2,8 +2,9 @@ from flask import request, current_app
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, TextAreaField, SubmitField
 from wtforms import IntegerField, SelectField, RadioField, SelectMultipleField, widgets
-from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length
+from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length, Optional
 from soleed.models import User, School, Religion, Languages, Language, Sports_facilities
+from soleed.models import Extracurricular
 from flask_babel import lazy_gettext as _l
 from soleed.helpers.functions import range_list, tuple_maker
 from soleed.main import bp
@@ -149,6 +150,7 @@ class EditSchoolForm(FlaskForm):
     monolingual = BooleanField('No')
     bilingual = BooleanField('Bilingüe')
     trilingual = BooleanField('Trilingüe')
+    bi_tri_languages = MultiCheckboxField('Elige el/los idioma/s', choices=[])
     #facilities
     patio_separado_infantil = BooleanField('Patio separado para Infantil')
     library = BooleanField('Biblioteca')
@@ -159,7 +161,27 @@ class EditSchoolForm(FlaskForm):
         sports_facilities_list.append(fac.sports_facility)
     sports_facilities = MultiCheckboxField('Instalaciones deportivas', choices=tuple_maker(sports_facilities_list))
     facilities_information = TextAreaField('Información sobre las instalaciones del colegio', validators=[Length(min=0, max=500)])
-    
+    #services
+    canteen = BooleanField('Comedor')
+    in_house_kitchen = BooleanField('Con cocina propia')
+    canteen_price = IntegerField('Precio al mes', validators=[Optional()])
+    horario_ampliado = BooleanField('Horario ampliado')
+    horario_ampliado_morning = SelectField('mañanas desde', choices=tuple_maker(['7:00', '7:30', '8:00', '8:30']))
+    horario_ampliado_afternoon = SelectField('tardes hasta', choices=tuple_maker(['16:00', '16:30', '17:00', '17:30', '18:00', '18:30']))
+    horario_ampliado_price = IntegerField('precio por franja al día', validators=[Optional()])
+    nurse = BooleanField('Enfermeria')
+    nurse_price = IntegerField('Precio al mes', validators=[Optional()])
+    school_bus = BooleanField('Transporte')
+    school_bus_price = IntegerField('Precio al mes', validators=[Optional()])
+    extracurricular_activities_offered = BooleanField('Se ofrece extraescolares')
+    extracurricular_activities_price_from = IntegerField('precios desde', validators=[Optional()])
+    extracurricular_activities_price_upto = IntegerField('precios hasta al mes', validators=[Optional()])
+    extracurriculars = Extracurricular.query.all()
+    extracurriculars_list = []
+    for activity in extracurriculars:
+        extracurriculars_list.append(activity.activity)
+    extracurricular_activities = MultiCheckboxField('Extraescolares ofrecidos', choices=tuple_maker(extracurriculars_list))
+
     
     submit = SubmitField('Registrar los cambios')
 

@@ -286,6 +286,10 @@ body {
   margin-right: 0.5em;
 }
 
+.indentation {
+  margin-left: 2em;
+}
+
 .service p {
   /*background-color: #F2DD72;*/
   border-bottom: .25em solid #F2DD72;
@@ -437,11 +441,7 @@ body {
   display: block
 }
 
-.page2,
-.page3,
-.page4,
-.page5,
-.page6 {
+.page {
   display: none;
 }
 

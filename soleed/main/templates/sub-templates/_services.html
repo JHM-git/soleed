@@ -1,6 +1,6 @@
 <section class="services">
   <div class=section-title-div>
-    <h2 class="section-title">Services</h2>
+    <h2 class="section-title">Servicios</h2>
   </div>
   <div class="services-div">
     {% if school.canteen is true and school.in_house_kitchen is true %}
@@ -12,13 +12,13 @@
     <div class="service"><div class="service-div"><p>Horario ampliado (mañanas desde las {{ school.horario_ampliado_morning }} y tardes hasta las {{ school.horario_ampliado_afternoon }})</p></div>
       <span class="service-price"><p>desde {{ school.horario_ampliado_price }}€ al día</p></span></div>
     {% endif %}
-    {% if school.extracurricular_activities is true %}
+    {% if school.extracurricular_activities_offered is true %}
     <div class="service"><div class="service-div"><div><p>Extrascolares:</p>
-      <ul>
-        {% for activity in extracurricular_activities %}
-        <li>{{ activity }}</li>
+        <p class="indentation">{% for activity in extracurricular_activities %}
+        <span> &#9734{{ activity }} </span>
         {% endfor %}
-      </ul></div>
+      </p>
+    </div>
     </div><span class="service-price"><p>desde {{ school.extracurricular_activities_price_from }}€ hasta {{ school.extracurricular_activities_price_upto }}€ al mes</p></span></div>
     {% endif %}
     {% if school.nurse is true%}

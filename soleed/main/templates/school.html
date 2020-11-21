@@ -74,9 +74,9 @@ Soleed - {{ school.name }}
         {% endif %}
       </p>
       {% if school.trilingual is true %}
-      <p class="e-info">Trilingüe ({{ school.first_language }}, {{school.second_language }})</p>
+      <p class="e-info">Trilingüe ({{ school.bilingual_language }}, {{school.trilingual_language }})</p>
       {% elif school.bilingual is true %}
-      <p class="e-info">Bilingüe ({{ school.first_language }})</p>
+      <p class="e-info">Bilingüe ({{ school.bilingual_language }})</p>
       {% endif %}
     </div>
     {% if opinions %}
