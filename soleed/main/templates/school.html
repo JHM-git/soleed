@@ -74,9 +74,9 @@ Soleed - {{ school.name }}
         {% endif %}
       </p>
       {% if school.trilingual is true %}
-      <p class="e-info">Trilingüe ({{ school.first_language }}, {{school.second_language }})</p>
+      <p class="e-info">Trilingüe ({{ school.bilingual_language }}, {{school.trilingual_language }})</p>
       {% elif school.bilingual is true %}
-      <p class="e-info">Bilingüe ({{ school.first_language }})</p>
+      <p class="e-info">Bilingüe ({{ school.bilingual_language }})</p>
       {% endif %}
     </div>
     {% if opinions %}
@@ -118,7 +118,7 @@ Soleed - {{ school.name }}
     {% include 'sub-templates/_edu-offer.html' %}
   {% endif %}
 
-  {% if facilites_list or school.sports_facilities %}
+  {% if facilities_list or school.sports_facilities.all()|length > 0 %}
     <div class="separator-2"></div>
     {% include 'sub-templates/_facilities.html' %}
     <div>
@@ -136,7 +136,7 @@ Soleed - {{ school.name }}
   <div class="separator-2"></div>
   {% endif %}
 
-  {% if school.first_language %}
+  {% if school_lang_list %}
     {% include 'sub-templates/_languages.html' %}
     <div class="separator-1"></div>
   {% endif %}

@@ -1,5 +1,4 @@
 
-from flask import current_app
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
@@ -54,7 +53,15 @@ class User(UserMixin, db.Model):
       return
     return User.query.get(id)
 
+school_sports_facilities = db.Table('school_sports_facilities',
+  db.Column('sports_facility_id', db.Integer, db.ForeignKey('sports_facilities.id')),
+  db.Column('school_id', db.Integer, db.ForeignKey('school.id'))
+)
 
+school_extracurricular_activities = db.Table('school_extracurricular_activities',
+  db.Column('extracurricular_id', db.Integer, db.ForeignKey('extracurricular.id')),
+  db.Column('school_id', db.Integer, db.ForeignKey('school.id'))
+)
 
 
 class School(db.Model):
@@ -110,15 +117,19 @@ class School(db.Model):
   bachillerato_type = db.Column(db.String(32), index=True)
   formación_profesional_type = db.Column(db.String(32), index=True)
   #languages
+  monolingual = db.Column(db.Boolean, index=True)
   trilingual = db.Column(db.Boolean, index=True)
   bilingual = db.Column(db.Boolean, index=True)
   languages = db.relationship('Language', backref='school', lazy='dynamic')
+  bilingual_language = db.Column(db.String(32), index=True)
+  trilingual_language = db.Column(db.String(32), index=True)
   #facilities
   patio_separado_infantil = db.Column(db.Boolean, index=True)
   library = db.Column(db.Boolean, index=True)
   vegetable_garden = db.Column(db.Boolean, index=True)
   facilities_information = db.Column(db.String(1000), index=True)
-  
+  sports_facilities = db.relationship('Sports_facilities', secondary=school_sports_facilities, 
+  backref='schools', lazy='dynamic')
   #services
   canteen = db.Column(db.Boolean, index=True)
   in_house_kitchen = db.Column(db.Boolean, index=True)
@@ -127,8 +138,9 @@ class School(db.Model):
   horario_ampliado_morning = db.Column(db.String(32), index=True)
   horario_ampliado_afternoon = db.Column(db.String(32), index=True)
   horario_ampliado_price = db.Column(db.Integer, index=True)
-  extracurricular_activities = db.Column(db.Boolean, index=True)
-  extracurricular_activities_list = db.Column(db.String(500), index=True)
+  extracurricular_activities_offered = db.Column(db.Boolean, index=True)
+  extracurricular_activities = db.relationship('Extracurricular', secondary=school_extracurricular_activities,
+  backref='schools', lazy='dynamic')
   extracurricular_activities_price_from = db.Column(db.Integer, index=True)
   extracurricular_activities_price_upto = db.Column(db.Integer, index=True)
   nurse = db.Column(db.Boolean, index=True)
@@ -139,7 +151,7 @@ class School(db.Model):
   bulletpoint_presentation = db.Column(db.String(500), index=True)
   bulletpoint_methods_and_priorities = db.Column(db.String(500), index=True)
   bulletpoint_specialities = db.Column(db.String(500), index=True)
-  #test
+  
 
   def __repr__(self):
     return '<{}>'.format(self.name)
@@ -149,6 +161,35 @@ class School(db.Model):
 
   def check_password(self, password):
     return check_password_hash(self.password_hash, password)
+  
+  def add_sports_facility(self, sports_facility):
+    if not self.has_sports_facility(sports_facility):
+      self.sports_facilities.append(sports_facility)
+
+  def remove_sports_facility(self, sports_facility):
+    if self.has_sports_facility(sports_facility):
+      self.sports_facilities.remove(sports_facility)
+
+  def has_sports_facility(self, sports_facility):
+    return self.sports_facilities.filter(
+      school_sports_facilities.c.sports_facility_id == sports_facility.id).count() > 0
+
+  def add_extracurricular(self, extracurricular):
+    if not self.has_extracurricular(extracurricular):
+      self.extracurricular_activities.append(extracurricular)
+
+  def remove_extracurricular(self, extracurricular):
+    if self.has_extracurricular(extracurricular):
+      self.extracurricular_activities.remove(extracurricular)
+
+  def has_extracurricular(self, extracurricular):
+    return self.extracurricular_activities.filter(
+      school_extracurricular_activities.c.extracurricular_id == extracurricular.id).count() > 0
+
+
+
+
+
 
 
 class Language(db.Model):
@@ -179,9 +220,11 @@ class Religion(db.Model):
   def __repr__(self):
     return f'{self.religion}'
 
-class SportsFacilities(db.Model):
+class Sports_facilities(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   sports_facility = db.Column(db.String(64), index=True)
+  school = db.relationship('School', secondary=school_sports_facilities, 
+  backref='sports_facility', lazy='dynamic')
 
   def __init__(self, sports_fac):
     self.sports_facility = sports_fac
@@ -189,12 +232,21 @@ class SportsFacilities(db.Model):
   def __repr__(self):
     return f'{self.sports_facility}'
 
-'''
-school_languages = db.Table('school_languages',
-  db.Column('language_id', db.Integer, db.ForeignKey('religion.id'))
-  db.Column('school_id', db.Inteher, db.ForeignKey('school.id'))
-)
-'''
+class Extracurricular(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  activity = db.Column(db.String(64), index=True)
+  school = db.relationship('School', secondary=school_extracurricular_activities,
+  backref='extracurricular activity', lazy='dynamic')
+
+  def __init__(self, activity):
+    self.activity = activity
+
+  def __repr__(self):
+    return f'{self.activity}'
+
+
+
+
 
 class Opinion(db.Model):
   id = db.Column(db.Integer, primary_key=True)

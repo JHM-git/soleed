@@ -1,0 +1,15 @@
+
+
+<p>
+  {{ remove_language_form.language.label }} <br>
+  {{ remove_language_form.language(id="remove-language", form="remove-language-form") }} <br>
+  {% for error in remove_language_form.language.errors %}
+  <span class="error">[{{ error }}]</span>
+  {% endfor %}
+</p>
+<p><button onclick="removeLang(event, 'remove-language-form',
+  urlDelLan, 'remove-language-bt', '#languages', ['#remove-language-form', '#edit-language-form'])">Quitar el idioma</button></p>
+
+<script>
+  const urlDelLan = "{{ url_for('main.remove_language') }}";
+</script>

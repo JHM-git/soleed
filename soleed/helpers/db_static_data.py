@@ -1,5 +1,5 @@
-from soleed import app, db
-from soleed.models import Religion, SportsFacilities, Languages
+from soleed import db
+from soleed.models import Religion, Sports_facilities, Languages, Extracurricular
 
 def religions_to_db():
   catholic = Religion(religion='Católica')
@@ -28,14 +28,24 @@ def languages_to_db():
   db.session.commit()
 
 def sports_facilities_to_db():
-  fut = SportsFacilities('Campo de Futból')
-  bal = SportsFacilities('Cancha de Baloncesto')
-  gim = SportsFacilities('Gimnasio')
-  atl = SportsFacilities('Pista de Atletismo')
-  bai = SportsFacilities('Estudio de Danza')
+  fut = Sports_facilities('Campo de Futból')
+  bal = Sports_facilities('Cancha de Baloncesto')
+  gim = Sports_facilities('Gimnasio')
+  atl = Sports_facilities('Pista de Atletismo')
+  bai = Sports_facilities('Estudio de Danza')
   db.session.add(fut)
   db.session.add(bal)
   db.session.add(gim)
   db.session.add(atl)
   db.session.add(bai)
   db.session.commit()
+
+def extracurriculars_to_db():
+  extracurriculars = ['fútbol', 'baloncesto', 'balonmano', 'natación', 'atletismo',
+  'patinaje', 'multideporte', 'baile moderno', 'ballet', 'guitarra', 'piano', 'inglés', 'francés',
+  'chino', 'portugués', 'italiano', 'gimnasia rítmica', 'judo', 'kung fu', 'música']
+  for item in extracurriculars:
+    extracurricular = Extracurricular(item)
+    db.session.add(extracurricular)
+  db.session.commit()
+

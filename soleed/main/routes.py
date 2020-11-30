@@ -1,18 +1,24 @@
 from flask import render_template, url_for, json, request, flash
-from flask import redirect, g, current_app
+from flask import redirect, g, current_app, jsonify
 from soleed import db
-from soleed.helpers.hardData import schoolx, opinionsx, picturesx
 from soleed.helpers.functions import oneRandomOpinion, twoRandomOpinions, schoolFundingLists
 from soleed.helpers.functions import facilitiesList, strToLs, edu_offer_lstMaker, tuple_maker
+from soleed.helpers.hardData import picturesx
 from soleed.main.forms import EditUserProfileForm, RegisterSchoolForm
-from soleed.main.forms import EditSchoolForm, LanguageForm
-from soleed.models import User, School, Opinion, Language, Religion, SportsFacilities, Languages
+from soleed.main.forms import EditSchoolForm, LanguageForm, EditLanguageForm, RemoveLanguageForm
+from soleed.models import User, School, Opinion, Language, Religion, Sports_facilities, Languages
+from soleed.models import Extracurricular
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from datetime import datetime
 from soleed.helpers.keys import googleAPI
 from flask_babel import _, get_locale
 from soleed.main import bp
+import googlemaps
+
+
+gmaps = googlemaps.Client(key=googleAPI)
+
 
 
 @bp.before_app_request
@@ -51,20 +57,28 @@ def school(name):
   school.description_secundaria, school.description_bachillerato, school.description_formación_profesional]
   #facilities
   facilities_list = facilitiesList(school.patio_separado_infantil, school.library, school.vegetable_garden)
-  #if school.sports_facilities:
-  #  sports_facilities = strToLs(school.sports_facilities)
-  #else:
-  #  sports_facilities = None
-  if school.extracurricular_activities_list:
-    extracurricular_activities = strToLs(school.extracurricular_activities_list)  
-  else:
-    extracurricular_activities = None
+  sports_facilities = school.sports_facilities.all()
+  #services
+  extracurricular_activities = school.extracurricular_activities.all()
+  #languages
+  school_languages = Language.query.filter_by(school_id=school.id).all()
+  school_lang_list = []
+  for lang in school_languages:
+    language_obj = Languages.query.filter_by(id=lang.language_id).first()
+    languages_dict = {
+    'language': language_obj.language,
+    'is_obligatory': lang.is_obligatory,
+    'starting_age': lang.starting_age,
+    'weekly_hours': lang.weekly_hours,
+    'description': lang.description
+    }
+    school_lang_list.append(languages_dict)
   #opinions
   opinions = Opinion.query.filter_by(school_id=school.id).all()
   return render_template('school.html', school=school, público=público, concertado=concertado, 
   privado=privado, pictures=picturesx, opinions=opinions, edu_offer=edu_offer, stages=stages, funding_type=funding_type,
-  edu_stage_msg=edu_stage_msg, facilities_list=facilities_list, 
-  extracurricular_activities=extracurricular_activities, googleAPI=googleAPI)
+  edu_stage_msg=edu_stage_msg, facilities_list=facilities_list, sports_facilities=sports_facilities, 
+  school_lang_list=school_lang_list, extracurricular_activities=extracurricular_activities, googleAPI=googleAPI)
 
 
 @bp.route('/schools/register school', methods=['GET', 'POST'])
@@ -117,33 +131,37 @@ def edit_school():
   if current_user.is_anonymous:
     return redirect(url_for('auth.login'))
   school = School.query.filter_by(headteacher_id=current_user.id).first_or_404()
+  all_sports_facilities = Sports_facilities.query.all()
+  all_extracurriculars = Extracurricular.query.all()
   form = EditSchoolForm()
   language_form = LanguageForm()
+  edit_language_form = EditLanguageForm()
+  remove_language_form = RemoveLanguageForm()
+  languages_db = Language.query.filter_by(school_id=school.id).all()
+  languages = []
+  for lid in languages_db:
+    lan_to_add = Languages.query.filter_by(id=lid.language_id).first()
+    languages.append(lan_to_add.language)
+  form.bi_tri_languages.choices = tuple_maker(languages)
+  edit_language_form.language.choices = tuple_maker(languages)
+  remove_language_form.language.choices = tuple_maker(languages)
   edu_offer_lst = []
-  if language_form.validate_on_submit():
-    languages_db = Language.query.filter_by(school_id=school.id).all()
-    language_ids = []
-    languages = []
-    for lan in languages_db:
-      language_ids.append(lan.language_id)
-    for lid in language_ids:
-      languages.append(Languages.query.filter_by(id=lid).first())
-    if language_form.language.data in languages:
-      flash('Idioma ya está en la oferta del colegio. Puedes editarlo abajo')
-      return redirect(url_for('main.edit_school'))
+  sports_facilities_lst = []
+  extracurricular_lst = []
+  school_lang_list = []
+  bi_tri_list = []
+  for lang in languages_db:
+    language_obj = Languages.query.filter_by(id=lang.language_id).first()
+    languages_dict = {
+    'language': language_obj.language,
+    'is_obligatory': lang.is_obligatory,
+    'starting_age': lang.starting_age,
+    'weekly_hours': lang.weekly_hours,
+    'description': lang.description
+    }
+    school_lang_list.append(languages_dict)
     
-    language = Languages.query.filter_by(language=language_form.language.data).first()
-    language_to_db = Language(language_id=language.id, 
-starting_age=language_form.starting_age.data, weekly_hours=language_form.weekly_hours.data, 
-description=language_form.description.data, school_id=school.id)
-    if language_form.is_obligatory.data == '1':
-      language_to_db.is_obligatory = True
-    elif language_form.is_obligatory.data == '0':
-      language_to_db.is_obligatory = False
-    db.session.add(language_to_db)
-    db.session.commit()
-    flash('idioma añadido')
-    return redirect(url_for('main.edit_school'))
+  
   if form.validate_on_submit():
     school.name = form.name.data
     school.telephone = form.telephone.data
@@ -153,6 +171,9 @@ description=language_form.description.data, school_id=school.id)
     school.number_pupils = form.number_pupils.data
     school.address = form.address.data
     school.street_number = form.street_number.data 
+    geocode_result = gmaps.geocode(f'{form.address.data}, {form.street_number.data}, {form.city.data}, {form.country.data}')
+    school.lat = geocode_result[0]['geometry']['location']['lat']
+    school.lng = geocode_result[0]['geometry']['location']['lng']
     school.city = form.city.data
     school.subregion = form.subregion.data
     school.region = form.region.data
@@ -200,8 +221,50 @@ description=language_form.description.data, school_id=school.id)
     school.bulletpoint_presentation = form.bulletpoint_presentation.data
     school.bulletpoint_methods_and_priorities = form.bulletpoint_methods_and_priorities.data
     school.bulletpoint_specialities = form.bulletpoint_specialities.data
+    school.monolingual = form.monolingual.data 
+    school.bilingual = form.bilingual.data 
+    school.trilingual = form.trilingual.data
+    if len(form.bi_tri_languages.data) == 1 and form.bilingual.data == True:
+      school.bilingual_language = form.bi_tri_languages.data[0]
+    elif len(form.bi_tri_languages.data) == 2 and form.trilingual.data == True:
+      school.bilingual_language = form.bi_tri_languages.data[0]
+      school.trilingual_language = form.bi_tri_languages.data[1]
+    else:
+      flash('Elige el correcto número de idiomas para bilingüe o trilingüe')
+      return redirect(url_for('main.edit_school'))
+    school.patio_separado_infantil = form.patio_separado_infantil.data 
+    school.library = form.library.data 
+    school.vegetable_garden = form.vegetable_garden.data 
+    school_sports_facilities = form.sports_facilities.data
+    for facility in all_sports_facilities:
+      if facility.sports_facility in school_sports_facilities:
+        school.add_sports_facility(facility)
+      else:
+        school.remove_sports_facility(facility)
+    school.facilities_information = form.facilities_information.data
+    school.canteen = form.canteen.data 
+    school.in_house_kitchen = form.in_house_kitchen.data 
+    school.canteen_price = form.canteen_price.data 
+    school.horario_ampliado = form.horario_ampliado.data
+    school.horario_ampliado_morning = form.horario_ampliado_morning.data
+    school.horario_ampliado_afternoon = form.horario_ampliado_afternoon.data
+    school.horario_ampliado_price = form.horario_ampliado_price.data
+    school.nurse = form.nurse.data
+    school.nurse_price = form.nurse_price.data
+    school.school_bus = form.school_bus.data
+    school.school_bus_price = form.school_bus_price.data
+    school.extracurricular_activities_offered = form.extracurricular_activities_offered.data
+    school.extracurricular_activities_price_from = form.extracurricular_activities_price_from.data
+    school.extracurricular_activities_price_upto = form.extracurricular_activities_price_upto.data
+    school_extracurriculars = form.extracurricular_activities.data
+    for activity in all_extracurriculars:
+      if activity.activity in school_extracurriculars:
+        school.add_extracurricular(activity)
+      else:
+        school.remove_extracurricular(activity)
     db.session.add(school)
     db.session.commit()
+    
     flash(_('Hemos guardado los cambios.'))
     return redirect(url_for('main.school', name=school.name))
   elif request.method == 'GET':
@@ -245,9 +308,140 @@ description=language_form.description.data, school_id=school.id)
     form.bulletpoint_presentation.data = school.bulletpoint_presentation
     form.bulletpoint_methods_and_priorities.data = school.bulletpoint_methods_and_priorities
     form.bulletpoint_specialities.data = school.bulletpoint_specialities
+    form.monolingual.data = school.monolingual
+    form.bilingual.data = school.bilingual
+    form.trilingual.data = school.trilingual
+    bi_tri_ids = []
+    for num in range(len(languages)):
+      bi_tri_ids.append('bi_tri_languages-' + str(num))
+    bi_tri_booleans = []
+    for lan in languages:
+      if lan in school.bilingual_language or lan in school.trilingual_language:
+        bi_tri_booleans.append(True)
+      else:
+        bi_tri_booleans.append(False)
+    bi_tri_list = edu_offer_lstMaker(bi_tri_booleans, bi_tri_ids)
+    form.patio_separado_infantil.data = school.patio_separado_infantil
+    form.library.data = school.library
+    form.vegetable_garden.data = school.vegetable_garden
+    sports_facilities_ids = ['sports_facilities-0', 'sports_facilities-1', 'sports_facilities-2',
+    'sports_facilities-3', 'sports_facilities-4', 'sports_facilities-5']
+    sports_facilities_booleans = []
+    sports_facilities = school.sports_facilities.all()
+    for facility in all_sports_facilities:
+      if facility in sports_facilities:
+        sports_facilities_booleans.append(True)
+      else:
+        sports_facilities_booleans.append(False)
+    sports_facilities_lst = edu_offer_lstMaker(sports_facilities_booleans, sports_facilities_ids)
+    form.facilities_information.data = school.facilities_information
+    form.canteen.data = school.canteen
+    form.in_house_kitchen.data = school.in_house_kitchen
+    form.canteen_price.data = school.canteen_price
+    form.horario_ampliado.data = school.horario_ampliado
+    form.horario_ampliado_morning.data = school.horario_ampliado_morning
+    form.horario_ampliado_afternoon.data = school.horario_ampliado_afternoon
+    form.horario_ampliado_price.data = school.horario_ampliado_price
+    form.nurse.data = school.nurse
+    form.nurse_price.data = school.nurse_price
+    form.school_bus.data = school.school_bus
+    form.school_bus_price.data = school.school_bus_price
+    form.extracurricular_activities_offered.data = school.extracurricular_activities_offered
+    form.extracurricular_activities_price_from.data = school.extracurricular_activities_price_from
+    form.extracurricular_activities_price_upto.data = school.extracurricular_activities_price_upto
+    extracurricular_ids = []
+    for num in range(0,20):
+      extracurricular_ids.append('extracurricular_activities-'+str(num))
+    extracurriculars = school.extracurricular_activities.all()
+    extracurricular_booleans = []
+    for activity in all_extracurriculars:
+      if activity in extracurriculars:
+        extracurricular_booleans.append(True)
+      else:
+        extracurricular_booleans.append(False)
+    extracurricular_lst = edu_offer_lstMaker(extracurricular_booleans, extracurricular_ids)
   return render_template('edit_school.html', form=form, school=school, language_form=language_form, 
-  googleAPI=googleAPI, edu_offer_lst=edu_offer_lst)
+  edit_language_form=edit_language_form, remove_language_form=remove_language_form, googleAPI=googleAPI, 
+  edu_offer_lst=edu_offer_lst, school_lang_list=school_lang_list, sports_facilities_lst=sports_facilities_lst,
+  extracurricular_lst=extracurricular_lst, bi_tri_list=bi_tri_list)
 
+@bp.route('/schools/edit_language', methods=['GET', 'POST'])
+def edit_language():
+  school = School.query.filter_by(headteacher_id=current_user.id).first_or_404()
+  edit_language_form = EditLanguageForm()
+  languages_db = Language.query.filter_by(school_id=school.id).all()
+  languages = []
+  for lid in languages_db:
+    lan_to_add = Languages.query.filter_by(id=lid.language_id).first()
+    languages.append(lan_to_add.language)
+  edit_language_form.language.choices = tuple_maker(languages)
+  if edit_language_form.validate_on_submit():
+    language_from_form = Languages.query.filter_by(language=edit_language_form.language.data).first()
+    language_to_edit = None
+    for l in languages_db:
+      if language_from_form.id == l.language_id:
+        language_to_edit = l
+        break
+    if language_to_edit is not None:
+      language_to_edit.starting_age = edit_language_form.starting_age.data
+      language_to_edit.weekly_hours = edit_language_form.weekly_hours.data
+      language_to_edit.description = edit_language_form.description.data
+      if edit_language_form.edit_is_obligatory.data == '1':
+        language_to_edit.is_obligatory = True
+      elif edit_language_form.edit_is_obligatory.data == '0':
+        language_to_edit.is_obligatory = False
+      db.session.add(language_to_edit)
+      db.session.commit()
+    return jsonify(data={'mensaje': '{} editado'.format(edit_language_form.language.data)})
+  return jsonify(data=edit_language_form.errors)
+
+@bp.route('/schools/add_language', methods=['GET', 'POST'])
+def add_language():
+  school = School.query.filter_by(headteacher_id=current_user.id).first_or_404()
+  language_form = LanguageForm()
+  languages_db = Language.query.filter_by(school_id=school.id).all()
+  languages = []
+  for lid in languages_db:
+    lan_to_add = Languages.query.filter_by(id=lid.language_id).first()
+    languages.append(lan_to_add.language)
+  if language_form.validate_on_submit():
+    if language_form.language.data in languages:
+      return jsonify(data={'error': f'{language_form.language.data} already in database'})
+    language = Languages.query.filter_by(language=language_form.language.data).first()
+    language_to_db = Language(language_id=language.id, 
+starting_age=language_form.starting_age.data, weekly_hours=language_form.weekly_hours.data, 
+description=language_form.description.data, school_id=school.id)
+    if language_form.is_obligatory.data == '1':
+      language_to_db.is_obligatory = True
+    elif language_form.is_obligatory.data == '0':
+      language_to_db.is_obligatory = False
+    db.session.add(language_to_db)
+    db.session.commit()
+    return jsonify(data={'message': '{} añadido'.format(language_form.language.data)})
+  return jsonify(data=language_form.errors)
+
+@bp.route('/schools/remove_language', methods=['GET', 'POST'])
+def remove_language():
+  school = School.query.filter_by(headteacher_id=current_user.id).first_or_404()
+  remove_language_form = RemoveLanguageForm()
+  languages_db = Language.query.filter_by(school_id=school.id).all()
+  languages = []
+  for lid in languages_db:
+    lan_to_add = Languages.query.filter_by(id=lid.language_id).first()
+    languages.append(lan_to_add.language)
+  remove_language_form.language.choices = tuple_maker(languages)
+  if remove_language_form.validate_on_submit():
+    language_from_form = Languages.query.filter_by(language=remove_language_form.language.data).first()
+    language_to_remove = None
+    for l in languages_db:
+      if language_from_form.id == l.language_id:
+        language_to_remove = l
+        break
+    if language_to_remove is not None:
+      db.session.delete(language_to_remove)
+      db.session.commit()
+      return jsonify(data={'message': '{} eliminado'.format(remove_language_form.language.data)})
+  return jsonify(data=remove_language_form.errors)
 
 
 @bp.route('/user/<username>')
@@ -308,7 +502,7 @@ def contact():
   return render_template('contact.html')
 
 
-from soleed.soleed import db
+
 
 
 

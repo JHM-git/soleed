@@ -1,3 +1,5 @@
+
+
 const nextPage = (e, number) => {
   let currentPage = document.getElementById('form-sec' + number);
   let nextPage = document.getElementById('form-sec' + (number + 1));
@@ -18,6 +20,15 @@ const previousPage = (e, number) => {
   };
   currentPage.style.display = 'none';
   previousPage.style.display = 'block';
+  e = e || window.Event;
+  e.preventDefault();
+}
+
+const lastPage = (e, current) => {
+  let currentPage = document.getElementById('form-sec' + current);
+  let lastPage = document.getElementById('form-sec7');
+  currentPage.style.display = 'none';
+  lastPage.style.display = 'block';
   e = e || window.Event;
   e.preventDefault();
 }
@@ -43,7 +54,11 @@ const buttonChanger = (target, txt1, txt2) => {
 const simplyToggleElement = (e, target, cclass) => {
   document.getElementById(target).classList.toggle(cclass);
   e = e || window.Event;
-  e.preventDefault(); 
+  e.preventDefault();
+}
+
+const justToggle = (target, cclass) => {
+  document.getElementById(target).classList.toggle(cclass);
 }
 
 const changeCSSClass = (target, cclass) => {
@@ -90,10 +105,27 @@ const multipleRadioToggler = (e, lst1, lst2, cclass) => {
   }
 }
 
+const divOpener = (lst, ids) => {
+  for(let i = 0; i < lst.length; i++) {
+    if(document.getElementById(lst[i]).checked) {
+      justToggle(ids[i], 'show');
+    }
+  }
+}
+
 const noDefault = (e) => {
   e = e || window.Event;
   e.preventDefault();
+  console.log($('.edit-language-form').serialize());
+  console.log($('.language-form').serialize());
 }
 
-window.addEventListener('load', radioChecker('school-religious'))
-window.addEventListener('load', radioChecker('edu-offer-lst'))
+window.addEventListener('load', radioChecker('school-religious'));
+window.addEventListener('load', radioChecker('edu-offer-lst'));
+window.addEventListener('load', radioChecker('sports-facilities-lst'));
+window.addEventListener('load', radioChecker('extracurriculars-lst'));
+window.addEventListener('load', radioChecker('bi-tri-list'));
+window.addEventListener('load', divOpener(['canteen', 'horario_ampliado', 'nurse', 'school_bus', 'extracurricular_activities_offered'],
+['canteen-div', 'horario-ampliado-div', 'nurse-div', 'school-bus-div', 'extracurricular-div']));
+window.addEventListener('load', divOpener(['bilingual', 'trilingual'], ['bi-tri', 'bi-tri']));
+

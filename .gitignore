@@ -49,4 +49,5 @@ app.db
 messages.pot
 messages.po
 messages.mo
+removed.py
 .env
